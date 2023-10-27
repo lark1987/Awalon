@@ -1,33 +1,53 @@
 "use client"
-import { useRouter } from 'next/navigation';
+
+import { useState,useEffect } from 'react';
+import {db} from '../../utils/firebase'
+import {collection,onSnapshot } from 'firebase/firestore'
 
 const RoomIdPage = () => {
 
-  const router = useRouter();
+  const [players, setPlayers] = useState()
 
-  const test=() => { 
+  const getData=() => { 
+    const pathName= window.location.pathname.split('/');
+    const roomId = pathName[pathName.length - 1]; 
+    const playersRef = collection(db, "Awalon-room", roomId, "players");
+    onSnapshot(playersRef, (shot) => { 
+      const newData = [];
+      shot.forEach((doc) => {
+      newData.push({
+        id: doc.id,
+        name: doc.data().player,
+      })
+      setPlayers(newData)
+      });
+    });
+  }
 
-    const pathName= window.location.pathname
-    const pathParts = pathName.split('/');
-    const lastPart = pathParts[pathParts.length - 1]; 
-
-    console.log(lastPart)
-
-    // const db = firebase.firestore();
-    // const docRef = db.collection("Awalon-room").doc('your-document');
-    // docRef.onSnapshot(function(doc) {
-    // const data = doc.data();
-    // });
-
-   }
+  useEffect( ()=>{
+    getData()
+  }, [players])
 
 
+  //     const playerId = sessionStorage.getItem('playerId')
+  //     await deleteDoc(doc(db, "Awalon-room", roomId, "players",playerId));
 
+
+  
+
+
+  
 
   return (
     <>
     <div>RoomIdPage</div><br/><br/>
-    <button onClick={test}> TEST </button>
+    { players?
+      players.map( (player, index)=>(
+      <div key={player.id}>玩家：{player.name}</div>))
+      :
+      <div>Loading...</div>
+    }
+
     </>
   )
 }

@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {db} from './utils/firebase'
-import {addDoc,getDocs,collection,query,where,} from 'firebase/firestore'
+import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
+
 import './page.css'
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
     }));
   };
 
+  // 創建房間：核對房名 > 創建房間 > 導向葉面 
   const createRoom = async() => { 
     const {userName, roomName, roomPassword } = inputData;
     const roomDocRef = collection(db, "Awalon-room");
@@ -33,11 +35,13 @@ export default function Home() {
     }
     else{
       await addDoc (collection(db, "Awalon-room"),{roomName,roomPassword})
-      console.log('房間創建成功！')
+      console.log('房間創建成功，請點選進入房間')
+      // router.push(`/Rooms/${roomRef.id}`);
     }
     
    }
 
+  // 開始遊戲：核對密碼 > 創建使用者資料於 firebase 和 session
   const getStart = async() => {
     const {userName, roomName, roomPassword } = inputData;
     const roomDocRef = collection(db, "Awalon-room");
@@ -46,12 +50,19 @@ export default function Home() {
 
     if (!querySnapshot.empty) {
       const docSnap = querySnapshot.docs[0];
+      const playersRef = collection(db, "Awalon-room",docSnap.id,"players");
+      const playerData = await addDoc(playersRef, {'player': userName});
+      sessionStorage.setItem('playerId',playerData.id)
       router.push(`/Rooms/${docSnap.id}`);
     }
     else{
       console.log('進入房間失敗')
     }
   };
+
+
+
+
 
   return (
     <div className='container'>
