@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {db} from './utils/firebase'
 import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
-
 import './page.css'
+import OnlineUsersCounter from './utils/sockect'
+
+
 
 export default function Home() {
 
@@ -78,6 +80,9 @@ export default function Home() {
       
       <button onClick={createRoom}> 創建房間 </button><br/><br/>
       <button onClick={getStart}> 進入房間 </button><br/><br/>
+      <OnlineUsersCounter/>
+
+      
       
 
     </div>
