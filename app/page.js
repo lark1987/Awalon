@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import {db} from './utils/firebase'
 import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
 import './page.css'
-import OnlineUsersCounter from './utils/sockect'
+import io from 'socket.io-client';
 
 
 
@@ -17,7 +17,6 @@ export default function Home() {
 
   const router = useRouter();
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputData((prevData) => ({
@@ -25,7 +24,7 @@ export default function Home() {
     }));
   };
 
-  // 創建房間：核對房名 > 創建房間 > 導向葉面 
+  // 創建房間：核對房名 > 於 firebase 創建房間
   const createRoom = async() => { 
     const {userName, roomName, roomPassword } = inputData;
     const roomDocRef = collection(db, "Awalon-room");
@@ -36,14 +35,13 @@ export default function Home() {
       console.log('房間名字已被使用')
     }
     else{
-      await addDoc (collection(db, "Awalon-room"),{roomName,roomPassword})
+      const newData = await addDoc (collection(db, "Awalon-room"),{roomName,roomPassword})
       console.log('房間創建成功，請點選進入房間')
-      // router.push(`/Rooms/${roomRef.id}`);
     }
     
    }
 
-  // 開始遊戲：核對密碼 > 創建使用者資料於 firebase 和 session
+  // 開始遊戲：核對密碼 > 將 roomId 存放於 sessionStorage，並創建 socket 的 space
   const getStart = async() => {
     const {userName, roomName, roomPassword } = inputData;
     const roomDocRef = collection(db, "Awalon-room");
@@ -52,9 +50,11 @@ export default function Home() {
 
     if (!querySnapshot.empty) {
       const docSnap = querySnapshot.docs[0];
-      const playersRef = collection(db, "Awalon-room",docSnap.id,"players");
-      const playerData = await addDoc(playersRef, {'player': userName});
-      sessionStorage.setItem('playerId',playerData.id)
+      sessionStorage.setItem('roomId',docSnap.id)
+
+      const socket = io('http://localhost:4000');
+      socket.emit ('spaceId',docSnap.id)
+
       router.push(`/Rooms/${docSnap.id}`);
     }
     else{
@@ -79,11 +79,7 @@ export default function Home() {
       type='password' name='roomPassword' placeholder='請輸入密碼' onChange={handleChange}/><br/><br/>
       
       <button onClick={createRoom}> 創建房間 </button><br/><br/>
-      <button onClick={getStart}> 進入房間 </button><br/><br/>
-      <OnlineUsersCounter/>
-
-      
-      
+      <button onClick={getStart}> 進入房間 </button><br/><br/>      
 
     </div>
   )
