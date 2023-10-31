@@ -24,6 +24,8 @@ const RoomIdPage = () => {
     });
   }
 
+  
+
   useEffect( ()=>{
     getData()
   }, [players])
