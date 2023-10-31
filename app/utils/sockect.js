@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect  } from 'react';
 import io from 'socket.io-client';
 
 const OnlineUsersCounter = () => {
 
-  const socket = io('http://localhost:4000');
-
-  socket.on('roomNotification', (message) => {
-    console.log(message)
-  });
+  useEffect (() => {
+    const socket = io('http://localhost:4000/123456');
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const test=() => { 
-    socket.emit('joinRoom', 'roomA');
-   }
 
-   const test2=() => { 
-    socket.emit('leaveRoom', 'roomA');
-   }
+  }
+
+  const test2=() => { 
+  }
 
 
 
