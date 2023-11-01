@@ -41,7 +41,7 @@ export default function Home() {
     
    }
 
-  // 開始遊戲：核對密碼 > 將 roomId 存放於 sessionStorage，並創建 socket 的 space
+  // 開始遊戲：核對密碼 > 將 roomId、userName 存放於 sessionStorage
   const getStart = async() => {
     const {userName, roomName, roomPassword } = inputData;
     const roomDocRef = collection(db, "Awalon-room");
@@ -51,19 +51,13 @@ export default function Home() {
     if (!querySnapshot.empty) {
       const docSnap = querySnapshot.docs[0];
       sessionStorage.setItem('roomId',docSnap.id)
-
-      const socket = io('http://localhost:4000');
-      socket.emit ('spaceId',docSnap.id)
-
+      sessionStorage.setItem('userName',userName)
       router.push(`/Rooms/${docSnap.id}`);
     }
     else{
       console.log('進入房間失敗')
     }
   };
-
-
-
 
 
   return (
