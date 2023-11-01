@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const RoomIdPage = () => {
 
-  // const [spaceState, setSpaceState] = useState(false);
+  const [users, setUsers] = useState(false);
 
   const roomId = sessionStorage.getItem('roomId')
   const userName = sessionStorage.getItem('userName')
@@ -16,6 +16,7 @@ const RoomIdPage = () => {
     socket.on('answer', (msg) => { 
       console.log(msg)
       connectRoom()
+      getOnlineUsers()
      })
     return () => {socket.disconnect(); };
   }
@@ -26,30 +27,23 @@ const RoomIdPage = () => {
     return () => {socketRoom.disconnect(); };
   }
 
+  // 如果無法做到實時更新可以每秒觸發一次
+  const getOnlineUsers=() => { 
+    const socketRoom = io(`http://localhost:4000/${roomId}`);
+    socketRoom.emit('getOnlineUsers');
+    socketRoom.on('onlineUsers', (msg) => { 
+      console.log(msg)
+      const users = Object.values(msg).map(item => item.userName);
+      setUsers(users)
+    })
+    return () => {socketRoom.disconnect(); };
+  }
+
+
+
   useEffect(() => connectSocket(), []);
 
-
-
-
-
-   
-
-
-
-
-
-  // useEffect (() => {
-  //   const socket = io(`http://localhost:4000/${roomId}`);
-  //   return () => {socket.disconnect(); };
-  // }, []);
-
-  // socket.on('error', (error) => {
-  //   console.error('Socket.IO error:', error);
-  // });
-
-
-
-
+ 
 
   
 
@@ -58,8 +52,15 @@ const RoomIdPage = () => {
 
   return (
     <>
-    <div>RoomIdPage</div><br/><br/>
-    {/* <button onClick={test}>TEST</button> */}
+    <div>RoomIdPage</div><br/>
+    <button onClick={getOnlineUsers}>TEST</button><br/><br/>
+    <div>目前在線人員：</div><br/>
+    { 
+      users?
+      users.map((user) => (<div key={user}>{user}<br/><br/></div>))
+      :(<div>Loading...</div>)
+    }
+    
     </>
   )
 }
