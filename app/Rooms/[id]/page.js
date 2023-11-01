@@ -39,9 +39,29 @@ const RoomIdPage = () => {
     return () => {socketRoom.disconnect(); };
   }
 
-
-
   useEffect(() => connectSocket(), []);
+
+
+  const good = () => { 
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('joinGood');
+    socket.on('groupMessage', (msg) => { 
+      console.log(msg)
+    })
+   }
+
+   const bad = () => { 
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('joinBad');
+    socket.on('groupMessage', (msg) => { 
+      console.log(msg)
+    })
+   }
+
+   const message = () => { 
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('checkGroup');
+   }
 
  
 
@@ -53,13 +73,17 @@ const RoomIdPage = () => {
   return (
     <>
     <div>RoomIdPage</div><br/>
-    <button onClick={getOnlineUsers}>TEST</button><br/><br/>
+    <button onClick={getOnlineUsers}>getOnlineUsers</button><br/><br/>
     <div>目前在線人員：</div><br/>
     { 
       users?
       users.map((user) => (<div key={user}>{user}<br/><br/></div>))
       :(<div>Loading...</div>)
     }
+
+    <button onClick={good}>good</button>
+    <button onClick={bad}>bad</button>
+    <button onClick={message}>message</button>
     
     </>
   )
