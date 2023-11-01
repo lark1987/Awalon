@@ -4,10 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {db} from './utils/firebase'
 import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
+import {nanoid} from 'nanoid'
 import './page.css'
-import io from 'socket.io-client';
-
-
 
 export default function Home() {
 
@@ -41,7 +39,7 @@ export default function Home() {
     
    }
 
-  // 開始遊戲：核對密碼 > 將 roomId、userName 存放於 sessionStorage
+  // 開始遊戲：核對密碼 > 將 roomId、userName、userId 存放於 sessionStorage
   const getStart = async() => {
     const {userName, roomName, roomPassword } = inputData;
     const roomDocRef = collection(db, "Awalon-room");
@@ -50,8 +48,10 @@ export default function Home() {
 
     if (!querySnapshot.empty) {
       const docSnap = querySnapshot.docs[0];
+      const userId = nanoid()
       sessionStorage.setItem('roomId',docSnap.id)
       sessionStorage.setItem('userName',userName)
+      sessionStorage.setItem('userId',userId)
       router.push(`/Rooms/${docSnap.id}`);
     }
     else{
