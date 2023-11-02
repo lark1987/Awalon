@@ -32,30 +32,19 @@ const Role = (props) => {
   socket.emit('checkGroup');
   return () => {socket.disconnect(); };
  }
+// 依照人數生成好人壞人的列表，成功之後亂序排列
 
- let buttons = null;
-
+// 可依照列表生成好人壞人的按鈕
  const setRole=() => { 
-
-  if (users.length < 6) {
-    buttons = (
-      <div>
-        <button onClick={good}>Good</button>
-        <button onClick={good}>Good</button>
-        <button onClick={bad}>Bad</button>
-      </div>
-    );
-    setRoleButtons(buttons)
-  }
-
+  const roles = ['good','good','bad'];
+  const roleButtons = roles.map((role,index) => (
+    <button key={index} onClick={role === 'good'? good:bad}>
+      {role}
+    </button>
+  ));
+  setRoleButtons(roleButtons)
+}
   
-  }
-
-
-
-
-
-
 
 
 
@@ -70,19 +59,11 @@ const Role = (props) => {
 
     <button onClick={setRole}>setRole</button>
     <br/><br/>
-    <div>{roleButtons}</div>
-
-
+    <div>
+      {roleButtons ? roleButtons:[]}
+    </div>
 
     <br/><br/>
-    {/* <div>
-      { users?
-        users.map((user, index) => (
-        <button key={index} onClick={index < 2 ? good(index) : bad(index)}> role
-        </button>))
-        :[]
-      }
-    </div> */}
    </>
   )
 }
