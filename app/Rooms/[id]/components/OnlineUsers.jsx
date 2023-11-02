@@ -1,22 +1,18 @@
 "use client"
 
-import React,{ useState,useEffect } from 'react';
+import React,{ useEffect } from 'react';
 import io from 'socket.io-client';
+import {nanoid} from 'nanoid'
 
-const OnlineUsers = () => {
+const OnlineUsers = (props) => {
 
- const [users, setUsers] = useState(false);
-
- const roomId = sessionStorage.getItem('roomId')
- const userName = sessionStorage.getItem('userName')
- const userId = sessionStorage.getItem('userId')
+  const { users, setUsers,roomId,userName,userId } = props;
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
    const socket = io('http://localhost:4000');
    socket.emit ('spaceId',roomId)
    socket.on('answer', (msg) => { 
-     console.log(msg)
      connectRoom()
      getOnlineUsers()
     })
@@ -28,12 +24,11 @@ const OnlineUsers = () => {
    socketRoom.emit('setUserName', userName,userId);
    return () => {socketRoom.disconnect(); };
  }
- // 如果無法做到實時更新可以每秒觸發一次
+ // 獲取線上使用者，並setUsers，如果無法做到實時更新可以每秒觸發一次
  const getOnlineUsers=() => { 
    const socketRoom = io(`http://localhost:4000/${roomId}`);
    socketRoom.emit('getOnlineUsers');
    socketRoom.on('onlineUsers', (msg) => { 
-     console.log(msg)
      const users = Object.values(msg).map(item => item.userName);
      setUsers(users)
    })
@@ -49,7 +44,7 @@ const OnlineUsers = () => {
    <div>目前在線人員：</div><br/>
    { 
      users?
-     users.map((user) => (<div key={user}>{user}<br/><br/></div>))
+     (users.map((user) => (<div key={nanoid()}>{user}<br/><br/></div>)))
      :(<div>Loading...</div>)
    }
    </>
