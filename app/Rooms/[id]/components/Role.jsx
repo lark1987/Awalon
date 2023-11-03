@@ -7,30 +7,9 @@ const Role = (props) => {
   const { users,setUsers,roomId,userName,userId } = props;
 
   const [shuffleList, setShuffleList] = useState();
-  
-
- const good = (index) => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinGood');
-  socket.on('groupMessage', (msg) => { 
-    console.log(msg)
-  })
-  return () => {socket.disconnect(); };
- }
- const bad = (index) => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinBad');
-  socket.on('groupMessage', (msg) => { 
-    console.log(msg)
-  })
-  return () => {socket.disconnect(); };
- }
- const message = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('checkGroup');
-  return () => {socket.disconnect(); };
- }
-
+  const [groupMessage, setGroupMessage] = useState();
+  const [hideClick1,setHideClick1] = useState(true);
+  const [hideClick2,setHideClick2] = useState(true);
 
 // 好人壞人人數配置
 const scenarios = [
@@ -67,20 +46,55 @@ const generateShuffleList = () => {
   return shuffleList
  }
 
-// 創造角色按鈕 - 啟動
+// 創造角色按鈕：提供列表給 socket，同步生成
  const getRoleButton = () => { 
   const newList = generateShuffleList()
   const socketRoom = io(`http://localhost:4000/${roomId}`);
-  socketRoom.emit('getGameStart',newList);
+  socketRoom.emit('getRoleButton',newList);
   return () => {socketRoom.disconnect(); };
 }
 
-// 創造角色按鈕 - 同步
+// 點選好人牌：加入好人陣營、刷新角色按鈕列表
+ const good = () => { 
+
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('joinGood');
+  socket.on('groupMessage', (msg) => { 
+    setGroupMessage(msg)
+  })
+
+  let index = shuffleList.indexOf('good');
+  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+  socket.emit('getRoleButton',newList);
+
+  setHideClick2(false)
+
+  return () => {socket.disconnect(); };
+ }
+
+// 點選壞人牌：加入好人陣營、刷新角色按鈕列表
+ const bad = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('joinBad');
+  socket.on('groupMessage', (msg) => { 
+    setGroupMessage(msg)
+  })
+
+  let index = shuffleList.indexOf('bad');
+  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+  socket.emit('getRoleButton',newList);
+
+  setHideClick2(false)
+
+  return () => {socket.disconnect(); };
+ }
+
+// 頁面加載監聽事件：點選角色按鈕後之同步更新
 const getReady = () => { 
   const socketRoom = io(`http://localhost:4000/${roomId}`);
-  socketRoom.on('gameStart', (newList) => { 
+  socketRoom.on('roleButton', (newList) => { 
     setShuffleList(newList)
-    console.log(newList)    
+    setHideClick1(false)
   })
   return () => {socketRoom.disconnect(); };
 }
@@ -92,31 +106,28 @@ useEffect(() => getReady(), []);
   return (
    <>
     <br/><br/>
-    <button onClick={getRoleButton}>getRoleButton</button>
-    <br/><br/>
     <div>
       {
-      shuffleList ?
+      hideClick1 ?
+      <button onClick={getRoleButton}>開始遊戲，請選擇遊戲角色</button>:
+      []
+      }
+
+      {
+      hideClick2 && shuffleList ?
       (shuffleList.map((role,index) => (
-        <button key={index} onClick={role === 'good'? good:bad}>
+        <button key={index} 
+        onClick={role === 'good'? good:bad}
+        >
         {role}
         </button>
       )))
       :[]
       }
-    </div>
-    <br/>
-    <button onClick={message}>message</button>
 
+      <div>{groupMessage}</div>
 
-
-
-
-
-    <br/><br/>
-
-    
-
+    </div>    
    </>
   )
 }
