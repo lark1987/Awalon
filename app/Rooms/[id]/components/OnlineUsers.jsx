@@ -44,11 +44,11 @@ useEffect(() => connectSocket(), []);
 
  return (
    <>
-   <button onClick={getOnlineUsers}>getOnlineUsers</button><br/><br/>
+   {/* <button onClick={getOnlineUsers}>getOnlineUsers</button><br/><br/> */}
    <div>目前在線人員：</div><br/>
    { 
      users?
-     (users.map((user) => (<div key={nanoid()}>{user}<br/><br/></div>)))
+     (users.map((user) => (<span key={nanoid()}>{user}　</span>)))
      :(<div>Loading...</div>)
    }
    </>

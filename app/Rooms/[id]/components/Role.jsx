@@ -1,12 +1,12 @@
 
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
 
 const Role = (props) => {
 
   const { users,setUsers,roomId,userName,userId } = props;
 
-  const [roleButtons, setRoleButtons] = useState();
+  const [shuffleList, setShuffleList] = useState();
   
 
  const good = (index) => { 
@@ -34,6 +34,8 @@ const Role = (props) => {
 
 // 好人壞人人數配置
 const scenarios = [
+  { total: 1, badCount: 0, goodCount: 1 },
+  { total: 2, badCount: 1, goodCount: 1 },
   { total: 3, badCount: 1, goodCount: 2 },
   { total: 4, badCount: 1, goodCount: 3 },
   { total: 5, badCount: 2, goodCount: 3 },
@@ -55,40 +57,61 @@ const generateList = (total, badCount, goodCount) =>{
   }
   return listItems;
 }
-// 角色按鈕生成
-const generateRoleButton = () => { 
-
-  // 依照參與人數，生成好人壞人列表，並隨機亂序
+// 依照參與人數，生成好人壞人列表，並隨機亂序
+const generateShuffleList = () => { 
   const newList = scenarios.map((scenario) => (
     users.length === scenario.total?
-    generateList(scenario.total, scenario.badCount, scenario.goodCount):null
-  )).filter(item => item !== null)[0];
+    generateList(scenario.total, scenario.badCount, scenario.goodCount):null)
+    ).filter(item => item !== null)[0];
   const shuffleList = newList.slice().sort(() => Math.random() - 0.5);
-  console.log(shuffleList)
-
-  // 依照亂序列表生成好人壞人的按鈕
-  const roleButtons = shuffleList.map((role,index) => (
-    <button key={index} onClick={role === 'good'? good:bad}>
-      {role}
-    </button>
-  ));
-  setRoleButtons(roleButtons)
+  return shuffleList
  }
+
+// 創造角色按鈕 - 啟動
+ const getRoleButton = () => { 
+  const newList = generateShuffleList()
+  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  socketRoom.emit('getGameStart',newList);
+  return () => {socketRoom.disconnect(); };
+}
+
+// 創造角色按鈕 - 同步
+const getReady = () => { 
+  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  socketRoom.on('gameStart', (newList) => { 
+    setShuffleList(newList)
+    console.log(newList)    
+  })
+  return () => {socketRoom.disconnect(); };
+}
+
+
+useEffect(() => getReady(), []);
 
 
   return (
    <>
-    <button onClick={good}>good</button>
-    <button onClick={bad}>bad</button>
+    <br/><br/>
+    <button onClick={getRoleButton}>getRoleButton</button>
+    <br/><br/>
+    <div>
+      {
+      shuffleList ?
+      (shuffleList.map((role,index) => (
+        <button key={index} onClick={role === 'good'? good:bad}>
+        {role}
+        </button>
+      )))
+      :[]
+      }
+    </div>
+    <br/>
     <button onClick={message}>message</button>
 
-    <br/><br/>
 
-    <button onClick={generateRoleButton}>generateRoleButton</button>
 
-    <div>
-      {roleButtons ? roleButtons:[]}
-    </div>
+
+
 
     <br/><br/>
 
