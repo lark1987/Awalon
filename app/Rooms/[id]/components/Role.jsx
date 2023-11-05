@@ -60,7 +60,7 @@ const generateShuffleList = () => {
  const good = () => { 
 
   const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinGood');
+  socket.emit('joinGood',userName);
   socket.on('groupMessage', (msg) => { 
     setGroupMessage(msg)
   })
@@ -105,6 +105,26 @@ const getReady = () => {
 useEffect(() => getReady(), []);
 
 
+
+
+// 進度在這裡 ~~~
+
+const test = () => { 
+  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  socketRoom.emit('getBadPeopleList')
+  return () => {socketRoom.disconnect(); };
+ }
+
+
+
+
+
+
+
+
+
+
+
 // 遊戲開始後，房間禁止進入
 const roomNoEntry = async() => { 
   const roomDocRef = doc(db, "Awalon-room",roomId);
@@ -144,6 +164,8 @@ const roomNoEntry = async() => {
       :[]}
 
     </div>    
+
+    <div><button onClick={test}>TEST</button></div>
    </>
   )
 }
