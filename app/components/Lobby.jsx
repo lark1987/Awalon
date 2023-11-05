@@ -9,9 +9,8 @@ import '../page.css'
 
 const Lobby = () => {
 
- const [inputData, setInputData] = useState({
-  userName: '', roomName: '', roomPassword: ''
-});
+ const [inputData, setInputData] = useState();
+ const [systemMessage, setSystemMessage] = useState();
 
 const router = useRouter();
 
@@ -25,16 +24,16 @@ const handleChange = (e) => {
 // 創建房間：核對房名 > 於 firebase 創建房間
 const createRoom = async() => { 
   const {userName, roomName, roomPassword } = inputData;
-  const roomDocRef = collection(db, "Awalon-room");
-  const q = query(roomDocRef, where("roomName", "==", roomName))
+  const roomDoc = collection(db, "Awalon-room");
+  const q = query(roomDoc, where("roomName", "==", roomName))
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {
-    console.log('房間名字已被使用')
+    setSystemMessage('房間名字已被使用')
   }
   else{
     const newData = await addDoc (collection(db, "Awalon-room"),{roomName,roomPassword})
-    console.log('房間創建成功，請點選進入房間')
+    setSystemMessage('房間創建成功，請點選進入房間')
   }
   
  }
@@ -48,16 +47,25 @@ const getStart = async() => {
 
   if (!querySnapshot.empty) {
     const docSnap = querySnapshot.docs[0];
-    const userId = nanoid()
-    sessionStorage.setItem('roomId',docSnap.id)
-    sessionStorage.setItem('userName',userName)
-    sessionStorage.setItem('userId',userId)
-    router.push(`/Rooms/${docSnap.id}`);
+
+    if(!docSnap.data().gameStart){
+      const userId = nanoid()
+      sessionStorage.setItem('roomId',docSnap.id)
+      sessionStorage.setItem('userName',userName)
+      sessionStorage.setItem('userId',userId)
+      router.push(`/Rooms/${docSnap.id}`);
+    }
+    else{
+      setSystemMessage('遊戲進行中，無法進入')
+    }
   }
   else{
-    console.log('進入房間失敗')
+    setSystemMessage('進入房間失敗')
   }
 };
+
+
+
 
   return (
    <div className='container'>
@@ -72,7 +80,8 @@ const getStart = async() => {
    type='password' name='roomPassword' placeholder='請輸入密碼' onChange={handleChange}/><br/><br/>
    
    <button onClick={createRoom}> 創建房間 </button><br/><br/>
-   <button onClick={getStart}> 進入房間 </button><br/><br/>      
+   <button onClick={getStart}> 進入房間 </button><br/><br/> 
+   <div>{systemMessage}</div>     
 
  </div>
   )

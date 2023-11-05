@@ -1,6 +1,8 @@
 
 import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import {db} from '../../../utils/firebase'
+import {updateDoc,doc} from 'firebase/firestore'
 
 const Role = (props) => {
 
@@ -103,18 +105,28 @@ const getReady = () => {
 useEffect(() => getReady(), []);
 
 
+// 遊戲開始後，房間禁止進入
+const roomNoEntry = async() => { 
+  const roomDocRef = doc(db, "Awalon-room",roomId);
+  await updateDoc(roomDocRef, {
+    gameStart: true
+  });
+ }
+
+
   return (
    <>
     <br/><br/>
     <div>
-      {
-      hideClick1 ?
-      <button onClick={getRoleButton}>開始遊戲，請選擇遊戲角色</button>:
-      []
-      }
+      
+      {hideClick1 ?
+      <div>
+      <h3>請等候玩家進場，即可開始遊戲</h3>
+      <button onClick={getRoleButton}>開始遊戲</button>
+      </div>
+      :[]}
 
-      {
-      hideClick2 && shuffleList ?
+      {hideClick2 && shuffleList ?
       (shuffleList.map((role,index) => (
         <button key={index} 
         onClick={role === 'good'? good:bad}
@@ -122,10 +134,14 @@ useEffect(() => getReady(), []);
         {role}
         </button>
       )))
-      :[]
-      }
+      :[]}
 
       <div>{groupMessage}</div>
+      <br/>
+
+      {groupMessage?
+      <div><button>確認陣營，繼續遊戲</button></div>
+      :[]}
 
     </div>    
    </>
