@@ -1,8 +1,6 @@
 
 import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
-import {db} from '../../../utils/firebase'
-import {updateDoc,doc} from 'firebase/firestore'
 
 const Role = (props) => {
 
@@ -12,6 +10,7 @@ const Role = (props) => {
   const [groupMessage, setGroupMessage] = useState();
   const [hideClick1,setHideClick1] = useState(true);
   const [hideClick2,setHideClick2] = useState(true);
+
 
 // 好人壞人人數配置
 const scenarios = [
@@ -29,8 +28,9 @@ const scenarios = [
 // 好人壞人列表生成
 const generateList = (total, badCount, goodCount) =>{
   const listItems = [];
-  for (let i = 0; i < total; i++) {
-    if (i < badCount) {
+  listItems.push('merlin');
+  for (let i = 1; i < total; i++) {
+    if (i <= badCount) {
       listItems.push('bad');
     } else {
       listItems.push('good');
@@ -47,7 +47,6 @@ const generateShuffleList = () => {
   const shuffleList = newList.slice().sort(() => Math.random() - 0.5);
   return shuffleList
  }
-
 // 創造角色按鈕：提供列表給 socket，同步生成
  const getRoleButton = () => { 
   const newList = generateShuffleList()
@@ -56,7 +55,8 @@ const generateShuffleList = () => {
   return () => {socketRoom.disconnect(); };
 }
 
-// 點選好人牌：加入好人陣營、刷新角色按鈕列表
+
+// 點選好人牌：加入好人room、刷新角色按鈕列表
  const good = () => { 
 
   const socket = io(`http://localhost:4000/${roomId}`);
@@ -73,14 +73,16 @@ const generateShuffleList = () => {
 
   return () => {socket.disconnect(); };
  }
-
-// 點選壞人牌：加入好人陣營、刷新角色按鈕列表
+// 點選壞人牌：加入壞人room、刷新角色按鈕列表
  const bad = () => { 
   const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinBad');
+  socket.emit('joinBad',userName);
   socket.on('groupMessage', (msg) => { 
     setGroupMessage(msg)
   })
+  socket.on('badPeopleList',(msg) => { 
+    console.log(msg)
+   })
 
   let index = shuffleList.indexOf('bad');
   const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
@@ -90,6 +92,26 @@ const generateShuffleList = () => {
 
   return () => {socket.disconnect(); };
  }
+//  點選梅林牌：加入梅林 oom、刷新角色按鈕列表
+ const merlin = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('joinMerlin',userName);
+  socket.on('groupMessage', (msg) => { 
+    setGroupMessage(msg)
+  })
+  socket.on('badPeopleList',(msg) => { 
+    console.log(msg)
+   })
+
+  let index = shuffleList.indexOf('merlin');
+  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+  socket.emit('getRoleButton',newList);
+
+  setHideClick2(false)
+
+  return () => {socket.disconnect(); };
+
+  }
 
 // 頁面加載監聽事件：點選角色按鈕後之同步更新
 const getReady = () => { 
@@ -98,41 +120,21 @@ const getReady = () => {
     setShuffleList(newList)
     setHideClick1(false)
   })
+  socketRoom.on('badPeopleList',(msg) => { 
+    console.log(msg)
+   })
   return () => {socketRoom.disconnect(); };
 }
-
 
 useEffect(() => getReady(), []);
 
 
-
-
-// 進度在這裡 ~~~
-
-const test = () => { 
+// 得到壞人列表 
+const getBadPeopleList = () => { 
   const socketRoom = io(`http://localhost:4000/${roomId}`);
   socketRoom.emit('getBadPeopleList')
   return () => {socketRoom.disconnect(); };
  }
-
-
-
-
-
-
-
-
-
-
-
-// 遊戲開始後，房間禁止進入
-const roomNoEntry = async() => { 
-  const roomDocRef = doc(db, "Awalon-room",roomId);
-  await updateDoc(roomDocRef, {
-    gameStart: true
-  });
- }
-
 
   return (
    <>
@@ -149,7 +151,7 @@ const roomNoEntry = async() => {
       {hideClick2 && shuffleList ?
       (shuffleList.map((role,index) => (
         <button key={index} 
-        onClick={role === 'good'? good:bad}
+        onClick={role === 'merlin' ? merlin : (role === 'good' ? good : bad)}
         >
         {role}
         </button>
@@ -164,8 +166,12 @@ const roomNoEntry = async() => {
       :[]}
 
     </div>    
+    <br/>
+    <button onClick={getBadPeopleList}>getBadPeopleList</button>
+    <br/>
+    <br/>
+    <br/>
 
-    <div><button onClick={test}>TEST</button></div>
    </>
   )
 }
