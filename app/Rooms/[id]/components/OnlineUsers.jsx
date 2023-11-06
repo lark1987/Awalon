@@ -24,6 +24,9 @@ const OnlineUsers = (props) => {
  const connectRoom=() => { 
    const socketRoom = io(`http://localhost:4000/${roomId}`);
    socketRoom.emit('setUserName', userName,userId);
+   socketRoom.on('fightButton', (msg) => { 
+    console.log(msg)
+  })
    return () => {socketRoom.disconnect(); };
  }
  // 獲取線上使用者，並setUsers

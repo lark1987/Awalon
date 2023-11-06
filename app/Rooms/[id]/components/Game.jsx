@@ -24,9 +24,9 @@ const Game = (props) => {
 
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('getFightButton',selectedItems);
-    // socket.on('fightResult', (msg) => { 
-    //   console.log(msg)
-    // })
+    socket.on('fightButton', (msg) => { 
+      console.log(msg)
+    })
   };
 
 
