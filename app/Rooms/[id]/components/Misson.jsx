@@ -3,29 +3,35 @@ import io from 'socket.io-client';
 
 const Misson = (props) => {
 
- const { users,setUsers,roomId,userName,userId } = props;
+ const { users,setUsers,roomId,userName,userId,scoreRecord} = props;
 
- const handleOnClick = (answer) => { 
+ const handleOnClick = async(answer) => { 
+
   const socket = io(`http://localhost:4000/${roomId}`);
   socket.emit('getMissonResult',userId,answer);
-  socket.on('getMissonResult',(obj) => { 
-   checkMissonResult(obj)
-   });
+  const missonResult = await new Promise((resolve, reject) => {
+    socket.on('getMissonResult', (obj) => {
+      resolve(checkMissonResult(obj));
+    });
+  });
+  // scoreRecord(missonResult) 記分板稍後
   }
 
   const checkMissonResult = (obj) => { 
-
+    
+  let missonResult = ''
    const missonRecord = []
    Object.keys(obj).forEach(key => {
     const value = obj[key];
     missonRecord.push(value)
   });
    if (missonRecord.includes("失敗")) {
-    console.log("结果失敗");
+    console.log('失敗')
+    return missonResult = '失敗'
   } else {
-    console.log("结果成功");
+    console.log('成功')
+    return missonResult = '成功'
   }
-   
   }
 
 

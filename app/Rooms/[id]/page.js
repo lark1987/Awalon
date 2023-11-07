@@ -2,23 +2,24 @@
 
 import React,{ useState } from 'react';
 import OnlineUsers from './components/OnlineUsers'
+import Scoreboard from './components/Scoreboard'
 import Role from './components/Role'
 import Game from './components/Game'
 import Vote from './components/Vote'
 import Misson from './components/Misson'
+import Assassin from './components/Assassin'
 
 const RoomIdPage = () => {
 
-  const [users, setUsers] = useState(false);
-  const [openGame, setOpenGame] = useState(false);
+  const [users, setUsers] = useState();
+  const [gameRecord, setGameRecord] = useState([]);
 
   const roomId = sessionStorage.getItem('roomId')
   const userName = sessionStorage.getItem('userName')
   const userId = sessionStorage.getItem('userId')
 
-  const commonProps = {
-    users,setUsers,roomId,userName,userId
-  }
+
+
 
 
 
@@ -30,6 +31,16 @@ const RoomIdPage = () => {
     });
   }
 
+  // 暫停處理：計分版
+  const scoreRecord = (data) => { 
+    setGameRecord((prev) => [...prev,data]);
+   }
+
+  const commonProps = {
+    users,setUsers,roomId,userName,userId,gameRecord,setGameRecord,
+    scoreRecord,
+  }
+
   return (
     <>
     <div>RoomIdPage</div><br/>
@@ -38,6 +49,8 @@ const RoomIdPage = () => {
     <Game {...commonProps}/>
     <Vote {...commonProps}/>
     <Misson {...commonProps}/>
+    <Assassin {...commonProps}/>
+    <Scoreboard {...commonProps} />
 
     </>
   )

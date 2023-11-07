@@ -49,7 +49,6 @@ const Game = (props) => {
         :[]}
       <br/>
       <br/>
-      
       <button onClick={handleSubmit}>選擇出征隊友</button>
     </div>
 
