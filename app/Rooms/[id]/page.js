@@ -4,6 +4,8 @@ import React,{ useState } from 'react';
 import OnlineUsers from './components/OnlineUsers'
 import Role from './components/Role'
 import Game from './components/Game'
+import Vote from './components/Vote'
+import Misson from './components/Misson'
 
 const RoomIdPage = () => {
 
@@ -34,6 +36,8 @@ const RoomIdPage = () => {
     <OnlineUsers {...commonProps} />
     <Role {...commonProps}/>
     <Game {...commonProps}/>
+    <Vote {...commonProps}/>
+    <Misson {...commonProps}/>
 
     </>
   )

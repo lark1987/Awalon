@@ -19,14 +19,9 @@ const Game = (props) => {
 
   // 進度在這裡 ~ 提供名單給後端，請後端給被選擇的人回應。
   const handleSubmit = () => {
-
     console.log(selectedItems);
-
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('getFightButton',selectedItems);
-    socket.on('fightButton', (msg) => { 
-      console.log(msg)
-    })
   };
 
 
@@ -36,6 +31,8 @@ const Game = (props) => {
   return (
     <>
     <div>Game</div>
+    <br/>
+    <div>請勾選三人出任務</div>
     <br/>
     <div>
         {users?
@@ -52,6 +49,7 @@ const Game = (props) => {
         :[]}
       <br/>
       <br/>
+      
       <button onClick={handleSubmit}>選擇出征隊友</button>
     </div>
 

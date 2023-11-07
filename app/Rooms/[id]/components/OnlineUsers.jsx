@@ -8,8 +8,6 @@ const OnlineUsers = (props) => {
 
   const { users, setUsers,roomId,userName,userId } = props;
 
-  const [update, setUpdate] = useState();
-
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
    const socket = io('http://localhost:4000');
@@ -47,7 +45,6 @@ useEffect(() => connectSocket(), []);
 
  return (
    <>
-   {/* <button onClick={getOnlineUsers}>getOnlineUsers</button><br/><br/> */}
    <div>目前在線人員：</div><br/>
    { 
      users?
