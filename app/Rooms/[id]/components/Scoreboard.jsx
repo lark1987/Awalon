@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const Scoreboard = (props) => {
 
-  const { users,setUsers,roomId,userName,userId,gameRecord, } = props;
+  const { users,setUsers,roomId,userName,userId, } = props;
 
  
 
@@ -13,13 +13,13 @@ const Scoreboard = (props) => {
    <>
     <div>Scoreboard</div>
     <div>
-      {gameRecord?
+      {/* {gameRecord?
       gameRecord.map((record,index)=>(
         <div key={index}>{record}
         </div>
       ))
       :[]
-      }
+      } */}
     </div>
     <br/><br/>
    </>

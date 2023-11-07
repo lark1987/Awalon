@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 const Role = (props) => {
 
-  const { users,setUsers,roomId,userName,userId } = props;
+  const { users,setUsers,roomId,userName,userId,toGame } = props;
 
   const [shuffleList, setShuffleList] = useState();
   const [groupMessage, setGroupMessage] = useState();
@@ -120,9 +120,9 @@ const getReady = () => {
     setShuffleList(newList)
     setHideClick1(false)
   })
-  socketRoom.on('badPeopleList',(msg) => { 
-    console.log(msg)
-   })
+  // socketRoom.on('badPeopleList',(msg) => { 
+  //   console.log(msg)
+  //  })
   return () => {socketRoom.disconnect(); };
 }
 
@@ -136,18 +136,20 @@ const getBadPeopleList = () => {
   return () => {socketRoom.disconnect(); };
  }
 
+
+
   return (
    <>
-    <br/><br/>
     <div>
       
       {hideClick1 ?
       <div>
-      <h3>請等候玩家進場，即可開始遊戲</h3>
+      <h4>請等候玩家進場，人員到齊後可點選下方，開始遊戲！</h4>
       <button onClick={getRoleButton}>開始遊戲</button>
       </div>
       :[]}
 
+      <br/>
       {hideClick2 && shuffleList ?
       (shuffleList.map((role,index) => (
         <button key={index} 
@@ -162,16 +164,12 @@ const getBadPeopleList = () => {
       <br/>
 
       {groupMessage?
-      <div><button>確認陣營，繼續遊戲</button></div>
+      <div><button onClick={toGame}>確認陣營，繼續遊戲</button></div>
       :[]}
 
     </div>    
     <br/>
-    <button onClick={getBadPeopleList}>getBadPeopleList</button>
-    <br/>
-    <br/>
-    <br/>
-
+    {/* <button onClick={getBadPeopleList}>getBadPeopleList</button> */}
    </>
   )
 }
