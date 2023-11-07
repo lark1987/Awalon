@@ -10,10 +10,7 @@ import Game from './components/Game'
 const RoomIdPage = () => {
 
   const [users, setUsers] = useState();
-  const [gameUsers, setGameUsers] = useState();
-
-  const [showRole, setShowRole] = useState(true);
-  const [showGame, setShowGame] = useState(false);
+  const [userReady, setUserReady] = useState();
 
 
   // const [gameRecord, setGameRecord] = useState([]);
@@ -22,20 +19,26 @@ const RoomIdPage = () => {
   const userName = sessionStorage.getItem('userName')
   const userId = sessionStorage.getItem('userId')
 
-  // 進度到這 ~~~ 要處理回傳的物件數量 = users 才 setter 有可能需要操作 await 
-const toGame = () => { 
+  // 從 role 轉至 Game，設置人員等候
+const toGame = async() => { 
   const socket = io(`http://localhost:4000/${roomId}`);
   socket.emit('goGame',userId,userName);
-  socket.on('goGame',(obj) => { 
-    console.log(obj)
-    // setShowRole(false)
-    // setShowGame(true)
-   });
- }
+  socket.on('goGame', (obj) => {
+    let ready = []
+    Object.keys(obj).forEach(key => {
+      const value = obj[key];
+      ready.push(value)
+     })
+     setUserReady(ready)
+  })
+  return () => {socket.disconnect(); };
+}
+
+
 
    const commonProps = {
     users,setUsers,roomId,userName,userId,
-    toGame
+    toGame,userReady
   }
 
 
@@ -44,9 +47,10 @@ const toGame = () => {
     <>
     <div>RoomIdPage</div><br/>
 
-    <OnlineUsers {...commonProps} />
-    {showRole && <Role {...commonProps} />}
-    {showGame && <Game {...commonProps} />}
+    <OnlineUsers {...commonProps} /><br/><br/>
+    <Role {...commonProps} />
+    <Game {...commonProps} />
+  
     
 
     </>

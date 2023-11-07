@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 const Role = (props) => {
 
-  const { users,setUsers,roomId,userName,userId,toGame } = props;
+  const { users,setUsers,roomId,userName,userId,toGame,userReady } = props;
 
   const [shuffleList, setShuffleList] = useState();
   const [groupMessage, setGroupMessage] = useState();
@@ -160,15 +160,14 @@ const getBadPeopleList = () => {
       )))
       :[]}
 
-      <div>{groupMessage}</div>
-      <br/>
-
-      {groupMessage?
-      <div><button onClick={toGame}>確認陣營，繼續遊戲</button></div>
-      :[]}
+      {groupMessage && !userReady ? (
+        <div>
+          <div>{groupMessage}</div><br/>
+          <button onClick={toGame}>確認陣營，繼續遊戲</button>
+        </div>
+      ) : []}
 
     </div>    
-    <br/>
     {/* <button onClick={getBadPeopleList}>getBadPeopleList</button> */}
    </>
   )
