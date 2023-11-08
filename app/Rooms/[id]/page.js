@@ -6,12 +6,13 @@ import io from 'socket.io-client';
 import OnlineUsers from './components/OnlineUsers'
 import Role from './components/Role'
 import Game from './components/Game'
+import Leader from './components/game/Leader'
 
 const RoomIdPage = () => {
 
   const [users, setUsers] = useState();
   const [userReady, setUserReady] = useState();
-
+  const [showLeader, setShowLeader] = useState(false);
 
   // const [gameRecord, setGameRecord] = useState([]);
 
@@ -19,7 +20,7 @@ const RoomIdPage = () => {
   const userName = sessionStorage.getItem('userName')
   const userId = sessionStorage.getItem('userId')
 
-  // 從 role 轉至 Game，設置人員等候
+  // 從 role 轉至 Game
 const toGame = async() => { 
   const socket = io(`http://localhost:4000/${roomId}`);
   socket.emit('goGame',userId,userName);
@@ -38,7 +39,8 @@ const toGame = async() => {
 
    const commonProps = {
     users,setUsers,roomId,userName,userId,
-    toGame,userReady
+    toGame,userReady,
+    showLeader,setShowLeader
   }
 
 
@@ -50,6 +52,7 @@ const toGame = async() => {
     <OnlineUsers {...commonProps} /><br/><br/>
     <Role {...commonProps} />
     <Game {...commonProps} />
+    <Leader {...commonProps} />
   
     
 

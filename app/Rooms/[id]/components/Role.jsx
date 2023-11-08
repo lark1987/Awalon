@@ -120,9 +120,6 @@ const getReady = () => {
     setShuffleList(newList)
     setHideClick1(false)
   })
-  // socketRoom.on('badPeopleList',(msg) => { 
-  //   console.log(msg)
-  //  })
   return () => {socketRoom.disconnect(); };
 }
 

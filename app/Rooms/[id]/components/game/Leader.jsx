@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const Leader = (props) => {
 
-  const { users,setUsers,roomId,userName,userId } = props;
+  const { users,roomId,showLeader } = props;
 
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -30,26 +30,27 @@ const Leader = (props) => {
  
   return (
     <>
-    <div>Leader</div>
     <br/>
-    <div>請選擇出任務的人員</div>
     <br/>
     <div>
-        {users?
-        users.map((item, index) => (
-          <span key={index}>
-              <input
-                type="checkbox"
-                checked={selectedItems.includes(item)}
-                onChange={() => handleCheckboxChange(item)}
-              />
-              {item}　
-          </span>
-        ))
-        :[]}
-      <br/>
-      <br/>
-      <button onClick={handleSubmit}>確認</button>
+      {users && showLeader &&
+      (<div>
+        <div>Leader：請選擇和您一起出任務的人員</div><br/>
+
+        {users.map((item, index) => (
+        <span key={index}>
+            <input
+              type="checkbox"
+              checked={selectedItems.includes(item)}
+              onChange={() => handleCheckboxChange(item)}
+            />
+            {item}　
+        </span>))}
+
+        <button onClick={handleSubmit}>確認</button>
+
+      </div>)
+      }
     </div>
 
 

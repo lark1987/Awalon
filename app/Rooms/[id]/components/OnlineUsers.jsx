@@ -6,7 +6,7 @@ import {nanoid} from 'nanoid'
 
 const OnlineUsers = (props) => {
 
-  const { users, setUsers,roomId,userName,userId } = props;
+  const { users, setUsers,roomId,userName,userId,setShowLeader } = props;
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
@@ -18,13 +18,18 @@ const OnlineUsers = (props) => {
     })
    return () => {socket.disconnect(); };
  }
- // 創建 room 提供 userName 回傳
+ // 創建 room 提供 userName 回傳！這裡很特別！用來接收userid專屬訊息！
  const connectRoom=() => { 
    const socketRoom = io(`http://localhost:4000/${roomId}`);
    socketRoom.emit('setUserName', userName,userId);
    socketRoom.on('fightButton', (msg) => { 
     console.log(msg)
-  })
+    })
+    socketRoom.on('leaderAction', (msg) => { 
+      console.log(msg)
+      setShowLeader(true)
+    })
+    
    return () => {socketRoom.disconnect(); };
  }
  // 獲取線上使用者，並setUsers
