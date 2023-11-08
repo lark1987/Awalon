@@ -3,7 +3,9 @@ import io from 'socket.io-client';
 
 const Game = (props) => {
 
-  const {users,roomId,userReady } = props;
+  const {
+    users,roomId,userReady,setShowVote,selectedList, setSelectedList, 
+  } = props;
 
   const [leaderList, setLeaderList] = useState();
 
@@ -19,9 +21,11 @@ const Game = (props) => {
     socket.on('leaderList', (msg) => { 
       setLeaderList(msg)
     })
-    socket.on('leaderAction', (msg) => { 
-      console.log(msg)
+    socket.on('missionRaise', (msg) => { 
+      setSelectedList(msg)
+      setShowVote(true)
     })
+
     return () => {socket.disconnect(); };
   }
   
@@ -56,9 +60,13 @@ const Game = (props) => {
     :[]
     }
 
-    {
-
-    }
+    {selectedList?
+    (<div><br/><br/>本局隊長選擇人員：
+      {selectedList.map((item, index) => (
+        <span key={index}> {item}、</span>
+      ))}
+    </div>)
+    :[]}
 
     
    </>

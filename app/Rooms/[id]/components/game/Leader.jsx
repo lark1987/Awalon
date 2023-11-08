@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const Leader = (props) => {
 
-  const { users,roomId,showLeader } = props;
+  const { users,roomId,showLeader,setShowLeader } = props;
 
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -17,15 +17,13 @@ const Leader = (props) => {
     }
   };
 
-  // 進度在這裡 ~ 提供名單給後端，請後端給被選擇的人回應。
-  const handleSubmit = () => {
-    console.log(selectedItems);
+  const missionRaise = () => { 
     const socket = io(`http://localhost:4000/${roomId}`);
-    socket.emit('getFightButton',selectedItems);
-  };
+    socket.emit('missionRaise',selectedItems);
+    setShowLeader(false)
 
-
-
+    return () => {socket.disconnect(); };
+   }
 
  
   return (
@@ -47,16 +45,11 @@ const Leader = (props) => {
             {item}　
         </span>))}
 
-        <button onClick={handleSubmit}>確認</button>
+        <button onClick={missionRaise}>確認</button>
 
       </div>)
       }
     </div>
-
-
-    <br/>
-    <br/>
-
    </>
   )
 }

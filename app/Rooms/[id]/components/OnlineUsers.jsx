@@ -22,13 +22,16 @@ const OnlineUsers = (props) => {
  const connectRoom=() => { 
    const socketRoom = io(`http://localhost:4000/${roomId}`);
    socketRoom.emit('setUserName', userName,userId);
+
+   socketRoom.on('leaderAction', (msg) => { 
+    console.log(msg)
+    setShowLeader(true)
+  })
+
    socketRoom.on('fightButton', (msg) => { 
     console.log(msg)
-    })
-    socketRoom.on('leaderAction', (msg) => { 
-      console.log(msg)
-      setShowLeader(true)
-    })
+  })
+
     
    return () => {socketRoom.disconnect(); };
  }

@@ -7,12 +7,19 @@ import OnlineUsers from './components/OnlineUsers'
 import Role from './components/Role'
 import Game from './components/Game'
 import Leader from './components/game/Leader'
+import Vote from './components/game/Vote'
+import Mission from './components/game/Mission'
 
 const RoomIdPage = () => {
 
   const [users, setUsers] = useState();
   const [userReady, setUserReady] = useState();
+  const [selectedList, setSelectedList] = useState();
+
   const [showLeader, setShowLeader] = useState(false);
+  const [showVote, setShowVote] = useState(false);
+  const [showMission, setShowMission] = useState(false);
+
 
   // const [gameRecord, setGameRecord] = useState([]);
 
@@ -35,12 +42,14 @@ const toGame = async() => {
   return () => {socket.disconnect(); };
 }
 
-
-
    const commonProps = {
     users,setUsers,roomId,userName,userId,
     toGame,userReady,
-    showLeader,setShowLeader
+    selectedList, setSelectedList,
+    
+    showLeader,setShowLeader,
+    showVote,setShowVote,
+    showMission, setShowMission
   }
 
 
@@ -53,6 +62,8 @@ const toGame = async() => {
     <Role {...commonProps} />
     <Game {...commonProps} />
     <Leader {...commonProps} />
+    <Vote {...commonProps} />
+    <Mission {...commonProps} />
   
     
 

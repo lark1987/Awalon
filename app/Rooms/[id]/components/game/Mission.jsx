@@ -1,9 +1,9 @@
 import React from 'react'
 import io from 'socket.io-client';
 
-const Misson = (props) => {
+const Mission = (props) => {
 
- const { users,setUsers,roomId,userName,userId,scoreRecord} = props;
+ const { roomId,userId,showMission} = props;
 
  const handleOnClick = async(answer) => { 
 
@@ -13,6 +13,8 @@ const Misson = (props) => {
     socket.on('getMissonResult', (obj) => {
       resolve(checkMissonResult(obj));
     });
+
+  return () => {socket.disconnect(); };
   });
   // scoreRecord(missonResult) 記分板稍後
   }
@@ -37,13 +39,16 @@ const Misson = (props) => {
 
   return (
    <>
-    <div>Misson</div><br/>
-    <button onClick={()=>handleOnClick('成功')}>任務成功</button>
-    <button onClick={()=>handleOnClick('失敗')}>任務失敗</button>
-    <br/>
-    <br/>
+    {showMission && 
+    (<div>
+      <button onClick={()=>handleOnClick('成功')}>任務成功</button>
+      <button onClick={()=>handleOnClick('失敗')}>任務失敗</button><br/><br/>
+      </div>)
+    }
+
+    
    </>
   )
 }
 
-export default Misson
+export default Mission

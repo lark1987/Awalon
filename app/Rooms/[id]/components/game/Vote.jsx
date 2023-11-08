@@ -1,20 +1,22 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
 
 const Vote = (props) => {
 
- const { users,setUsers,roomId,userName,userId } = props;
+ const {users,roomId,userName,userId,showVote,selectedList} = props;
  const [voteResult, setVoteResult] = useState();
  const [voteFinalResult, setVoteFinalResult] = useState();
 
-// 發送投票到後端，待整合資訊後回傳
+
+// 投票按鈕：發送答案到後端整合，紀錄投票結果
  const handleOnClick = (answer) => { 
   const socket = io(`http://localhost:4000/${roomId}`);
   socket.emit('getVote',userId,userName,answer);
   socket.on('getVote',(obj) => { 
     checkVoteResult(obj)
    });
-  }
+  return () => {socket.disconnect(); };
+ }
 
 // 收到資訊後，儲存結果 
  const checkVoteResult = (obj) => { 
@@ -27,12 +29,14 @@ const Vote = (props) => {
  }
 
 // 投票結果按鈕 
-const handleResultOnclick = () => { 
-  voteCaculate()
-}
+ const handleResultOnclick = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('getVoteResult',voteResult);
+  return () => {socket.disconnect(); };
+ }
 // 計算投票結果
-const voteCaculate = () => { 
-  const answers = voteResult.map(item => item.answer);
+ const handleVoteFinalResult = (obj) => { 
+  const answers = obj.map(item => item.answer);
   let countAgree = 0
   let countAgainst = 0
  
@@ -44,25 +48,67 @@ const voteCaculate = () => {
    }});
  
    if (countAgree > countAgainst) {
-     setVoteFinalResult("票選結果：同意")
+     setVoteFinalResult("投票結果：同意")
    } else if (countAgree < countAgainst) {
-     setVoteFinalResult("票選結果：反對")
+     setVoteFinalResult("投票結果：反對")
    } else {
-     setVoteFinalResult("票選結果：平票")
+     setVoteFinalResult("投票結果：平票")
    }
+ }
+
+
+// 投票通過，提供名單給後端，後端給要出任務的人回應。
+ const goMission = () => {
+  console.log(selectedList,users,roomId,userName)
+  
+  // const socket = io(`http://localhost:4000/${roomId}`);
+  // socket.emit('getFightButton',selectedList);
+  // return () => {socket.disconnect(); };
+ };
+
+
+
+// 監聽加載
+const onload = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.on('getVoteResult',(obj) => { 
+    handleVoteFinalResult(obj)
+   });
+  return () => {socket.disconnect(); };
 }
+
+useEffect(() => onload(), []);
 
 
 
 
   return (
     <>
-    <div>Vote</div><br/>
-    <button onClick={()=>handleOnClick('同意')}>同意</button>
-    <button onClick={()=>handleOnClick('反對')}>反對</button>
-    <br/><br/>
-    <button onClick={handleResultOnclick}>投票結果</button>
-    <br/><br/>
+
+    { showVote && !voteResult &&
+      (<div>
+        是否同意上述人員出任務？　
+      <button onClick={()=>handleOnClick('同意')}>同意</button>　
+      <button onClick={()=>handleOnClick('反對')}>反對</button>
+      </div>)
+    }
+
+    {
+      voteResult && voteResult.length !== users.length &&
+      (<div>請稍候，其他玩家投票中　
+        {voteResult.map((data,index) => (
+          <span key={index}>{data.userName} OK　</span>
+        ))}
+      </div>)
+    }
+
+    {
+    voteResult && voteResult.length === users.length && !voteFinalResult && (
+      <div>投票結束，請確認投票結果<br/><br/>
+      <button onClick={handleResultOnclick}>投票結果</button>
+      </div>)
+    }
+
     <div>{voteFinalResult}</div><br/>
     {
       voteFinalResult?
@@ -72,6 +118,10 @@ const voteCaculate = () => {
       :[]
     }
     <br/>
+
+
+
+
    </>
   )
 }
