@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const Vote = (props) => {
 
- const {users,roomId,userName,userId,showVote,selectedList} = props;
+ const {users,roomId,userName,userId,showVote,selectedList,missionResult} = props;
  const [voteResult, setVoteResult] = useState();
  const [voteFinalResult, setVoteFinalResult] = useState();
 
@@ -17,7 +17,6 @@ const Vote = (props) => {
    });
   return () => {socket.disconnect(); };
  }
-
 // 收到資訊後，儲存結果 
  const checkVoteResult = (obj) => { 
   const voteRecord = []
@@ -48,24 +47,24 @@ const Vote = (props) => {
    }});
  
    if (countAgree > countAgainst) {
-     setVoteFinalResult("投票結果：同意")
+     setVoteFinalResult("同意")
    } else if (countAgree < countAgainst) {
-     setVoteFinalResult("投票結果：反對")
+     setVoteFinalResult("反對")
    } else {
-     setVoteFinalResult("投票結果：平票")
+     setVoteFinalResult("平票")
    }
  }
 
 
-// 投票通過，提供名單給後端，後端給要出任務的人回應。
+// 投票同意：提供名單給後端，後端給要出任務的人回應。
  const goMission = () => {
-  console.log(selectedList,users,roomId,userName)
-  
-  // const socket = io(`http://localhost:4000/${roomId}`);
-  // socket.emit('getFightButton',selectedList);
-  // return () => {socket.disconnect(); };
+  if(!selectedList) return
+  if(voteFinalResult !== '同意') return
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('goMission',selectedList);
+  return () => {socket.disconnect(); };
  };
-
+ useEffect(() => goMission(), [voteFinalResult]);
 
 
 // 監聽加載
@@ -109,15 +108,18 @@ useEffect(() => onload(), []);
       </div>)
     }
 
-    <div>{voteFinalResult}</div><br/>
+    
     {
-      voteFinalResult?
-      voteResult.map((data,index) => (
-        <div key={index}>{data.userName}：{data.answer}</div>
-      ))
-      :[]
+      voteFinalResult && !missionResult &&
+      (
+        <div>
+        投票結果：{voteFinalResult}<br/><br/>
+        {voteResult.map((data,index) => (
+          <div key={index}>{data.userName}：{data.answer}</div>
+        ))}
+        </div>
+      )
     }
-    <br/>
 
 
 

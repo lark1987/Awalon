@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 const Role = (props) => {
 
-  const { users,setUsers,roomId,userName,userId,toGame,userReady } = props;
+  const { users,setUsers,roomId,userName,userId,userReady,setUserReady } = props;
 
   const [shuffleList, setShuffleList] = useState();
   const [groupMessage, setGroupMessage] = useState();
@@ -126,12 +126,23 @@ const getReady = () => {
 useEffect(() => getReady(), []);
 
 
-// 得到壞人列表 
-const getBadPeopleList = () => { 
-  const socketRoom = io(`http://localhost:4000/${roomId}`);
-  socketRoom.emit('getBadPeopleList')
-  return () => {socketRoom.disconnect(); };
- }
+  // 從 role 轉至 Game
+  const toGame = () => { 
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('goGame',userId,userName);
+    socket.on('goGame', (obj) => {
+      let ready = []
+      Object.keys(obj).forEach(key => {
+        const value = obj[key];
+        ready.push(value)
+       })
+       setUserReady(ready)
+    })
+    return () => {socket.disconnect(); };
+  }
+
+
+
 
 
 
@@ -165,7 +176,6 @@ const getBadPeopleList = () => {
       ) : []}
 
     </div>    
-    {/* <button onClick={getBadPeopleList}>getBadPeopleList</button> */}
    </>
   )
 }

@@ -15,37 +15,26 @@ const RoomIdPage = () => {
   const [users, setUsers] = useState();
   const [userReady, setUserReady] = useState();
   const [selectedList, setSelectedList] = useState();
+  const [missionResult, setMissionResult] = useState();
 
   const [showLeader, setShowLeader] = useState(false);
   const [showVote, setShowVote] = useState(false);
   const [showMission, setShowMission] = useState(false);
 
-
-  // const [gameRecord, setGameRecord] = useState([]);
+  const [scoreRecord , setScoreRecord ] = useState();
+  const [voteRecord , setVoteRecord ] = useState();
+  const [leaderRecord , setLeaderRecord ] = useState(0);
 
   const roomId = sessionStorage.getItem('roomId')
   const userName = sessionStorage.getItem('userName')
   const userId = sessionStorage.getItem('userId')
 
-  // 從 role 轉至 Game
-const toGame = async() => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('goGame',userId,userName);
-  socket.on('goGame', (obj) => {
-    let ready = []
-    Object.keys(obj).forEach(key => {
-      const value = obj[key];
-      ready.push(value)
-     })
-     setUserReady(ready)
-  })
-  return () => {socket.disconnect(); };
-}
 
    const commonProps = {
     users,setUsers,roomId,userName,userId,
-    toGame,userReady,
+    userReady,setUserReady,
     selectedList, setSelectedList,
+    missionResult, setMissionResult,
     
     showLeader,setShowLeader,
     showVote,setShowVote,
@@ -84,4 +73,11 @@ export default RoomIdPage
     // 暫停處理：計分版
     // const scoreRecord = (data) => { 
     //   setGameRecord((prev) => [...prev,data]);
+    //  }
+
+    // 暫停處理：得到壞人列表 
+    // const getBadPeopleList = () => { 
+    //   const socketRoom = io(`http://localhost:4000/${roomId}`);
+    //   socketRoom.emit('getBadPeopleList')
+    //   return () => {socketRoom.disconnect(); };
     //  }
