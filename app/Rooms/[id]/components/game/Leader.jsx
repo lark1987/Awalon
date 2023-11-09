@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const Leader = (props) => {
 
-  const { users,roomId,showLeader,setShowLeader } = props;
+  const { users,userName,roomId,showLeader,setShowLeader } = props;
 
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -19,7 +19,7 @@ const Leader = (props) => {
 
   const missionRaise = () => { 
     const socket = io(`http://localhost:4000/${roomId}`);
-    socket.emit('missionRaise',selectedItems);
+    socket.emit('missionRaise',selectedItems,userName);
     setShowLeader(false)
 
     return () => {socket.disconnect(); };

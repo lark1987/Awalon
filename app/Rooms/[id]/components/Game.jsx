@@ -1,20 +1,22 @@
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import { doc, updateDoc } from "firebase/firestore";
 
 const Game = (props) => {
 
-  const gameArray = [];
-  sessionStorage.setItem('gameArray', JSON.stringify(gameArray));
-
   const {
-    users,roomId,userReady,
-    setShowVote,
+    users,roomId,
+    userReady,setUserReady,
     selectedList, setSelectedList,
     missionResult, setMissionResult,
+    setShowVote,
+    scoreRecord , setScoreRecord,
   } = props;
 
   const [leaderList, setLeaderList] = useState();
+  const [leaderName, setLeaderName] = useState();
   const [missionKeyCount, setMissionKeyCount] = useState();
+  const [hideClick1,setHideClick1] = useState(true);
 
   const chooseLeader = () => { 
     const shuffleList = userReady.slice().sort(() => Math.random() - 0.5);
@@ -23,17 +25,40 @@ const Game = (props) => {
     return () => {socket.disconnect(); };
    }
 
-   const handleMissionResult = (obj) => { 
-    const keyCount = Object.keys(obj).length;
-    if (Object.values(obj).includes("失敗")){
-      setMissionKeyCount(keyCount)
-      setMissionResult('失敗')
-    }
-    else{ 
-      setMissionKeyCount(keyCount)
-      setMissionResult('成功')
-    }
+  const handleMissionResult = (obj) => { 
+  const keyCount = Object.keys(obj).length;
+  if (Object.values(obj).includes("失敗")){
+    setMissionKeyCount(keyCount)
+    setMissionResult('失敗')
+  }
+  else{ 
+    setMissionKeyCount(keyCount)
+    setMissionResult('成功')
+  }
+  }
+
+  const nextGame = () => { 
+
+    const leaderIndex = scoreRecord.length % leaderList.length;
+    const leaderName = leaderList[leaderIndex];
+    console.log(leaderName);
+
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('goNextGame',);
+    socket.emit('leaderAction',leaderName);
+    return () => {socket.disconnect(); };
    }
+
+  const handleGoNextGame = () => { 
+    console.log('我是nextGame')
+    setSelectedList('')
+    setMissionResult('')
+    setHideClick1(false)
+    setShowVote(false)
+   }
+
+
+
 
 
 
@@ -43,7 +68,8 @@ const Game = (props) => {
       setLeaderList(msg)
       return () => {socket.disconnect(); };
     })
-    socket.on('missionRaise', (msg) => { 
+    socket.on('missionRaise', (msg,leaderName) => { 
+      setLeaderName(leaderName)
       setSelectedList(msg)
       setShowVote(true)
       return () => {socket.disconnect(); };
@@ -51,37 +77,27 @@ const Game = (props) => {
     socket.on('getMissonResult', (obj) => {
       handleMissionResult(obj)
       return () => {socket.disconnect(); };
-   });
+    });
+    socket.on('goNextGame', () => {
+      handleGoNextGame()
+      return () => {socket.disconnect(); };
+    });
 
     return () => {socket.disconnect(); };
   }
   
    useEffect(() => onLoad(), []);
+
+   useEffect(() => {
+    setScoreRecord((prev) => [...prev,missionResult]);
+  }, [missionResult]);
+
+
  
 
 
 
 
-  const nextGame = () => { 
-
-    const storedArray = JSON.parse(sessionStorage.getItem('gameArray'));
-    storedArray.push(missionResult);
-    sessionStorage.setItem('gameArray', JSON.stringify(storedArray));
-
-    const newArray = JSON.parse(sessionStorage.getItem('gameArray'));
-    const leaderIndex = newArray.length % leaderList.length;
-    const leaderName = leaderList[leaderIndex];
-    console.log(leaderName)
-
-    const socket = io(`http://localhost:4000/${roomId}`);
-    socket.emit('leaderAction',leaderName);
-
-    setSelectedList('')
-    setMissionResult('')
-    setShowVote(false)
-
-    return () => {socket.disconnect(); };
-   }
 
 
 
@@ -92,10 +108,7 @@ const Game = (props) => {
   return (
    <>
 
-
-
-
-   {userReady && userReady.length !== users.length &&(
+   {hideClick1 && userReady && userReady.length !== users.length &&(
    <span>
     <span>請稍候，其他玩家確認中</span>
     {userReady.map((data, index) => (
@@ -133,6 +146,15 @@ const Game = (props) => {
       <br/><br/><br/><button onClick={nextGame}>繼續遊戲</button>
      </div>)
     }
+
+    {scoreRecord?
+    (<div><br/><br/>成敗紀錄：
+      {scoreRecord.map((item, index) => (
+      <span key={index}> {item} </span>
+      ))}</div>)
+    :[]
+    }
+    
 
     
    </>
