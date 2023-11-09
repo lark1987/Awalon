@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const Scoreboard = (props) => {
 
-  const { users,setUsers,roomId,userName,userId, } = props;
+  const { } = props;
 
  
 

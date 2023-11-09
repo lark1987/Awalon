@@ -3,6 +3,9 @@ import io from 'socket.io-client';
 
 const Game = (props) => {
 
+  const gameArray = [];
+  sessionStorage.setItem('gameArray', JSON.stringify(gameArray));
+
   const {
     users,roomId,userReady,
     setShowVote,
@@ -33,6 +36,7 @@ const Game = (props) => {
    }
 
 
+
   const onLoad = () => { 
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.on('leaderList', (msg) => { 
@@ -52,10 +56,34 @@ const Game = (props) => {
     return () => {socket.disconnect(); };
   }
   
-
-
    useEffect(() => onLoad(), []);
  
+
+
+
+
+  const nextGame = () => { 
+
+    const storedArray = JSON.parse(sessionStorage.getItem('gameArray'));
+    storedArray.push(missionResult);
+    sessionStorage.setItem('gameArray', JSON.stringify(storedArray));
+
+    const newArray = JSON.parse(sessionStorage.getItem('gameArray'));
+    const leaderIndex = newArray.length % leaderList.length;
+    const leaderName = leaderList[leaderIndex];
+    console.log(leaderName)
+
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('leaderAction',leaderName);
+
+    setSelectedList('')
+    setMissionResult('')
+    setShowVote(false)
+
+    return () => {socket.disconnect(); };
+   }
+
+
 
 
 
@@ -63,6 +91,10 @@ const Game = (props) => {
 
   return (
    <>
+
+
+
+
    {userReady && userReady.length !== users.length &&(
    <span>
     <span>請稍候，其他玩家確認中</span>
@@ -98,7 +130,7 @@ const Game = (props) => {
     missionResult && missionKeyCount == selectedList.length &&
     (<div>
       <br/><br/><span>任務結果：{missionResult}</span>
-      <br/><br/><br/><button>繼續遊戲</button>
+      <br/><br/><br/><button onClick={nextGame}>繼續遊戲</button>
      </div>)
     }
 

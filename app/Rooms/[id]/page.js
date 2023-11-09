@@ -51,7 +51,7 @@ const RoomIdPage = () => {
     <Role {...commonProps} />
     <Game {...commonProps} />
     <Leader {...commonProps} />
-    <Vote {...commonProps} />
+    { showVote && (<Vote {...commonProps} />)}
     <Mission {...commonProps} />
   
     
