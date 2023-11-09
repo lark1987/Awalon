@@ -6,6 +6,8 @@ const Game = (props) => {
 
   const {
     users,roomId,
+    leaderList, setLeaderList,
+    leaderName, setLeaderName,
     userReady,setUserReady,
     selectedList, setSelectedList,
     missionResult, setMissionResult,
@@ -13,8 +15,7 @@ const Game = (props) => {
     scoreRecord , setScoreRecord,
   } = props;
 
-  const [leaderList, setLeaderList] = useState();
-  const [leaderName, setLeaderName] = useState();
+
   const [missionKeyCount, setMissionKeyCount] = useState();
   const [hideClick1,setHideClick1] = useState(true);
 
@@ -37,15 +38,19 @@ const Game = (props) => {
   }
   }
 
+
   const nextGame = () => { 
 
-    const leaderIndex = scoreRecord.length % leaderList.length;
-    const leaderName = leaderList[leaderIndex];
-    console.log(leaderName);
+    const leaderIndex = leaderList.indexOf(leaderName);
+    const nextIndex = (leaderIndex + 1) % leaderList.length;
+
+    const newleaderName = leaderList[nextIndex];
+    console.log(nextIndex);
+    console.log(newleaderName);
 
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('goNextGame',);
-    socket.emit('leaderAction',leaderName);
+    socket.emit('leaderAction',newleaderName);
     return () => {socket.disconnect(); };
    }
 
@@ -126,6 +131,7 @@ const Game = (props) => {
       {leaderList.map((item, index) => (
         <span key={index}> {item}、</span>
       ))}
+      現在隊長：{leaderName}
     </div>
     :[]
     }

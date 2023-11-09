@@ -14,6 +14,8 @@ const RoomIdPage = () => {
 
   const [users, setUsers] = useState();
   const [userReady, setUserReady] = useState();
+  const [leaderList, setLeaderList] = useState();
+  const [leaderName, setLeaderName] = useState();
   const [selectedList, setSelectedList] = useState();
   const [missionResult, setMissionResult] = useState();
 
@@ -32,6 +34,9 @@ const RoomIdPage = () => {
 
    const commonProps = {
     users,setUsers,roomId,userName,userId,
+    leaderList, setLeaderList,
+    leaderName, setLeaderName,
+    
     userReady,setUserReady,
     selectedList, setSelectedList,
     missionResult, setMissionResult,
