@@ -153,13 +153,13 @@ const Game = (props) => {
      </div>)
     }
 
-    {scoreRecord?
+    {/* {scoreRecord?
     (<div><br/><br/>成敗紀錄：
       {scoreRecord.map((item, index) => (
       <span key={index}> {item} </span>
       ))}</div>)
     :[]
-    }
+    } */}
     
 
     

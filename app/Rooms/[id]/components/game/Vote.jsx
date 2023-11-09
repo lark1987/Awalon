@@ -3,9 +3,13 @@ import io from 'socket.io-client';
 
 const Vote = (props) => {
 
- const {users,roomId,userName,userId,leaderName,leaderList,
+ const {
+  users,roomId,userName,userId,leaderName,leaderList,
   showVote,selectedList,missionResult,
+  voteFailedRecord , setVoteFailedRecord ,
+  gameOver,setGameOver,
 } = props;
+
  const [voteResult, setVoteResult] = useState();
  const [voteFinalResult, setVoteFinalResult] = useState();
 
@@ -56,17 +60,24 @@ const Vote = (props) => {
  }
 
 
-// 投票同意：提供名單給後端，後端給要出任務的人回應。
+// 投票結果處理
  const handleNextOnclick = () => {
 
+  // 投票同意：提供名單給後端，後端給發出任務給被選擇的人。
   if(voteFinalResult == '同意'){
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('goMission',selectedList);
+    setVoteFailedRecord('')
     return () => {socket.disconnect(); };
   }
+
+  //投票反對：開啟下一局，紀錄反對次數 
   if(voteFinalResult == '反對'){
 
-    if(!leaderList) return
+    if(voteFailedRecord.length > 3){
+      setGameOver('遊戲結束，壞人陣營勝利！')
+      return
+    }
 
     const leaderIndex = leaderList.indexOf(leaderName);
     const nextIndex = (leaderIndex + 1) % leaderList.length;
@@ -75,10 +86,12 @@ const Vote = (props) => {
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('goNextGame',);
     socket.emit('leaderAction',newleaderName);
+
+    setVoteFailedRecord((prev) => [...prev,'X'])
+
     return () => {socket.disconnect(); };
   };
 }
-//  useEffect(() => goMission(), [voteFinalResult]);
 
 
 // 監聽加載
@@ -91,6 +104,10 @@ const onload = () => {
 }
 
 useEffect(() => onload(), []);
+
+// useEffect(() => {
+//   setVoteFailedRecord((prev) => [...prev,voteResult]);
+// }, [voteResult]);
 
 
 

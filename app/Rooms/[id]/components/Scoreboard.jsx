@@ -1,29 +1,37 @@
 import React from 'react'
 import io from 'socket.io-client';
 
-const Scoreboard = (props) => {
+const ScoreBoard = (props) => {
 
-  const { } = props;
-
- 
-
-
+  const {scoreRecord,voteFailedRecord,gameOver } = props;
 
   return (
    <>
-    <div>Scoreboard</div>
-    <div>
-      {/* {gameRecord?
-      gameRecord.map((record,index)=>(
-        <div key={index}>{record}
-        </div>
-      ))
-      :[]
-      } */}
-    </div>
-    <br/><br/>
+    {scoreRecord ?
+    (<div><br/><br/>任務成敗紀錄：
+      {scoreRecord.map((item, index) => (
+      <span key={index}> {item} </span>
+      ))}</div>)
+    :[]
+    }
+
+    {voteFailedRecord ?
+    (<div><br/><br/>投票失敗次數：
+      {voteFailedRecord.map((item, index) => (
+      <span key={index}> {item} </span>
+      ))}</div>)
+    :[]
+    }
+
+    {gameOver ?
+    <div><br/>{gameOver}</div>
+    :[]
+    }
+
+
+
    </>
   )
 }
 
-export default Scoreboard
+export default ScoreBoard

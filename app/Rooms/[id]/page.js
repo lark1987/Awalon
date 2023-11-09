@@ -4,6 +4,8 @@ import React,{ useState } from 'react';
 import io from 'socket.io-client';
 
 import OnlineUsers from './components/OnlineUsers'
+import ScoreBoard from './components/ScoreBoard'
+
 import Role from './components/Role'
 import Game from './components/Game'
 import Leader from './components/game/Leader'
@@ -24,8 +26,8 @@ const RoomIdPage = () => {
   const [showMission, setShowMission] = useState(false);
 
   const [scoreRecord , setScoreRecord ] = useState([]);
-  const [voteRecord , setVoteRecord ] = useState();
-  const [leaderRecord , setLeaderRecord ] = useState(0);
+  const [voteFailedRecord , setVoteFailedRecord ] = useState([]);
+  const [gameOver,setGameOver]= useState()
 
   const roomId = sessionStorage.getItem('roomId')
   const userName = sessionStorage.getItem('userName')
@@ -46,6 +48,8 @@ const RoomIdPage = () => {
     showMission, setShowMission,
 
     scoreRecord , setScoreRecord,
+    voteFailedRecord , setVoteFailedRecord ,
+    gameOver,setGameOver,
   }
 
 
@@ -53,13 +57,13 @@ const RoomIdPage = () => {
   return (
     <>
     <div>RoomIdPage</div><br/>
-
     <OnlineUsers {...commonProps} /><br/><br/>
     <Role {...commonProps} />
     <Game {...commonProps} />
     <Leader {...commonProps} />
     { showVote && (<Vote {...commonProps} />)}
     <Mission {...commonProps} />
+    <ScoreBoard {...commonProps} /><br/><br/>
   
     
 
