@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {db} from '../utils/firebase'
 import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
-import {nanoid} from 'nanoid'
 import '../page.css'
 
 const Lobby = () => {
@@ -38,30 +37,38 @@ const createRoom = async() => {
   
  }
 
-// 開始遊戲：核對密碼 > 將 roomId、userName、userId 存放於 sessionStorage
+// 開始遊戲：核對房間、名字，存在 FireBase、sessionStorage
 const getStart = async() => {
   const {userName, roomName, roomPassword } = inputData;
+
   const roomDocRef = collection(db, "Awalon-room");
-  const q = query(roomDocRef, where("roomName", "==", roomName), where("roomPassword", "==", roomPassword));
-  const querySnapshot = await getDocs(q);
+  const qRoom = query(roomDocRef, where("roomName", "==", roomName), where("roomPassword", "==", roomPassword));
+  const data = await getDocs(qRoom);
+  const roomData = data.docs[0];
 
-  if (!querySnapshot.empty) {
-    const docSnap = querySnapshot.docs[0];
+  if (data.empty) {
+    setSystemMessage('房間名稱或密碼錯誤')
+    return
+  }
+  if(roomData.data().gameStart){
+    setSystemMessage('遊戲進行中，無法進入')
+    return
+  }
 
-    if(!docSnap.data().gameStart){
-      const userId = nanoid()
-      sessionStorage.setItem('roomId',docSnap.id)
-      sessionStorage.setItem('userName',userName)
-      sessionStorage.setItem('userId',userId)
-      router.push(`/Rooms/${docSnap.id}`);
-    }
-    else{
-      setSystemMessage('遊戲進行中，無法進入')
-    }
+  const usersDocRef = collection(db, "Awalon-room",roomData.id,'players')
+  const qName = query(usersDocRef, where("userName", "==", userName));
+  const sameName = await getDocs(qName);
+  if(!sameName.empty){
+    setSystemMessage('遊戲名稱已被使用')
+    return
   }
-  else{
-    setSystemMessage('進入房間失敗')
-  }
+  const userData = await addDoc (collection(db, "Awalon-room",roomData.id,'players'),{userName})
+  sessionStorage.setItem('roomId',roomData.id)
+  sessionStorage.setItem('userId',userData.id)
+  sessionStorage.setItem('userName',userName)
+
+  router.push(`/Rooms/${roomData.id}`);
+
 };
 
 

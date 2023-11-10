@@ -3,6 +3,8 @@
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
 import {nanoid} from 'nanoid'
+import {db} from '../../../utils/firebase'
+import {deleteDoc,doc, } from 'firebase/firestore'
 
 const OnlineUsers = (props) => {
 
@@ -52,13 +54,36 @@ const OnlineUsers = (props) => {
    return () => {socketRoom.disconnect(); };
  }
 
+ const handleBeforeUnload = async() => {
+  await deleteDoc(doc(db, "Awalon-room",roomId,'players',userId));
+  return 
+ };
+
+ const handleUnload = async(event) => {
+  const isRefresh = !event.persisted; // 检查事件是否被持久化，如果是则为刷新
+  if (isRefresh) {
+    console.log('页面被刷新');
+  } else {
+    console.log('页面被关闭');
+    await deleteDoc(doc(db, "Awalon-room",roomId,'players',userId));
+  }
+};
+
 useEffect(() => connectSocket(), []);
 
+
+useEffect(() => {
+  window.addEventListener('unload', handleUnload);
+  return () => {
+    window.removeEventListener('unload', handleUnload);
+  };
+}, []);
  
 
 
  return (
    <>
+   <button onClick={handleBeforeUnload}>TEST</button>
    <span>目前在線人員：
    { 
      users?

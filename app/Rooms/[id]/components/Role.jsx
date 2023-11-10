@@ -29,7 +29,9 @@ const scenarios = [
 const generateList = (total, badCount, goodCount) =>{
   const listItems = [];
   listItems.push('merlin');
-  listItems.push('assassin');
+  if(total > 1){
+    listItems.push('assassin');
+  }
   for (let i = 2; i < total; i++) {
     if (i <= badCount) {
       listItems.push('bad');
