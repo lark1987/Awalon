@@ -76,7 +76,7 @@ const Vote = (props) => {
 
     if(voteFailedRecord.length > 3){
       socket.emit('goGameOver','遊戲結束，壞人陣營勝利',)
-      return
+      return () => {socket.disconnect(); };
     }
 
     const leaderIndex = leaderList.indexOf(leaderName);

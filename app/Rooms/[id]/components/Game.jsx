@@ -64,7 +64,6 @@ const Game = (props) => {
 
   // 開啟下局前的全員同步清除工作
   const handleGoNextGame = () => { 
-    console.log('我是goNextGame')
     setSelectedList('')
     setMissionResult('')
     setVoteFinalResult('')
@@ -72,9 +71,30 @@ const Game = (props) => {
     setShowVote(false)
    }
 
-  const handkeGameOver = () => { 
+  const handleGameOver = () => { 
     // 清空 userReady、selectedList
    }
+
+  const judgeGameResult = () => { 
+
+    const socket = io(`http://localhost:4000/${roomId}`);
+    let successCount = 0;
+    let failureCount = 0;
+    scoreRecord.forEach(item => {
+      if (item === '成功') {
+        successCount++;}
+      if (item === '失敗') {
+        failureCount++;}
+    });
+    if (successCount === 3) {
+      socket.emit('goGameOver','遊戲結束，好人陣營勝利',)
+      return;
+    }
+    if (failureCount === 3 ) {
+      socket.emit('goGameOver','遊戲結束，壞人陣營勝利',)
+      return;
+    }
+  }
 
 
   // 頁面加載監聽區
@@ -110,6 +130,7 @@ const Game = (props) => {
 
   useEffect(() => {
     setScoreRecord((prev) => [...prev,missionResult]);
+    judgeGameResult()
   }, [missionResult]);
 
   useEffect(() => {
