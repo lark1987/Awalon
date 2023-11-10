@@ -11,6 +11,7 @@ import Game from './components/Game'
 import Leader from './components/game/Leader'
 import Vote from './components/game/Vote'
 import Mission from './components/game/Mission'
+import Assassin from './components/game/Assassin'
 
 const RoomIdPage = () => {
 
@@ -25,6 +26,7 @@ const RoomIdPage = () => {
   const [showLeader, setShowLeader] = useState(false);
   const [showVote, setShowVote] = useState(false);
   const [showMission, setShowMission] = useState(false);
+  const [showAssassin, setShowAssassin] = useState(false);
 
   const [scoreRecord , setScoreRecord ] = useState([]);
   const [voteFailedRecord , setVoteFailedRecord ] = useState([]);
@@ -48,6 +50,7 @@ const RoomIdPage = () => {
     showLeader,setShowLeader,
     showVote,setShowVote,
     showMission, setShowMission,
+    showAssassin, setShowAssassin,
 
     scoreRecord , setScoreRecord,
     voteFailedRecord , setVoteFailedRecord ,
@@ -66,6 +69,7 @@ const RoomIdPage = () => {
     { showVote && (<Vote {...commonProps} />)}
     <Mission {...commonProps} />
     <ScoreBoard {...commonProps} /><br/><br/>
+    { showAssassin && (<Assassin {...commonProps} />)}
   
     
 

@@ -71,10 +71,13 @@ const Game = (props) => {
     setShowVote(false)
    }
 
+  // 遊戲結束，清理畫面
   const handleGameOver = () => { 
-    // 清空 userReady、selectedList
+    setLeaderList('')
+    setShowLeader(false)
    }
 
+  // 遊戲結束判斷，
   const judgeGameResult = () => { 
 
     const socket = io(`http://localhost:4000/${roomId}`);
@@ -87,11 +90,12 @@ const Game = (props) => {
         failureCount++;}
     });
     if (successCount === 3) {
-      socket.emit('goGameOver','遊戲結束，好人陣營勝利',)
+      socket.emit('goGameOver','遊戲結束，好人陣營勝利，刺客啟動暗殺行動')
+      socket.emit('goAssassin');
       return;
     }
     if (failureCount === 3 ) {
-      socket.emit('goGameOver','遊戲結束，壞人陣營勝利',)
+      socket.emit('goGameOver','遊戲結束，壞人陣營勝利')
       return;
     }
   }
@@ -120,6 +124,7 @@ const Game = (props) => {
     });
     socket.on('goGameOver', (msg) => {
       setGameOver(msg)
+      handleGameOver()
       return () => {socket.disconnect(); };
     });
 
@@ -134,7 +139,9 @@ const Game = (props) => {
   }, [missionResult]);
 
   useEffect(() => {
-    setVoteFailedRecord((prev) => [...prev,voteFinalResult]);
+    if(voteFinalResult == '反對'){
+      setVoteFailedRecord((prev) => [...prev,'X']);
+      }
   }, [voteFinalResult]);
 
 

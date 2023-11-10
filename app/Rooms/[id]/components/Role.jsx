@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 const Role = (props) => {
 
-  const { users,setUsers,roomId,userName,userId,userReady,setUserReady } = props;
+  const { users,roomId,userName,userId,userReady,setUserReady,setShowAssassin } = props;
 
   const [shuffleList, setShuffleList] = useState();
   const [groupMessage, setGroupMessage] = useState();
@@ -29,7 +29,8 @@ const scenarios = [
 const generateList = (total, badCount, goodCount) =>{
   const listItems = [];
   listItems.push('merlin');
-  for (let i = 1; i < total; i++) {
+  listItems.push('assassin');
+  for (let i = 2; i < total; i++) {
     if (i <= badCount) {
       listItems.push('bad');
     } else {
@@ -111,7 +112,30 @@ const generateShuffleList = () => {
 
   return () => {socket.disconnect(); };
 
-  }
+ }
+ const assassin = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('joinAssassin',userName);
+  socket.on('groupMessage', (msg) => { 
+    setGroupMessage(msg)
+  })
+  socket.on('badPeopleList',(msg) => { 
+    console.log(msg)
+  })
+  socket.on('goAssassin',() => { 
+    console.log('Assassin出任務囉！')
+    setShowAssassin(true)
+  })
+
+  let index = shuffleList.indexOf('assassin');
+  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+  socket.emit('getRoleButton',newList);
+
+  setHideClick2(false)
+
+  return () => {socket.disconnect(); };
+
+ }
 
 // 頁面加載監聽事件：點選角色按鈕後之同步更新
 const getReady = () => { 
@@ -161,7 +185,11 @@ useEffect(() => getReady(), []);
       {hideClick2 && shuffleList ?
       (shuffleList.map((role,index) => (
         <button key={index} 
-        onClick={role === 'merlin' ? merlin : (role === 'good' ? good : bad)}
+        onClick={
+          role === 'merlin' ? merlin : (
+          role === 'assassin' ? assassin : (
+          role === 'good' ? good : bad))
+        }
         >
         {role}
         </button>

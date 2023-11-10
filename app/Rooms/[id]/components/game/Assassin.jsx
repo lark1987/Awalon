@@ -3,31 +3,31 @@ import io from 'socket.io-client';
 
 const Assassin = (props) => {
 
- const { users,setUsers,roomId,userName,userId } = props;
+ const { users,roomId } = props;
 
- const [selectedItems, setSelectedItems] = useState([]);
+ const [selectedItem, setSelectedItem] = useState([]);
 
  const handleCheckboxChange = (item) => {
-   if (selectedItems.includes(item)) {
-     setSelectedItems(selectedItems.filter((i) => i !== item));
-   } else {
-     setSelectedItems([...selectedItems, item]);
-   }
+    setSelectedItem(item);
  };
+
+  const assassinChoose = () => { 
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('assassinChoose',selectedItem);
+    }
 
   return (
    <>
-    <div>Assassin</div>
     <br/>
-    <div>請勾選哪一位是梅林</div>
+    <div>請選出哪一位是梅林</div>
     <br/>
     <div>
         {users?
         users.map((item, index) => (
           <span key={index}>
               <input
-                type="checkbox"
-                checked={selectedItems.includes(item)}
+                type="radio"
+                checked={selectedItem === item}
                 onChange={() => handleCheckboxChange(item)}
               />
               {item}　
@@ -35,7 +35,7 @@ const Assassin = (props) => {
         ))
         :[]}
       <br/><br/>
-      <button>確認</button>
+      <button onClick={assassinChoose}>確認</button>
     </div>
     <br/><br/>
 
