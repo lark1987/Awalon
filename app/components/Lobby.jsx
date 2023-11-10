@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import {nanoid} from 'nanoid'
 import {db} from '../utils/firebase'
 import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
 import '../page.css'
@@ -55,16 +56,18 @@ const getStart = async() => {
     return
   }
 
-  const usersDocRef = collection(db, "Awalon-room",roomData.id,'players')
-  const qName = query(usersDocRef, where("userName", "==", userName));
-  const sameName = await getDocs(qName);
-  if(!sameName.empty){
-    setSystemMessage('遊戲名稱已被使用')
-    return
-  }
-  const userData = await addDoc (collection(db, "Awalon-room",roomData.id,'players'),{userName})
+  // const usersDocRef = collection(db, "Awalon-room",roomData.id,'players')
+  // const qName = query(usersDocRef, where("userName", "==", userName));
+  // const sameName = await getDocs(qName);
+  // if(!sameName.empty){
+  //   setSystemMessage('使用者名稱已被使用')
+  //   return
+  // }
+  // 還沒解決離開房間刪名字的問題
+  // const userData = await addDoc (collection(db, "Awalon-room",roomData.id,'players'),{userName})
+  const userId = nanoid()
   sessionStorage.setItem('roomId',roomData.id)
-  sessionStorage.setItem('userId',userData.id)
+  sessionStorage.setItem('userId',userId)
   sessionStorage.setItem('userName',userName)
 
   router.push(`/Rooms/${roomData.id}`);
