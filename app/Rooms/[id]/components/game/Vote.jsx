@@ -5,13 +5,13 @@ const Vote = (props) => {
 
  const {
   users,roomId,userName,userId,leaderName,leaderList,
-  showVote,selectedList,missionResult,
-  voteFailedRecord , setVoteFailedRecord ,
-  gameOver,setGameOver,
+  selectedList,missionResult,voteFailedRecord,
+  showVote,
+  voteFinalResult, setVoteFinalResult,gameOver
 } = props;
 
  const [voteResult, setVoteResult] = useState();
- const [voteFinalResult, setVoteFinalResult] = useState();
+//  const [voteFinalResult, setVoteFinalResult] = useState();
 
 
 // 投票按鈕：發送答案到後端整合，紀錄投票結果
@@ -67,27 +67,23 @@ const Vote = (props) => {
   if(voteFinalResult == '同意'){
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('goMission',selectedList);
-    setVoteFailedRecord('')
     return () => {socket.disconnect(); };
   }
 
   //投票反對：開啟下一局，紀錄反對次數 
   if(voteFinalResult == '反對'){
+    const socket = io(`http://localhost:4000/${roomId}`);
 
     if(voteFailedRecord.length > 3){
-      setGameOver('遊戲結束，壞人陣營勝利！')
+      socket.emit('goGameOver','遊戲結束，壞人陣營勝利',)
       return
     }
 
     const leaderIndex = leaderList.indexOf(leaderName);
     const nextIndex = (leaderIndex + 1) % leaderList.length;
     const newleaderName = leaderList[nextIndex];
-
-    const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('goNextGame',);
     socket.emit('leaderAction',newleaderName);
-
-    setVoteFailedRecord((prev) => [...prev,'X'])
 
     return () => {socket.disconnect(); };
   };
@@ -104,11 +100,6 @@ const onload = () => {
 }
 
 useEffect(() => onload(), []);
-
-// useEffect(() => {
-//   setVoteFailedRecord((prev) => [...prev,voteResult]);
-// }, [voteResult]);
-
 
 
 
@@ -133,15 +124,15 @@ useEffect(() => onload(), []);
     }
 
     {
-    voteResult && voteResult.length === users.length && !voteFinalResult && (
-      <div>投票結束，請確認投票結果<br/><br/>
+    voteResult && voteResult.length === users.length && !voteFinalResult &&
+     (<div>投票結束，請確認投票結果<br/><br/>
       <button onClick={handleResultOnclick}>投票結果</button>
       </div>)
     }
 
     
     {
-      voteFinalResult && !missionResult &&
+     voteFinalResult && !missionResult && !gameOver &&
       (
         <div>
         投票結果：{voteFinalResult}<br/><br/>

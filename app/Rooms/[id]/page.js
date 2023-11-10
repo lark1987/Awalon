@@ -20,6 +20,7 @@ const RoomIdPage = () => {
   const [leaderName, setLeaderName] = useState();
   const [selectedList, setSelectedList] = useState();
   const [missionResult, setMissionResult] = useState();
+  const [voteFinalResult, setVoteFinalResult] = useState();
 
   const [showLeader, setShowLeader] = useState(false);
   const [showVote, setShowVote] = useState(false);
@@ -42,6 +43,7 @@ const RoomIdPage = () => {
     userReady,setUserReady,
     selectedList, setSelectedList,
     missionResult, setMissionResult,
+    voteFinalResult, setVoteFinalResult,
     
     showLeader,setShowLeader,
     showVote,setShowVote,

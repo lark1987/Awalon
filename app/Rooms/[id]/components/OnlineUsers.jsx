@@ -6,7 +6,7 @@ import {nanoid} from 'nanoid'
 
 const OnlineUsers = (props) => {
 
-  const { users, setUsers,roomId,userName,userId,setShowLeader,setShowMission } = props;
+  const { users, setUsers,roomId,userName,userId,setShowLeader,setShowMission,setVoteFailedRecord } = props;
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
@@ -33,6 +33,7 @@ const OnlineUsers = (props) => {
    socketRoom.on('goMission', (msg) => { 
     console.log(msg)
     setShowMission(true)
+    setVoteFailedRecord('')
     return () => {socketRoom.disconnect(); };
   })
 

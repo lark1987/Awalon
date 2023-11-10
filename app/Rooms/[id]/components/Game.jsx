@@ -5,20 +5,30 @@ import { doc, updateDoc } from "firebase/firestore";
 const Game = (props) => {
 
   const {
-    users,roomId,
+    users,setUsers,roomId,userName,userId,
     leaderList, setLeaderList,
     leaderName, setLeaderName,
+    
     userReady,setUserReady,
     selectedList, setSelectedList,
     missionResult, setMissionResult,
-    setShowVote,
+    voteFinalResult, setVoteFinalResult,
+    
+    showLeader,setShowLeader,
+    showVote,setShowVote,
+    showMission, setShowMission,
+
     scoreRecord , setScoreRecord,
+    voteFailedRecord , setVoteFailedRecord ,
+    gameOver,setGameOver,
+
   } = props;
 
 
   const [missionKeyCount, setMissionKeyCount] = useState();
   const [hideClick1,setHideClick1] = useState(true);
 
+  // 產生隊長清單
   const chooseLeader = () => { 
     const shuffleList = userReady.slice().sort(() => Math.random() - 0.5);
     const socket = io(`http://localhost:4000/${roomId}`);
@@ -26,6 +36,7 @@ const Game = (props) => {
     return () => {socket.disconnect(); };
    }
 
+  // 任務結果
   const handleMissionResult = (obj) => { 
   const keyCount = Object.keys(obj).length;
   if (Object.values(obj).includes("失敗")){
@@ -38,15 +49,12 @@ const Game = (props) => {
   }
   }
 
-
-  const nextGame = () => { 
+  // 投票成功 > 任務結束 > 開啟下局
+  const goNextGame = () => { 
 
     const leaderIndex = leaderList.indexOf(leaderName);
     const nextIndex = (leaderIndex + 1) % leaderList.length;
-
     const newleaderName = leaderList[nextIndex];
-    console.log(nextIndex);
-    console.log(newleaderName);
 
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('goNextGame',);
@@ -54,19 +62,22 @@ const Game = (props) => {
     return () => {socket.disconnect(); };
    }
 
+  // 開啟下局前的全員同步清除工作
   const handleGoNextGame = () => { 
-    console.log('我是nextGame')
+    console.log('我是goNextGame')
     setSelectedList('')
     setMissionResult('')
+    setVoteFinalResult('')
     setHideClick1(false)
     setShowVote(false)
    }
 
+  const handkeGameOver = () => { 
+    // 清空 userReady、selectedList
+   }
 
 
-
-
-
+  // 頁面加載監聽區
   const onLoad = () => { 
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.on('leaderList', (msg) => { 
@@ -87,15 +98,25 @@ const Game = (props) => {
       handleGoNextGame()
       return () => {socket.disconnect(); };
     });
+    socket.on('goGameOver', (msg) => {
+      setGameOver(msg)
+      return () => {socket.disconnect(); };
+    });
 
     return () => {socket.disconnect(); };
   }
   
-   useEffect(() => onLoad(), []);
+  useEffect(() => onLoad(), []);
 
-   useEffect(() => {
+  useEffect(() => {
     setScoreRecord((prev) => [...prev,missionResult]);
   }, [missionResult]);
+
+  useEffect(() => {
+    setVoteFailedRecord((prev) => [...prev,voteFinalResult]);
+  }, [voteFinalResult]);
+
+
 
 
  
@@ -149,19 +170,9 @@ const Game = (props) => {
     missionResult && missionKeyCount == selectedList.length &&
     (<div>
       <br/><br/><span>任務結果：{missionResult}</span>
-      <br/><br/><br/><button onClick={nextGame}>繼續遊戲</button>
+      <br/><br/><br/><button onClick={goNextGame}>繼續遊戲</button>
      </div>)
     }
-
-    {/* {scoreRecord?
-    (<div><br/><br/>成敗紀錄：
-      {scoreRecord.map((item, index) => (
-      <span key={index}> {item} </span>
-      ))}</div>)
-    :[]
-    } */}
-    
-
     
    </>
     
