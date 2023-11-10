@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const Assassin = (props) => {
 
- const { users,roomId } = props;
+ const { users,roomId,setShowAssassin } = props;
 
  const [selectedItem, setSelectedItem] = useState([]);
 
@@ -14,6 +14,8 @@ const Assassin = (props) => {
   const assassinChoose = () => { 
     const socket = io(`http://localhost:4000/${roomId}`);
     socket.emit('assassinChoose',selectedItem);
+    setShowAssassin(false)
+    return () => {socket.disconnect(); };
     }
 
   return (

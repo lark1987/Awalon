@@ -92,12 +92,13 @@ const Game = (props) => {
     if (successCount === 3) {
       socket.emit('goGameOver','遊戲結束，好人陣營勝利，刺客啟動暗殺行動')
       socket.emit('goAssassin');
-      return;
+      return () => {socket.disconnect(); };
     }
     if (failureCount === 3 ) {
       socket.emit('goGameOver','遊戲結束，壞人陣營勝利')
-      return;
+      return () => {socket.disconnect(); };
     }
+    return () => {socket.disconnect(); };
   }
 
 

@@ -26,7 +26,7 @@ const ScoreBoard = (props) => {
     {gameOver ?
     (<div>
       <br/>{gameOver}
-      <button>遊戲結束，公開所有角色</button>
+      {/* <button>遊戲結束，公開所有角色</button> */}
     </div>)
     :[]
     }

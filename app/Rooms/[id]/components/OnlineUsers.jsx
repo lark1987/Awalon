@@ -47,6 +47,7 @@ const OnlineUsers = (props) => {
    socketRoom.on('onlineUsers', (msg) => { 
      const users = Object.values(msg).map(item => item.userName);
      setUsers(users)
+     return () => {socketRoom.disconnect(); };
    })
    return () => {socketRoom.disconnect(); };
  }

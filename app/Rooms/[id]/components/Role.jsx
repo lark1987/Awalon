@@ -64,6 +64,7 @@ const generateShuffleList = () => {
   socket.emit('joinGood',userName);
   socket.on('groupMessage', (msg) => { 
     setGroupMessage(msg)
+    return () => {socket.disconnect(); };
   })
 
   let index = shuffleList.indexOf('good');
@@ -80,9 +81,11 @@ const generateShuffleList = () => {
   socket.emit('joinBad',userName);
   socket.on('groupMessage', (msg) => { 
     setGroupMessage(msg)
+    return () => {socket.disconnect(); };
   })
   socket.on('badPeopleList',(msg) => { 
     console.log(msg)
+    return () => {socket.disconnect(); };
    })
 
   let index = shuffleList.indexOf('bad');
@@ -99,9 +102,11 @@ const generateShuffleList = () => {
   socket.emit('joinMerlin',userName);
   socket.on('groupMessage', (msg) => { 
     setGroupMessage(msg)
+    return () => {socket.disconnect(); };
   })
   socket.on('badPeopleList',(msg) => { 
     console.log(msg)
+    return () => {socket.disconnect(); };
    })
 
   let index = shuffleList.indexOf('merlin');
@@ -118,13 +123,16 @@ const generateShuffleList = () => {
   socket.emit('joinAssassin',userName);
   socket.on('groupMessage', (msg) => { 
     setGroupMessage(msg)
+    return () => {socket.disconnect(); };
   })
   socket.on('badPeopleList',(msg) => { 
     console.log(msg)
+    return () => {socket.disconnect(); };
   })
   socket.on('goAssassin',() => { 
     console.log('Assassin出任務囉！')
     setShowAssassin(true)
+    return () => {socket.disconnect(); };
   })
 
   let index = shuffleList.indexOf('assassin');
@@ -143,6 +151,7 @@ const getReady = () => {
   socketRoom.on('roleButton', (newList) => { 
     setShuffleList(newList)
     setHideClick1(false)
+    return () => {socket.disconnect(); };
   })
   return () => {socketRoom.disconnect(); };
 }
@@ -161,6 +170,7 @@ useEffect(() => getReady(), []);
         ready.push(value)
        })
        setUserReady(ready)
+       return () => {socket.disconnect(); };
     })
     return () => {socket.disconnect(); };
   }
