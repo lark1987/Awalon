@@ -6,6 +6,8 @@ import {nanoid} from 'nanoid'
 import {db} from '../../../utils/firebase'
 import {deleteDoc,doc, } from 'firebase/firestore'
 
+import '../../../page.css'
+
 const OnlineUsers = (props) => {
 
   const { users, setUsers,roomId,userName,userId,setShowLeader,setShowMission,setVoteFailedRecord } = props;
@@ -60,13 +62,20 @@ useEffect(() => connectSocket(), []);
 
  return (
    <>
-   <span>目前在線人員：
+   
    { 
      users?
-     (users.map((user) => (<span key={nanoid()}>　{user}</span>)))
+     (<div className='onlineUsers'>
+     目前在線人員<br/>
+      {users.map((user,index) => (
+      <span key={index}>
+      <img src='/leaf.png' alt="leaf" /> {user}　
+      </span>
+     ))}
+      </div>
+     )
      :(<span>Loading...</span>)
    }
-   </span>
    </>
  )
 

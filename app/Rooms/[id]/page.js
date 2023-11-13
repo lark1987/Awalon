@@ -13,6 +13,8 @@ import Vote from './components/game/Vote'
 import Mission from './components/game/Mission'
 import Assassin from './components/game/Assassin'
 
+import '../../page.css'
+
 const RoomIdPage = () => {
 
   const [users, setUsers] = useState();
@@ -58,11 +60,15 @@ const RoomIdPage = () => {
   }
 
 
-
   return (
     <>
-    <div>RoomIdPage</div><br/>
-    <OnlineUsers {...commonProps} /><br/><br/>
+    <div className='container'>
+      
+    <div className='logo'>
+    <img src='/logo.png' alt="AWALON" />
+    </div><br/>
+    
+    <OnlineUsers {...commonProps} /><br/>
     <Role {...commonProps} />
     <Game {...commonProps} />
     <Leader {...commonProps} />
@@ -70,6 +76,7 @@ const RoomIdPage = () => {
     <Mission {...commonProps} />
     <ScoreBoard {...commonProps} /><br/><br/>
     { showAssassin && (<Assassin {...commonProps} />)}
+    </div>
   
     
 

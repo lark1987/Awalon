@@ -1,4 +1,72 @@
 .container{
-  width:500px;
+  width:300px;
   margin: 50px auto;
+  display:flex;
+  flex-flow : column wrap;
+}
+
+body{
+  font-family: '微軟正黑體';
+  text-align:center;
+  font-size:15px;
+}
+
+.logo{
+  margin: 0 auto
+}
+.logo img{
+  width:200px;
+}
+
+.onlineUsers {
+  background-color: rgb(216, 216, 216);
+  border-radius:5px;
+  padding: 10px;
+  line-height: 30px;
+}
+
+.onlineUsers img {
+  height:15px;
+  position: relative;
+  top:3px
+}
+
+.btn-yellow {
+  background-color:rgb(244, 244, 165);
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.btn-yellow:hover {
+  background-color:rgb(255, 200, 0);
+}
+
+.btn-green {
+  background-color:rgb(164, 216, 164);
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.btn-green:hover {
+  background-color:rgb(111, 174, 111);
+}
+
+
+.mini-text-grey{
+  color: grey;
+  font-size: 10px;
+  letter-spacing:1px
+}
+
+.card img{
+  height:100px;
+  cursor: pointer;
+}
+.card img :hover {
+  position: relative;
+  bottom:10px;
 }

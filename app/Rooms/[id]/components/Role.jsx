@@ -1,6 +1,7 @@
 
 import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import '../../../page.css'
 
 const Role = (props) => {
 
@@ -187,31 +188,35 @@ useEffect(() => getReady(), []);
     <div>
       
       {hideClick1 ?
-      <div>
-      <h4>請等候玩家進場，人員到齊後可點選下方，開始遊戲！</h4>
-      <button onClick={getRoleButton}>開始遊戲</button>
-      </div>
+      (<div>
+      <button className ='btn-yellow ' onClick={getRoleButton}>START</button><br/><br/>
+      <div className='mini-text-grey'>人員到齊即可開始遊戲</div>
+      </div>)
       :[]}
 
       <br/>
       {hideClick2 && shuffleList ?
-      (shuffleList.map((role,index) => (
-        <button key={index} 
+      ( <span>
+        請抽選您的角色牌<br/><br/>
+        {shuffleList.map((role,index) => (
+        <span key={index} 
+        className='card'
         onClick={
           role === 'merlin' ? merlin : (
           role === 'assassin' ? assassin : (
           role === 'good' ? good : bad))
-        }
-        >
-        {role}
-        </button>
-      )))
+        }>
+        <img src='/card.png' alt="card" />　
+        </span>
+        ))}
+        </span>
+      )
       :[]}
 
       {groupMessage && !userReady ? (
         <div>
           <div>{groupMessage}</div><br/>
-          <button onClick={toGame}>確認陣營，繼續遊戲</button>
+          <button className ='btn-green' onClick={toGame}>確認陣營，繼續遊戲</button>
         </div>
       ) : []}
 
