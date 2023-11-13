@@ -189,15 +189,16 @@ useEffect(() => getReady(), []);
       
       {hideClick1 ?
       (<div>
+        <br/>
       <button className ='btn-yellow ' onClick={getRoleButton}>START</button><br/><br/>
-      <div className='mini-text-grey'>人員到齊即可開始遊戲</div>
+      <div className='mini-text-grey'>人員到齊後，即可開始遊戲</div>
       </div>)
       :[]}
 
-      <br/>
+      
       {hideClick2 && shuffleList ?
       ( <span>
-        請抽選您的角色牌<br/><br/>
+        <br/>請抽選您的角色牌<br/><br/>
         {shuffleList.map((role,index) => (
         <span key={index} 
         className='card'
@@ -215,8 +216,15 @@ useEffect(() => getReady(), []);
 
       {groupMessage && !userReady ? (
         <div>
+          <div className='card-role' >
+          {groupMessage.includes("梅林")?(<img src='/role/merlin.jpg' alt="card" />): 
+          (groupMessage.includes("刺客")?(<img src='/role/assassin.jpg' alt="card" />):
+          (groupMessage.includes("好人")?(<img src='/role/goodPerson.jpg' alt="card" />):
+          (groupMessage.includes("壞人")?(<img src='/role/badPerson.jpg' alt="card" />):([]))))
+          }</div><br/>
+
           <div>{groupMessage}</div><br/>
-          <button className ='btn-green' onClick={toGame}>確認陣營，繼續遊戲</button>
+          <button onClick={toGame}>確認陣營，繼續遊戲</button>
         </div>
       ) : []}
 

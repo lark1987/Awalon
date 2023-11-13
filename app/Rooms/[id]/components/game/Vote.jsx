@@ -108,9 +108,9 @@ useEffect(() => onload(), []);
 
     { showVote && !voteResult &&
       (<div>
-        是否同意上述人員出任務？　
-      <button onClick={()=>handleOnClick('同意')}>同意</button>　
-      <button onClick={()=>handleOnClick('反對')}>反對</button>
+        是否同意上述人員出任務？<br/><br/>
+      <span className='vote-btn' onClick={()=>handleOnClick('同意')}><img src='/yes.png' alt="yes" /></span>　
+      <span className='vote-btn' onClick={()=>handleOnClick('反對')}><img src='/no.png' alt="no" /></span>
       </div>)
     }
 
@@ -139,13 +139,14 @@ useEffect(() => onload(), []);
         {voteResult.map((data,index) => (
           <div key={index}>{data.userName}：{data.answer}</div>
         ))}
+        <br/>
         <button onClick={handleNextOnclick}>繼續遊戲</button>
         </div>
       )
     }
 
 
-
+    <br/>
 
    </>
   )

@@ -1,18 +1,30 @@
-.container{
-  width:300px;
-  margin: 50px auto;
-  display:flex;
-  flex-flow : column wrap;
-}
-
 body{
   font-family: '微軟正黑體';
   text-align:center;
   font-size:15px;
+  background-color: black;
+}
+
+
+.container{
+  background-color: white;
+  width:300px;
+  margin: 50px auto;
+  display:flex;
+  flex-flow : column wrap;
+  border-radius: 5px;
+  padding: 50px;
+}
+
+
+
+hr{
+  width: 100%;
 }
 
 .logo{
-  margin: 0 auto
+  margin: 0 auto;
+  cursor: pointer;
 }
 .logo img{
   width:200px;
@@ -31,30 +43,34 @@ body{
   top:3px
 }
 
-.btn-yellow {
-  background-color:rgb(244, 244, 165);
-  border-radius: 5px;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
 
-.btn-yellow:hover {
-  background-color:rgb(255, 200, 0);
-}
 
-.btn-green {
+/* 按鈕區 */
+
+button{
   background-color:rgb(164, 216, 164);
   border-radius: 5px;
   border: none;
   padding: 10px;
   cursor: pointer;
 }
-
-.btn-green:hover {
+button:hover{
   background-color:rgb(111, 174, 111);
 }
 
+
+.btn-yellow {
+  background-color:rgb(244, 244, 165);
+}
+.btn-yellow:hover {
+  background-color:rgb(255, 200, 0);
+}
+
+.vote-btn{
+  cursor: pointer;
+}
+
+/* 文字區 */
 
 .mini-text-grey{
   color: grey;
@@ -62,11 +78,28 @@ body{
   letter-spacing:1px
 }
 
+.background-red{
+  background-color: rgb(237, 183, 183);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.background-blue{
+  background-color: rgb(183, 201, 237);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
 .card img{
-  height:100px;
+  height:150px;
   cursor: pointer;
 }
-.card img :hover {
+.card :hover {
   position: relative;
-  bottom:10px;
+  bottom:3px;
+}
+
+.card-role img{
+  height:300px;
 }

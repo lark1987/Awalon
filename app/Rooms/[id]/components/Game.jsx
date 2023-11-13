@@ -165,32 +165,33 @@ const Game = (props) => {
 
    {hideClick1 && userReady && userReady.length !== users.length &&(
    <span>
-    <span>請稍候，其他玩家確認中</span>
+    <span>請稍候，其他玩家確認中</span><br/><br/>
     {userReady.map((data, index) => (
       <span key={index}> 　{data} OK </span>))}
     </span>)}
 
     {userReady && userReady.length === users.length && !leaderList && (
-      <div>全部玩家完成身份確認，點擊下方按鈕，確認隊長順序<br/><br/>
-      <button onClick={chooseLeader}>確認隊長順序</button>
+      <div>
+      <br/><button onClick={chooseLeader}>確認隊長</button><br/><br/>
+      身份確認完成，點選按鈕確認此局隊長。
       </div>
     )}
 
-    {leaderList?
-    <div>隊長順序：
+    {leaderList && !showLeader &&
+    (<div>隊長順序：
       {leaderList.map((item, index) => (
         <span key={index}> {item}、</span>
       ))}
-      現在隊長：{leaderName}
-    </div>
-    :[]
+    </div>)
     }
 
     {selectedList?
-    (<div><br/><br/>本局隊長選擇人員：
+    (<div><br/>
+    <div className='background-blue'>出任務人員：
       {selectedList.map((item, index) => (
         <span key={index}> {item}、</span>
       ))}
+      </div>
     </div>)
     :[]}
 

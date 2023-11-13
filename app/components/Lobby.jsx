@@ -80,17 +80,26 @@ const getStart = async() => {
   return (
    <div className='container'>
 
-   <h1>Welcome to Awalon</h1>
+   <div className='logo'>
+    <img src='/logo.png' alt="AWALON" />
+    </div><br/>
 
+    <div>
+    玩家名稱　
    <input 
    type='text' name='userName' placeholder='請輸入名稱' onChange={handleChange}/><br/><br/>
+    房間名稱　
    <input 
    type='text' name='roomName'placeholder='請輸入房名' onChange={handleChange}/><br/><br/>
+    房間密碼　
    <input 
    type='password' name='roomPassword' placeholder='請輸入密碼' onChange={handleChange}/><br/><br/>
-   
-   <button onClick={createRoom}> 創建房間 </button><br/><br/>
-   <button onClick={getStart}> 進入房間 </button><br/><br/> 
+   </div>
+
+   <div>
+   <button onClick={createRoom}> 創建房間 </button>　　　
+   <button onClick={getStart}> 進入房間 </button>
+   </div>
    <div>{systemMessage}</div>     
 
  </div>

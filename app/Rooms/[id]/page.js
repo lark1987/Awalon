@@ -1,6 +1,7 @@
 "use client"
 
 import React,{ useState } from 'react';
+import { useRouter } from 'next/navigation'
 import io from 'socket.io-client';
 
 import OnlineUsers from './components/OnlineUsers'
@@ -59,23 +60,34 @@ const RoomIdPage = () => {
     gameOver,setGameOver,
   }
 
+  const router = useRouter();
+
+  const goHome = () => { 
+    router.push('/');
+   }
+
 
   return (
     <>
     <div className='container'>
       
-    <div className='logo'>
+    <div className='logo' onClick={goHome}>
     <img src='/logo.png' alt="AWALON" />
-    </div><br/>
+    </div>
+    <hr/>
     
-    <OnlineUsers {...commonProps} /><br/>
     <Role {...commonProps} />
     <Game {...commonProps} />
     <Leader {...commonProps} />
+    
     { showVote && (<Vote {...commonProps} />)}
     <Mission {...commonProps} />
-    <ScoreBoard {...commonProps} /><br/><br/>
     { showAssassin && (<Assassin {...commonProps} />)}
+    <br/>
+    <OnlineUsers {...commonProps} />
+    {/* <ScoreBoard {...commonProps} /><br/><br/> */}
+    
+    
     </div>
   
     

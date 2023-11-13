@@ -1,6 +1,7 @@
 
 import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import '../../../../page.css'
 
 
 const Leader = (props) => {
@@ -33,19 +34,22 @@ const Leader = (props) => {
     <div>
       {users && showLeader &&
       (<div>
-        <div>Leader：請選擇和您一起出任務的人員</div><br/>
-
+        <img src='/leader.png' alt="leader" style={{width:'50px'}}/><br/><br/>
+        <div className='background-red'>您是本局隊長，請選擇要出任務的人員</div><br/>
+        <div style={{display:'inline-flex'}}>
         {users.map((item, index) => (
-        <span key={index}>
-            <input
+        <label key={index}>
+          <span>{item}</span><br/>
+          <img src={`/member/member-${index+1}.jpg`} alt="member" style={{width:'40px'}}/><br/>
+          <input
               type="checkbox"
               checked={selectedItems.includes(item)}
               onChange={() => handleCheckboxChange(item)}
-            />
-            {item}　
-        </span>))}
+            /><br/>
+        </label>))}
+        </div>
 
-        <button onClick={missionRaise}>確認</button>
+        <br/><br/><button onClick={missionRaise} style={{'backgroundColor':'#cbd5f1'}}>提請投票</button><br/><br/>
 
       </div>)
       }
