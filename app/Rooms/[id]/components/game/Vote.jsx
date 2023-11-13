@@ -108,7 +108,7 @@ useEffect(() => onload(), []);
 
     { showVote && !voteResult &&
       (<div>
-        是否同意上述人員出任務？<br/><br/>
+        <br/>是否同意上述人員出任務？<br/><br/>
       <span className='vote-btn' onClick={()=>handleOnClick('同意')}><img src='/yes.png' alt="yes" /></span>　
       <span className='vote-btn' onClick={()=>handleOnClick('反對')}><img src='/no.png' alt="no" /></span>
       </div>)
@@ -116,16 +116,16 @@ useEffect(() => onload(), []);
 
     {
       voteResult && voteResult.length !== users.length &&
-      (<div>請稍候，其他玩家投票中　
+      (<div><br/><b style={{color:'red'}}>其他玩家投票中．．．</b><br/><br/>
         {voteResult.map((data,index) => (
-          <span key={index}>{data.userName} OK　</span>
+          <span key={index}>✅{data.userName}　</span>
         ))}
       </div>)
     }
 
     {
     voteResult && voteResult.length === users.length && !voteFinalResult &&
-     (<div>投票結束，請確認投票結果<br/><br/>
+     (<div><br/>投票結束，請確認投票結果<br/><br/>
       <button onClick={handleResultOnclick}>投票結果</button>
       </div>)
     }
@@ -135,7 +135,14 @@ useEffect(() => onload(), []);
      voteFinalResult && !missionResult && !gameOver &&
       (
         <div>
-        投票結果：{voteFinalResult}<br/><br/>
+        <br/>
+        {voteFinalResult.includes("同意")?
+        (<img src='/agree.png' alt="yes" style={{width:'150px'}}/>):
+        (<img src='/reject.png' alt="no" style={{width:'150px'}}/>)
+        }
+
+        <br/><br/><b style={{color:'red'}}>投票結果：{voteFinalResult}</b><br/><br/>   
+
         {voteResult.map((data,index) => (
           <div key={index}>{data.userName}：{data.answer}</div>
         ))}

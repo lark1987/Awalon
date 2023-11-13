@@ -167,22 +167,29 @@ const Game = (props) => {
    <span>
     <span>請稍候，其他玩家確認中</span><br/><br/>
     {userReady.map((data, index) => (
-      <span key={index}> 　{data} OK </span>))}
+      <span key={index}> 　✅{data} </span>))}
     </span>)}
 
     {userReady && userReady.length === users.length && !leaderList && (
       <div>
       <br/><button onClick={chooseLeader}>確認隊長</button><br/><br/>
-      身份確認完成，點選按鈕確認此局隊長。
+      確認完畢，點選按鈕指派隊長。
       </div>
     )}
 
-    {leaderList && !showLeader &&
-    (<div>隊長順序：
+    {leaderList &&
+    (<b style={{color:'green'}}>隊長順序：
       {leaderList.map((item, index) => (
-        <span key={index}> {item}、</span>
+        <span key={index}>{item}、</span>
       ))}
-    </div>)
+    </b>)
+    }
+
+    {leaderList && !showLeader && !selectedList &&
+    (<div>
+      <br/><img src='/wait-1.png' alt="wait" style={{width:'150px'}} /><br/>
+      <b style={{color:'red'}}>隊長選擇中．．．</b>
+      </div>)
     }
 
     {selectedList?

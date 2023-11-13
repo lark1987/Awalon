@@ -216,14 +216,14 @@ useEffect(() => getReady(), []);
 
       {groupMessage && !userReady ? (
         <div>
-          <div className='card-role' >
+          <br/><div className='card-role' >
           {groupMessage.includes("梅林")?(<img src='/role/merlin.jpg' alt="card" />): 
           (groupMessage.includes("刺客")?(<img src='/role/assassin.jpg' alt="card" />):
           (groupMessage.includes("好人")?(<img src='/role/goodPerson.jpg' alt="card" />):
           (groupMessage.includes("壞人")?(<img src='/role/badPerson.jpg' alt="card" />):([]))))
-          }</div><br/>
+          }</div>
 
-          <div>{groupMessage}</div><br/>
+          <br/><b>{groupMessage}</b><br/><br/>
           <button onClick={toGame}>確認陣營，繼續遊戲</button>
         </div>
       ) : []}

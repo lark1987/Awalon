@@ -11,7 +11,7 @@ import '../../../page.css'
 const OnlineUsers = (props) => {
 
   const { users, setUsers,roomId,userName,userId,
-    setShowLeader,setShowMission,setVoteFailedRecord } = props;
+    setShowLeader,setShowMission,setShowVote,setVoteFailedRecord } = props;
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 

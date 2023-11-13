@@ -66,8 +66,14 @@ button:hover{
   background-color:rgb(255, 200, 0);
 }
 
-.vote-btn{
+.vote-btn {
   cursor: pointer;
+}
+.vote-btn img:hover{
+  position:relative;
+  bottom: 10px;
+  /* border: 3px solid black;
+  border-radius: 60px; */
 }
 
 /* 文字區 */
@@ -92,7 +98,7 @@ button:hover{
 
 
 .card img{
-  height:150px;
+  height:100px;
   cursor: pointer;
 }
 .card :hover {
@@ -101,5 +107,5 @@ button:hover{
 }
 
 .card-role img{
-  height:300px;
+  height:200px;
 }

@@ -16,6 +16,7 @@ const Mission = (props) => {
    <>
     {showMission &&
     (<div>
+      <br/>
       <button onClick={()=>handleOnClick('成功')}>任務成功</button>　　
       <button onClick={()=>handleOnClick('失敗')}>任務失敗</button><br/><br/>
       </div>)

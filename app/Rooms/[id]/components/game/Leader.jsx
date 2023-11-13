@@ -29,11 +29,9 @@ const Leader = (props) => {
  
   return (
     <>
-    <br/>
-    <br/>
-    <div>
       {users && showLeader &&
       (<div>
+        <br/>
         <img src='/leader.png' alt="leader" style={{width:'50px'}}/><br/><br/>
         <div className='background-red'>您是本局隊長，請選擇要出任務的人員</div><br/>
         <div style={{display:'inline-flex'}}>
@@ -48,12 +46,9 @@ const Leader = (props) => {
             /><br/>
         </label>))}
         </div>
-
         <br/><br/><button onClick={missionRaise} style={{'backgroundColor':'#cbd5f1'}}>提請投票</button><br/><br/>
-
       </div>)
       }
-    </div>
    </>
   )
 }
