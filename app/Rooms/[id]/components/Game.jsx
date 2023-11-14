@@ -38,17 +38,16 @@ const Game = (props) => {
    }
 
   // 任務結果
-  const handleMissionResult = (obj) => { 
-    const keyCount = Object.keys(obj).length;
-    if (Object.values(obj).includes("失敗")){
+  const handleMissionResult = (arr) => { 
+    const keyCount = arr.length;
+    const isFailed = arr.some(item=>item.answer === "失敗");
+    if (isFailed) { 
       setMissionResult('失敗')
+      setMissionKeyCount(keyCount)
+      return
     }
-    else{ 
-      setMissionResult('成功')
-    }
+    setMissionResult('成功')
     setMissionKeyCount(keyCount)
-    setMissionWait(false)
-    setVoteFailedRecord('')
   }
 
   // 投票成功 > 任務結束 > 開啟下局
@@ -84,12 +83,12 @@ const Game = (props) => {
       if (item === '失敗') {
         failureCount++;}
     });
-    if (successCount === 3) {
-      socket.emit('goGameOver','遊戲結束，好人陣營勝利！啟動刺客暗殺行動')
+    if (successCount > 2) {
+      socket.emit('goGameOver','遊戲結束，好人陣營勝利！刺客啟動暗殺行動')
       socket.emit('goAssassin');
       return () => {socket.disconnect(); };
     }
-    if (failureCount === 3 ) {
+    if (failureCount > 2 ) {
       socket.emit('goGameOver','遊戲結束，壞人陣營勝利！')
       return () => {socket.disconnect(); };
     }
@@ -124,8 +123,8 @@ const Game = (props) => {
       setMissionWait(true)
       return () => {socket.disconnect(); };
     });
-    socket.on('getMissonResult', (obj) => {
-      handleMissionResult(obj)
+    socket.on('getMissionResult', (arr) => {
+      handleMissionResult(arr)
       return () => {socket.disconnect(); };
     });
     socket.on('goNextGame', () => {
@@ -143,11 +142,7 @@ const Game = (props) => {
   
   useEffect(() => onLoad(), []);
 
-  // 任務結果
-  useEffect(() => {
-    setScoreRecord((prev) => [...prev,missionResult]);
-    judgeGameResult()
-  }, [missionResult]);
+
 
   // 投票結果
   useEffect(() => {
@@ -155,6 +150,21 @@ const Game = (props) => {
       setVoteFailedRecord((prev) => [...prev,'反對']);
       }
   }, [voteFinalResult]);
+
+  // 任務結果
+  useEffect(() => {
+    if(!selectedList) return
+    if(missionKeyCount == selectedList.length){
+      setScoreRecord((prev) => [...prev,missionResult]);
+      setMissionWait(false)
+      setVoteFailedRecord('')
+    }
+  }, [missionKeyCount,missionResult]);
+
+  // 勝敗判斷
+  useEffect(() => {
+    judgeGameResult()
+  }, [scoreRecord]);
 
 
 

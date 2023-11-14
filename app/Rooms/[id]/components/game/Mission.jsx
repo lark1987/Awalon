@@ -8,7 +8,7 @@ const Mission = (props) => {
 
  const handleOnClick = (answer) => { 
   const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('getMissonResult',userId,answer);
+  socket.emit('getMissionResult',userId,answer,roomId);
   setShowMission(false)
   return () => {socket.disconnect(); };
  }
