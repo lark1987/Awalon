@@ -1,5 +1,6 @@
 import React,{ useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import '../../../../page.css'
 
 const Assassin = (props) => {
 
@@ -21,9 +22,8 @@ const Assassin = (props) => {
   return (
    <>
     <br/>
-    <div>請選出哪一位是梅林</div>
-    <br/>
-    <div>
+    <div className='background-blue'>請選出哪一位是梅林</div>
+    <div><br/>
         {users?
         users.map((item, index) => (
           <span key={index}>
@@ -39,8 +39,6 @@ const Assassin = (props) => {
       <br/><br/>
       <button onClick={assassinChoose}>確認</button>
     </div>
-    <br/><br/>
-
    </>
   )
 }

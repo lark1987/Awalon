@@ -26,6 +26,7 @@ const RoomIdPage = () => {
   const [missionResult, setMissionResult] = useState();
   const [voteFinalResult, setVoteFinalResult] = useState();
 
+  const [showGame, setShowGame] = useState(true);
   const [showLeader, setShowLeader] = useState(false);
   const [showVote, setShowVote] = useState(false);
   const [showMission, setShowMission] = useState(false);
@@ -49,7 +50,8 @@ const RoomIdPage = () => {
     selectedList, setSelectedList,
     missionResult, setMissionResult,
     voteFinalResult, setVoteFinalResult,
-    
+
+    showGame, setShowGame,
     showLeader,setShowLeader,
     showVote,setShowVote,
     showMission, setShowMission,
@@ -77,14 +79,12 @@ const RoomIdPage = () => {
     <hr/>
     
     <Role {...commonProps} />
-    <Game {...commonProps} />
-    <Leader {...commonProps} />
-    
+    { showGame && (<Game {...commonProps} />)}
+    { showLeader && (<Leader {...commonProps} />)}
     { showVote && (<Vote {...commonProps} />)}
-    <Mission {...commonProps} />
+    { showMission && (<Mission {...commonProps} />)}
+    <ScoreBoard {...commonProps} />
     { showAssassin && (<Assassin {...commonProps} />)}
-    <br/>
-    {/* <ScoreBoard {...commonProps} /><br/><br/> */}
     <OnlineUsers {...commonProps} />
 
     

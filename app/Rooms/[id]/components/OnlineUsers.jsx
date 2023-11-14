@@ -67,15 +67,16 @@ useEffect(() => connectSocket(), []);
    
    { 
      users?
-     (<div className='onlineUsers'>
-     目前在線人員<br/>
-      {users.map((user,index) => (
-      <span key={index}>
-      <img src='/leaf.png' alt="leaf" /> {user}　
-      </span>
-     ))}
-      </div>
-     )
+     (<div><br/>
+        <div className='onlineUsers'>
+        目前在線人員<br/>
+        {users.map((user,index) => (
+        <span key={index}>
+        <img src='/leaf.png' alt="leaf" /> {user}　
+        </span>
+        ))}
+        </div>
+      </div>)
      :(<span>Loading...</span>)
    }
    </>

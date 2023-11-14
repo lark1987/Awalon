@@ -189,7 +189,7 @@ useEffect(() => getReady(), []);
       
       {hideClick1 ?
       (<div>
-        <br/>
+      <br/>
       <button className ='btn-yellow ' onClick={getRoleButton}>START</button><br/><br/>
       <div className='mini-text-grey'>人員到齊後，即可開始遊戲</div>
       </div>)

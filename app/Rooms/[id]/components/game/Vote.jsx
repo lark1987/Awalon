@@ -74,7 +74,7 @@ const Vote = (props) => {
   if(voteFinalResult == '反對'){
     const socket = io(`http://localhost:4000/${roomId}`);
 
-    if(voteFailedRecord.length > 3){
+    if(voteFailedRecord.length > 4){
       socket.emit('goGameOver','遊戲結束，壞人陣營勝利',)
       return () => {socket.disconnect(); };
     }
