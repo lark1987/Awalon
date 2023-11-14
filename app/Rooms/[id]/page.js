@@ -84,8 +84,9 @@ const RoomIdPage = () => {
     <Mission {...commonProps} />
     { showAssassin && (<Assassin {...commonProps} />)}
     <br/>
-    <OnlineUsers {...commonProps} />
     {/* <ScoreBoard {...commonProps} /><br/><br/> */}
+    <OnlineUsers {...commonProps} />
+
     
     
     </div>

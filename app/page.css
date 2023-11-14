@@ -66,14 +66,19 @@ button:hover{
   background-color:rgb(255, 200, 0);
 }
 
+.btn-red {
+  background-color:rgb(244, 185, 165);
+}
+.btn-red:hover {
+  background-color:rgb(248, 144, 144);
+}
+
 .vote-btn {
   cursor: pointer;
 }
 .vote-btn img:hover{
   position:relative;
   bottom: 10px;
-  /* border: 3px solid black;
-  border-radius: 60px; */
 }
 
 /* 文字區 */

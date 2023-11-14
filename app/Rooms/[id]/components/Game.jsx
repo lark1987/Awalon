@@ -26,6 +26,7 @@ const Game = (props) => {
 
 
   const [missionKeyCount, setMissionKeyCount] = useState();
+  const [missionWait,setMissionWait] = useState(false);
   const [hideClick1,setHideClick1] = useState(true);
 
   // 產生隊長清單
@@ -42,10 +43,12 @@ const Game = (props) => {
   if (Object.values(obj).includes("失敗")){
     setMissionKeyCount(keyCount)
     setMissionResult('失敗')
+    setMissionWait(false)
   }
   else{ 
     setMissionKeyCount(keyCount)
     setMissionResult('成功')
+    setMissionWait(false)
   }
   }
 
@@ -67,7 +70,6 @@ const Game = (props) => {
     setSelectedList('')
     setMissionResult('')
     setVoteFinalResult('')
-    setHideClick1(false)
     setShowVote(false)
    }
 
@@ -115,6 +117,12 @@ const Game = (props) => {
       setShowVote(true)
       return () => {socket.disconnect(); };
     })
+    socket.on('goMissionWait', () => {
+      console.log('goMissionWait')
+      setShowVote(false)
+      setMissionWait(true)
+      return () => {socket.disconnect(); };
+    });
     socket.on('getMissonResult', (obj) => {
       handleMissionResult(obj)
       return () => {socket.disconnect(); };
@@ -202,12 +210,24 @@ const Game = (props) => {
     </div>)
     :[]}
 
+    {missionWait && !showMission &&
+    (<div>
+    <br/><img src='/goMission.png' alt="goMission" style={{width:'150px'}} /><br/><br/>
+    <b style={{color:'red'}}>出任務中．．．</b>
+    </div>)
+    }
+
 
     {
     missionResult && missionKeyCount == selectedList.length &&
     (<div>
-      <br/><br/><span>任務結果：{missionResult}</span>
-      <br/><br/><br/><button onClick={goNextGame}>繼續遊戲</button>
+      <br/>
+      {missionResult.includes("成功")?
+      (<img src='/mission-sucess.png' alt="sucess" style={{width:'200px'}} />):
+      (<img src='/mission-fail.png' alt="fail" style={{width:'200px'}} />)
+      }
+      <br/><b style={{color:'red'}}>任務結果：{missionResult}</b>
+      <br/><br/><button onClick={goNextGame}>繼續遊戲</button>
      </div>)
     }
     
