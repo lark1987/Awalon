@@ -39,17 +39,16 @@ const Game = (props) => {
 
   // 任務結果
   const handleMissionResult = (obj) => { 
-  const keyCount = Object.keys(obj).length;
-  if (Object.values(obj).includes("失敗")){
+    const keyCount = Object.keys(obj).length;
+    if (Object.values(obj).includes("失敗")){
+      setMissionResult('失敗')
+    }
+    else{ 
+      setMissionResult('成功')
+    }
     setMissionKeyCount(keyCount)
-    setMissionResult('失敗')
     setMissionWait(false)
-  }
-  else{ 
-    setMissionKeyCount(keyCount)
-    setMissionResult('成功')
-    setMissionWait(false)
-  }
+    setVoteFailedRecord('')
   }
 
   // 投票成功 > 任務結束 > 開啟下局
@@ -86,7 +85,7 @@ const Game = (props) => {
         failureCount++;}
     });
     if (successCount === 3) {
-      socket.emit('goGameOver','遊戲結束，好人陣營勝利！刺客啟動。')
+      socket.emit('goGameOver','遊戲結束，好人陣營勝利！啟動刺客暗殺行動')
       socket.emit('goAssassin');
       return () => {socket.disconnect(); };
     }
@@ -99,7 +98,6 @@ const Game = (props) => {
 
   // 遊戲結束，清理畫面
   const handleGameOver = () => { 
-    // setShowGame(false)
     setShowLeader(false)
     setShowVote(false)
     setLeaderList('')
@@ -139,11 +137,6 @@ const Game = (props) => {
       handleGameOver()
       return () => {socket.disconnect(); };
     });
-    // socket.on('assassinChoose', (msg) => {
-    //   console.log(msg)
-    //   setGameOver(msg)
-    //   return () => {socket.disconnect(); };
-    // });
 
     return () => {socket.disconnect(); };
   }

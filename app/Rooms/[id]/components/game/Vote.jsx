@@ -17,7 +17,7 @@ const Vote = (props) => {
 // 投票按鈕：發送答案到後端整合，紀錄投票結果
  const handleOnClick = (answer) => { 
   const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('getVote',userId,userName,answer);
+  socket.emit('getVote',userId,userName,answer,roomId);
   socket.on('getVote',(obj) => { 
     checkVoteResult(obj)
    });

@@ -21,7 +21,7 @@ const ScoreBoard = (props) => {
     ):[]
     }
 
-    {!gameOver &&voteFailedRecord.includes("反對") ?
+    {!gameOver && voteFailedRecord.includes("反對") ?
     (<div><br/>投票失敗：
       {voteFailedRecord.map((item, index) => (
       <span key={index}>{item && item.includes("反對")?('❌'):[]}</span>

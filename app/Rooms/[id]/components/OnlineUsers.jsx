@@ -39,7 +39,6 @@ const OnlineUsers = (props) => {
     console.log(msg)
     setShowVote(false)
     setShowMission(true)
-    setVoteFailedRecord('')
     return () => {socketRoom.disconnect(); };
   })
 
