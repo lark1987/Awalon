@@ -165,14 +165,12 @@ useEffect(() => getReady(), []);
   // 從 role 轉至 Game
   const toGame = () => { 
     const socket = io(`http://localhost:4000/${roomId}`);
-    socket.emit('goGame',userId,userName);
-    socket.on('goGame', (obj) => {
-      let ready = []
-      Object.keys(obj).forEach(key => {
-        const value = obj[key];
-        ready.push(value)
-       })
-       setUserReady(ready)
+    socket.emit('goGame',userId,userName,roomId);
+    socket.on('goGame', (arr) => {
+
+      let ready = arr.map(item => item.userName);
+      setUserReady(ready)
+
        return () => {socket.disconnect(); };
     })
     return () => {socket.disconnect(); };
