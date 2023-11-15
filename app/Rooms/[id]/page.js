@@ -1,6 +1,6 @@
 "use client"
 
-import React,{ useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 import io from 'socket.io-client';
 
@@ -64,8 +64,9 @@ const RoomIdPage = () => {
 
   const router = useRouter();
 
-  const goHome = () => { 
-    router.push('/');
+  const goHome = () => {
+    window.location.href = "/";
+    // router.push('/');
    }
 
 
@@ -79,10 +80,10 @@ const RoomIdPage = () => {
     <hr/>
     
     <Role {...commonProps} />
-    { showGame && (<Game {...commonProps} />)}
-    { showLeader && (<Leader {...commonProps} />)}
-    { showVote && (<Vote {...commonProps} />)}
-    { showMission && (<Mission {...commonProps} />)}
+    { !gameOver && showGame && (<Game {...commonProps} />)}
+    { !gameOver && showLeader && (<Leader {...commonProps} />)}
+    { !gameOver && showVote && (<Vote {...commonProps} />)}
+    { !gameOver && showMission && (<Mission {...commonProps} />)}
     <ScoreBoard {...commonProps} />
     { showAssassin && (<Assassin {...commonProps} />)}
     <OnlineUsers {...commonProps} />

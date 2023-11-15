@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {nanoid} from 'nanoid'
 import {db} from '../utils/firebase'
 import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
 import '../page.css'
+import io from 'socket.io-client';
 
 const Lobby = () => {
 
@@ -32,13 +33,13 @@ const createRoom = async() => {
     setSystemMessage('房間名字已被使用')
   }
   else{
-    const newData = await addDoc (collection(db, "Awalon-room"),{roomName,roomPassword})
+    await addDoc (collection(db, "Awalon-room"),{roomName,roomPassword})
     setSystemMessage('房間創建成功，請點選進入房間')
   }
   
  }
 
-// 開始遊戲：核對房間、名字，存在 FireBase、sessionStorage
+// 開始遊戲：核對房間，儲存資訊於sessionStorage
 const getStart = async() => {
   const {userName, roomName, roomPassword } = inputData;
 
@@ -46,33 +47,50 @@ const getStart = async() => {
   const qRoom = query(roomDocRef, where("roomName", "==", roomName), where("roomPassword", "==", roomPassword));
   const data = await getDocs(qRoom);
   const roomData = data.docs[0];
-
+  
   if (data.empty) {
     setSystemMessage('房間名稱或密碼錯誤')
     return
   }
-  if(roomData.data().gameStart){
-    setSystemMessage('遊戲進行中，無法進入')
+
+  const roomId = roomData.id
+
+  const nameCheckPromise = new Promise(resolve => {
+    const socket = io('http://localhost:4000');
+    socket.emit ('nameCheck',roomId)
+    socket.once('nameCheck', (arr) => {
+      const isNamed = arr.some(item => item.userName === userName);
+      resolve(isNamed); 
+    });
+  });
+  
+  const isNamed = await nameCheckPromise; 
+  if(isNamed){
+    setSystemMessage('玩家名稱已被使用');
     return
   }
-
-  // const usersDocRef = collection(db, "Awalon-room",roomData.id,'players')
-  // const qName = query(usersDocRef, where("userName", "==", userName));
-  // const sameName = await getDocs(qName);
-  // if(!sameName.empty){
-  //   setSystemMessage('使用者名稱已被使用')
+  
+  
+  // if(roomData.data().gameStart){
+  //   setSystemMessage('遊戲進行中，無法進入')
   //   return
   // }
-  // 還沒解決離開房間刪名字的問題
-  // const userData = await addDoc (collection(db, "Awalon-room",roomData.id,'players'),{userName})
+
+  
   const userId = nanoid()
-  sessionStorage.setItem('roomId',roomData.id)
+  sessionStorage.setItem('roomId',roomId)
   sessionStorage.setItem('userId',userId)
   sessionStorage.setItem('userName',userName)
 
-  router.push(`/Rooms/${roomData.id}`);
+  router.push(`/Rooms/${roomId}`);
+
+  return () => {socket.disconnect(); };
 
 };
+
+const goHome = () => { 
+  window.location.href = "/";
+ }
 
 
 
@@ -80,7 +98,7 @@ const getStart = async() => {
   return (
    <div className='container'>
 
-   <div className='logo'>
+   <div className='logo' onClick={goHome}>
     <img src='/logo.png' alt="AWALON" />
     </div><br/>
 
@@ -96,14 +114,29 @@ const getStart = async() => {
    type='password' name='roomPassword' placeholder='請輸入密碼' onChange={handleChange}/><br/><br/>
    </div>
 
+    {systemMessage?
+    (<b style={{color:'red'}} >{systemMessage}<br/><br/></b>)
+    :[]}
+
    <div>
    <button onClick={createRoom}> 創建房間 </button>　　　
    <button onClick={getStart}> 進入房間 </button>
    </div>
-   <div>{systemMessage}</div>     
+  
 
  </div>
   )
 }
 
 export default Lobby
+
+
+// const usersDocRef = collection(db, "Awalon-room",roomData.id,'players')
+  // const qName = query(usersDocRef, where("userName", "==", userName));
+  // const sameName = await getDocs(qName);
+  // if(!sameName.empty){
+  //   setSystemMessage('使用者名稱已被使用')
+  //   return
+  // }
+  // 還沒解決離開房間刪名字的問題
+  // const userData = await addDoc (collection(db, "Awalon-room",roomData.id,'players'),{userName})

@@ -1,17 +1,14 @@
 "use client"
 
-import { useState,useEffect } from 'react';
+import { useEffect } from 'react';
 import io from 'socket.io-client';
-import {nanoid} from 'nanoid'
-import {db} from '../../../utils/firebase'
-import {deleteDoc,doc, } from 'firebase/firestore'
 
 import '../../../page.css'
 
 const OnlineUsers = (props) => {
 
-  const { users, setUsers,roomId,userName,userId,
-    setShowLeader,setShowMission,setShowVote,setVoteFailedRecord } = props;
+  const { users, setUsers,roomId,userName,userId,userReady,setGameOver,
+    setShowLeader,setShowMission,setShowVote } = props;
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
@@ -57,8 +54,16 @@ const OnlineUsers = (props) => {
    return () => {socketRoom.disconnect(); };
  }
 
-
 useEffect(() => connectSocket(), []);
+
+useEffect(() => { 
+  if(!userReady) return
+  if(userReady.length !== users.length){
+    setGameOver('遊戲中斷')
+  }
+ }, [users]);
+
+
 
 
  return (

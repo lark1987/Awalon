@@ -159,6 +159,22 @@ const getReady = () => {
   return () => {socketRoom.disconnect(); };
 }
 
+useEffect(() => {
+  const handleBeforeUnload = (event) => {
+    const message = '您確定要離開嗎？';
+    event.returnValue = message; 
+    return message; 
+  };
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, []);
+
+
+
+
+
 useEffect(() => getReady(), []);
 
 
