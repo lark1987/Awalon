@@ -79,13 +79,13 @@ const RoomIdPage = () => {
     </div>
     <hr/>
     
-    <Role {...commonProps} />
+    { !gameOver && (<Role {...commonProps} />)}
     { !gameOver && showGame && (<Game {...commonProps} />)}
     { !gameOver && showLeader && (<Leader {...commonProps} />)}
     { !gameOver && showVote && (<Vote {...commonProps} />)}
     { !gameOver && showMission && (<Mission {...commonProps} />)}
-    <ScoreBoard {...commonProps} />
     { showAssassin && (<Assassin {...commonProps} />)}
+    <ScoreBoard {...commonProps} />
     <OnlineUsers {...commonProps} />
 
     

@@ -56,12 +56,12 @@ const OnlineUsers = (props) => {
 
 useEffect(() => connectSocket(), []);
 
-useEffect(() => { 
-  if(!userReady) return
-  if(userReady.length !== users.length){
-    setGameOver('遊戲中斷')
-  }
- }, [users]);
+// useEffect(() => { 
+//   if(!userReady) return
+//   if(userReady.length !== users.length){
+//     setGameOver('遊戲中斷')
+//   }
+//  }, [users]);
 
 
 

@@ -55,34 +55,28 @@ const getStart = async() => {
 
   const roomId = roomData.id
 
-  const nameCheckPromise = new Promise(resolve => {
+  const roomCheckPromise = new Promise(resolve => {
     const socket = io('http://localhost:4000');
-    socket.emit ('nameCheck',roomId)
-    socket.once('nameCheck', (arr) => {
-      const isNamed = arr.some(item => item.userName === userName);
-      resolve(isNamed); 
+    socket.emit ('roomCheck',roomId,userName)
+    socket.once('roomCheck', (msg) => {
+      resolve(msg); 
     });
   });
   
-  const isNamed = await nameCheckPromise; 
-  if(isNamed){
-    setSystemMessage('玩家名稱已被使用');
+  const msg = await roomCheckPromise; 
+  if(msg){
+    console.log(msg)
+    setSystemMessage(msg)
     return
   }
-  
-  
-  // if(roomData.data().gameStart){
-  //   setSystemMessage('遊戲進行中，無法進入')
-  //   return
-  // }
-
-  
+    
   const userId = nanoid()
   sessionStorage.setItem('roomId',roomId)
   sessionStorage.setItem('userId',userId)
   sessionStorage.setItem('userName',userName)
 
   router.push(`/Rooms/${roomId}`);
+  // window.location.href = `/Rooms/${roomId}`;
 
   return () => {socket.disconnect(); };
 
@@ -129,14 +123,3 @@ const goHome = () => {
 }
 
 export default Lobby
-
-
-// const usersDocRef = collection(db, "Awalon-room",roomData.id,'players')
-  // const qName = query(usersDocRef, where("userName", "==", userName));
-  // const sameName = await getDocs(qName);
-  // if(!sameName.empty){
-  //   setSystemMessage('使用者名稱已被使用')
-  //   return
-  // }
-  // 還沒解決離開房間刪名字的問題
-  // const userData = await addDoc (collection(db, "Awalon-room",roomData.id,'players'),{userName})
