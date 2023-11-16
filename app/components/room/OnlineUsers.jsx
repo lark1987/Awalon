@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
 
 const OnlineUsers = (props) => {
@@ -8,9 +8,16 @@ const OnlineUsers = (props) => {
   const { users,setUsers,roomId,userName,userId,userNumber,
     setShowLeader,setShowMission,setShowVote } = props;
 
+    const [connectOK,setConnectOK] = useState(false);
+
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
    const socket = io('http://localhost:4000');
+
+   if (!socket.connected){
+    setConnectOK(false)
+   }
+
    socket.emit ('spaceId',roomId)
    socket.on('spaceId', () => { 
      connectRoom()
@@ -45,11 +52,13 @@ const OnlineUsers = (props) => {
    socketRoom.on('onlineUsers', (msg) => { 
      const users = Object.values(msg).map(item => item.userName);
      setUsers(users)
+     setConnectOK(true)
      return () => {socketRoom.disconnect(); };
    })
    return () => {socketRoom.disconnect(); };
  }
 
+// 連線掛載
 useEffect(() => connectSocket(), []);
 
 // 判斷是否玩家中離
@@ -70,7 +79,7 @@ useEffect(() => {
    <>
    
    { 
-     users?
+     connectOK?
      (<div><br/>
         <div className='onlineUsers'>
         目前在線人員<br/>
