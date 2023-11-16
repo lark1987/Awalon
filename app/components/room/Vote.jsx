@@ -1,4 +1,4 @@
-import React,{ useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
 
 const Vote = (props) => {
@@ -60,7 +60,7 @@ const Vote = (props) => {
  }
 
 
-// 投票結果處理
+// 投票結果下一步
  const handleNextOnclick = () => {
 
   // 投票同意：提供名單給後端，後端給發出任務給被選擇的人。

@@ -1,6 +1,5 @@
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
-import { doc, updateDoc } from "firebase/firestore";
 
 const Game = (props) => {
 
@@ -95,13 +94,6 @@ const Game = (props) => {
     return () => {socket.disconnect(); };
   }
 
-  // 遊戲結束，清理畫面
-  const handleGameOver = () => { 
-    setShowLeader(false)
-    setShowVote(false)
-    setLeaderList('')
-   }
-
 
 
 
@@ -129,11 +121,6 @@ const Game = (props) => {
     });
     socket.on('goNextGame', () => {
       handleGoNextGame()
-      return () => {socket.disconnect(); };
-    });
-    socket.on('goGameOver', (msg) => {
-      setGameOver(msg)
-      handleGameOver()
       return () => {socket.disconnect(); };
     });
 
@@ -168,22 +155,10 @@ const Game = (props) => {
 
 
 
- 
-
-
-
-
-
-
-
-
-
 
 
   return (
    <>
-   {!gameOver?(
-    <div>
 
   {userReady && userReady.length !== users.length && !leaderList && (
   <span>
@@ -245,14 +220,6 @@ const Game = (props) => {
     </div>)
    }
    
-
-
-   </div>
-   )  
-   :[]
-   }
-
-
    </>
     
   )

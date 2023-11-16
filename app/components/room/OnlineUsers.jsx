@@ -3,8 +3,6 @@
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 
-import '../../../page.css'
-
 const OnlineUsers = (props) => {
 
   const { users,setUsers,roomId,userName,userId,userNumber,
@@ -54,14 +52,14 @@ const OnlineUsers = (props) => {
 
 useEffect(() => connectSocket(), []);
 
+// 判斷是否玩家中離
 useEffect(() => { 
-  // console.log(userNumber)
   if(!users) return
   if(!userNumber) return
   if (users.length !== userNumber){
-    console.log('玩家離線，遊戲中止')
     const socket = io(`http://localhost:4000/${roomId}`);
-    socket.emit('goGameOver','玩家離線，遊戲中止')
+    socket.emit('goGameOver','玩家離線，遊戲結束')
+    socket.emit('roomOpen')
     return () => {socket.disconnect(); };
   }
   

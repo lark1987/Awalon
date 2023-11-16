@@ -26,11 +26,11 @@ const handleChange = (e) => {
 // 創建房間：核對房名 > 於 firebase 創建房間
 const createRoom = async() => { 
   const {userName, roomName, roomPassword } = inputData;
-  const roomDoc = collection(db, "Awalon-room");
-  const q = query(roomDoc, where("roomName", "==", roomName))
-  const querySnapshot = await getDocs(q);
+  const roomRef = collection(db, "Awalon-room");
+  const q = query(roomRef, where("roomName", "==", roomName))
+  const roomDouble = await getDocs(q);
 
-  if (!querySnapshot.empty) {
+  if (!roomDouble.empty) {
     setSystemMessage('房間名字已被使用')
   }
   else{
@@ -40,22 +40,23 @@ const createRoom = async() => {
   
  }
 
-// 開始遊戲：核對房間，socket確認同名及是否遊戲中，完成後儲存sessionStorage
+// 開始遊戲：確認房間狀況(密碼+同名+關閉)，儲存sessionStorage
 const getStart = async() => {
   const {userName, roomName, roomPassword } = inputData;
 
-  const roomDocRef = collection(db, "Awalon-room");
-  const qRoom = query(roomDocRef, where("roomName", "==", roomName), where("roomPassword", "==", roomPassword));
+  const roomRef = collection(db, "Awalon-room");
+  const qRoom = query(roomRef, where("roomName", "==", roomName), where("roomPassword", "==", roomPassword));
   const data = await getDocs(qRoom);
-  const roomData = data.docs[0];
-  
+
   if (data.empty) {
     setSystemMessage('房間名稱或密碼錯誤')
     return
   }
 
+  const roomData = data.docs[0];
   const roomId = roomData.id
 
+  // 確認是否玩家同名、遊戲進行中
   const roomCheckPromise = new Promise(resolve => {
     const socket = io('http://localhost:4000');
     socket.emit ('roomCheck',roomId,userName)
@@ -66,7 +67,6 @@ const getStart = async() => {
   
   const msg = await roomCheckPromise; 
   if(msg){
-    console.log(msg)
     setSystemMessage(msg)
     return
   }
@@ -76,8 +76,8 @@ const getStart = async() => {
   sessionStorage.setItem('userId',userId)
   sessionStorage.setItem('userName',userName)
 
-  router.push(`/Rooms/${roomId}`);
-  // window.location.href = `/Rooms/${roomId}`;
+  router.push(`/rooms/${roomId}`);
+  // window.location.href = `/rooms/${roomId}`;
 
   return () => {socket.disconnect(); };
 

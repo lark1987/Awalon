@@ -1,7 +1,6 @@
 
-import React,{ useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
-import '../../../page.css'
 
 const Role = (props) => {
 
@@ -14,6 +13,8 @@ const Role = (props) => {
   const [groupMessage, setGroupMessage] = useState();
   const [hideClick1,setHideClick1] = useState(true);
   const [hideClick2,setHideClick2] = useState(true);
+
+
 
 
 // 好人壞人人數配置
@@ -59,6 +60,14 @@ const generateShuffleList = () => {
   const newList = generateShuffleList()
   const socketRoom = io(`http://localhost:4000/${roomId}`);
   socketRoom.emit('getRoleButton',newList);
+  return () => {socketRoom.disconnect(); };
+}
+// 遊戲開始按鈕：關房、抽角
+const gameStart = () => { 
+  getRoleButton()
+  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  const userNumber = users.length
+  socketRoom.emit('userNumber',userNumber);
   return () => {socketRoom.disconnect(); };
 }
 
@@ -151,7 +160,21 @@ return () => {socket.disconnect(); };
 
 }
 
-// 頁面加載監聽事件：點選角色按鈕後之同步更新
+// 角色確認等候，跳轉至 Game 組件 
+const toGame = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('goGame',userId,userName,roomId);
+  socket.on('goGame', (arr) => {
+
+    let ready = arr.map(item => item.userName);
+    setUserReady(ready)
+
+      return () => {socket.disconnect(); };
+  })
+  return () => {socket.disconnect(); };
+}
+
+// 頁面掛載監聽
 const getReady = () => { 
   const socketRoom = io(`http://localhost:4000/${roomId}`);
   socketRoom.on('roleButton', (newList) => { 
@@ -166,6 +189,8 @@ const getReady = () => {
   return () => {socketRoom.disconnect(); };
 }
 
+useEffect(() => getReady(), []);
+
 // 頁面刷新提醒
 useEffect(() => {
   const handleBeforeUnload = (event) => {
@@ -178,36 +203,6 @@ useEffect(() => {
     window.removeEventListener('beforeunload', handleBeforeUnload);
   };
 }, []);
-
-// 頁面掛載監聽
-useEffect(() => getReady(), []);
-
-
-  // 從 role 轉至 Game
-const toGame = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('goGame',userId,userName,roomId);
-  socket.on('goGame', (arr) => {
-
-    let ready = arr.map(item => item.userName);
-    setUserReady(ready)
-
-      return () => {socket.disconnect(); };
-  })
-  return () => {socket.disconnect(); };
-}
-
-const gameStart = () => { 
-  getRoleButton()
-  const socketRoom = io(`http://localhost:4000/${roomId}`);
-  const userNumber = users.length
-  socketRoom.emit('userNumber',userNumber);
-
-  return () => {socketRoom.disconnect(); };
-}
-
-
-
 
 
 
