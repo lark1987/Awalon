@@ -61,9 +61,6 @@ const getStart = async() => {
   
   const socket = io("https://awalon-server.vercel.app", {
     withCredentials: true,
-    extraHeaders: {
-        "Access-Control-Allow-Origin": "https://awalon.vercel.app"
-    }
   });
     // const socket = io('https://awalon-server.vercel.app');
     socket.emit ('roomCheck',roomId,userName)
