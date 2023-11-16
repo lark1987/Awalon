@@ -5,7 +5,10 @@ import '../../../page.css'
 
 const Role = (props) => {
 
-  const { users,roomId,userName,userId,userReady,setUserReady,setShowAssassin } = props;
+  const { users,roomId,userName,userId,
+    setUserNumber,userReady,setUserReady,
+    setShowAssassin, 
+  } = props;
 
   const [shuffleList, setShuffleList] = useState();
   const [groupMessage, setGroupMessage] = useState();
@@ -61,92 +64,92 @@ const generateShuffleList = () => {
 
 
 // 點選好人牌：加入好人room、刷新角色按鈕列表
- const good = () => { 
+const good = () => { 
 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinGood',userName);
-  socket.on('groupMessage', (msg) => { 
-    setGroupMessage(msg)
-    return () => {socket.disconnect(); };
-  })
-
-  let index = shuffleList.indexOf('good');
-  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
-  socket.emit('getRoleButton',newList);
-
-  setHideClick2(false)
-
+const socket = io(`http://localhost:4000/${roomId}`);
+socket.emit('joinGood',userName);
+socket.on('groupMessage', (msg) => { 
+  setGroupMessage(msg)
   return () => {socket.disconnect(); };
- }
+})
+
+let index = shuffleList.indexOf('good');
+const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+socket.emit('getRoleButton',newList);
+
+setHideClick2(false)
+
+return () => {socket.disconnect(); };
+}
 // 點選壞人牌：加入壞人room、刷新角色按鈕列表
- const bad = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinBad',userName);
-  socket.on('groupMessage', (msg) => { 
-    setGroupMessage(msg)
-    return () => {socket.disconnect(); };
-  })
-  socket.on('badPeopleList',(msg) => { 
-    console.log(msg)
-    return () => {socket.disconnect(); };
-   })
-
-  let index = shuffleList.indexOf('bad');
-  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
-  socket.emit('getRoleButton',newList);
-
-  setHideClick2(false)
-
+const bad = () => { 
+const socket = io(`http://localhost:4000/${roomId}`);
+socket.emit('joinBad',userName);
+socket.on('groupMessage', (msg) => { 
+  setGroupMessage(msg)
   return () => {socket.disconnect(); };
- }
+})
+socket.on('badPeopleList',(msg) => { 
+  console.log(msg)
+  return () => {socket.disconnect(); };
+  })
+
+let index = shuffleList.indexOf('bad');
+const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+socket.emit('getRoleButton',newList);
+
+setHideClick2(false)
+
+return () => {socket.disconnect(); };
+}
 //  點選梅林牌：加入梅林 oom、刷新角色按鈕列表
- const merlin = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinMerlin',userName);
-  socket.on('groupMessage', (msg) => { 
-    setGroupMessage(msg)
-    return () => {socket.disconnect(); };
-  })
-  socket.on('badPeopleList',(msg) => { 
-    console.log(msg)
-    return () => {socket.disconnect(); };
-   })
-
-  let index = shuffleList.indexOf('merlin');
-  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
-  socket.emit('getRoleButton',newList);
-
-  setHideClick2(false)
-
+const merlin = () => { 
+const socket = io(`http://localhost:4000/${roomId}`);
+socket.emit('joinMerlin',userName);
+socket.on('groupMessage', (msg) => { 
+  setGroupMessage(msg)
   return () => {socket.disconnect(); };
-
- }
- const assassin = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
-  socket.emit('joinAssassin',userName);
-  socket.on('groupMessage', (msg) => { 
-    setGroupMessage(msg)
-    return () => {socket.disconnect(); };
-  })
-  socket.on('badPeopleList',(msg) => { 
-    console.log(msg)
-    return () => {socket.disconnect(); };
-  })
-  socket.on('goAssassin',() => { 
-    console.log('Assassin出任務囉！')
-    setShowAssassin(true)
-    return () => {socket.disconnect(); };
-  })
-
-  let index = shuffleList.indexOf('assassin');
-  const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
-  socket.emit('getRoleButton',newList);
-
-  setHideClick2(false)
-
+})
+socket.on('badPeopleList',(msg) => { 
+  console.log(msg)
   return () => {socket.disconnect(); };
+  })
 
- }
+let index = shuffleList.indexOf('merlin');
+const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+socket.emit('getRoleButton',newList);
+
+setHideClick2(false)
+
+return () => {socket.disconnect(); };
+
+}
+const assassin = () => { 
+const socket = io(`http://localhost:4000/${roomId}`);
+socket.emit('joinAssassin',userName);
+socket.on('groupMessage', (msg) => { 
+  setGroupMessage(msg)
+  return () => {socket.disconnect(); };
+})
+socket.on('badPeopleList',(msg) => { 
+  console.log(msg)
+  return () => {socket.disconnect(); };
+})
+socket.on('goAssassin',() => { 
+  console.log('Assassin出任務囉！')
+  setShowAssassin(true)
+  return () => {socket.disconnect(); };
+})
+
+let index = shuffleList.indexOf('assassin');
+const newList = shuffleList.slice(0, index).concat(shuffleList.slice(index + 1));
+socket.emit('getRoleButton',newList);
+
+setHideClick2(false)
+
+return () => {socket.disconnect(); };
+
+}
 
 // 頁面加載監聽事件：點選角色按鈕後之同步更新
 const getReady = () => { 
@@ -154,11 +157,16 @@ const getReady = () => {
   socketRoom.on('roleButton', (newList) => { 
     setShuffleList(newList)
     setHideClick1(false)
-    return () => {socket.disconnect(); };
+    return () => {socketRoom.disconnect(); };
+  })
+  socketRoom.on('userNumber', (userNumber) => { 
+    setUserNumber(userNumber)
+    return () => {socketRoom.disconnect(); };
   })
   return () => {socketRoom.disconnect(); };
 }
 
+// 頁面刷新提醒
 useEffect(() => {
   const handleBeforeUnload = (event) => {
     const message = '您確定要離開嗎？';
@@ -171,26 +179,32 @@ useEffect(() => {
   };
 }, []);
 
-
-
-
-
+// 頁面掛載監聽
 useEffect(() => getReady(), []);
 
 
   // 從 role 轉至 Game
-  const toGame = () => { 
-    const socket = io(`http://localhost:4000/${roomId}`);
-    socket.emit('goGame',userId,userName,roomId);
-    socket.on('goGame', (arr) => {
+const toGame = () => { 
+  const socket = io(`http://localhost:4000/${roomId}`);
+  socket.emit('goGame',userId,userName,roomId);
+  socket.on('goGame', (arr) => {
 
-      let ready = arr.map(item => item.userName);
-      setUserReady(ready)
+    let ready = arr.map(item => item.userName);
+    setUserReady(ready)
 
-       return () => {socket.disconnect(); };
-    })
-    return () => {socket.disconnect(); };
-  }
+      return () => {socket.disconnect(); };
+  })
+  return () => {socket.disconnect(); };
+}
+
+const gameStart = () => { 
+  getRoleButton()
+  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  const userNumber = users.length
+  socketRoom.emit('userNumber',userNumber);
+
+  return () => {socketRoom.disconnect(); };
+}
 
 
 
@@ -204,7 +218,7 @@ useEffect(() => getReady(), []);
       {hideClick1 ?
       (<div>
       <br/>
-      <button className ='btn-yellow ' onClick={getRoleButton}>START</button><br/><br/>
+      <button className ='btn-yellow ' onClick={gameStart}>START</button><br/><br/>
       <div className='mini-text-grey'>人員到齊後，即可開始遊戲</div>
       </div>)
       :[]}

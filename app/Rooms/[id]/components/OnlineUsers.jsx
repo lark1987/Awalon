@@ -7,17 +7,17 @@ import '../../../page.css'
 
 const OnlineUsers = (props) => {
 
-  const { users, setUsers,roomId,userName,userId,userReady,setGameOver,
+  const { users,setUsers,roomId,userName,userId,userNumber,
     setShowLeader,setShowMission,setShowVote } = props;
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
    const socket = io('http://localhost:4000');
    socket.emit ('spaceId',roomId)
-   socket.on('answer', (msg) => { 
+   socket.on('spaceId', () => { 
      connectRoom()
      getOnlineUsers()
-     return () => {socketRoom.disconnect(); };
+     return () => {socket.disconnect(); };
     })
    return () => {socket.disconnect(); };
  }
@@ -38,8 +38,6 @@ const OnlineUsers = (props) => {
     setShowMission(true)
     return () => {socketRoom.disconnect(); };
   })
-
-    
    return () => {socketRoom.disconnect(); };
  }
  // 獲取線上使用者，並setUsers
@@ -56,14 +54,18 @@ const OnlineUsers = (props) => {
 
 useEffect(() => connectSocket(), []);
 
-// useEffect(() => { 
-//   if(!userReady) return
-//   if(userReady.length !== users.length){
-//     setGameOver('遊戲中斷')
-//   }
-//  }, [users]);
-
-
+useEffect(() => { 
+  // console.log(userNumber)
+  if(!users) return
+  if(!userNumber) return
+  if (users.length !== userNumber){
+    console.log('玩家離線，遊戲中止')
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('goGameOver','玩家離線，遊戲中止')
+    return () => {socket.disconnect(); };
+  }
+  
+ },[users])
 
 
  return (

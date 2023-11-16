@@ -1,12 +1,13 @@
 "use client"
 
-import { useState,useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {nanoid} from 'nanoid'
-import {db} from '../utils/firebase'
-import {addDoc,getDocs,collection,query,where } from 'firebase/firestore'
-import '../page.css'
+import { db } from '../utils/firebase'
+import { addDoc,getDocs,collection,query,where } from 'firebase/firestore'
 import io from 'socket.io-client';
+import { nanoid } from 'nanoid'
+import '../page.css'
+
 
 const Lobby = () => {
 
@@ -39,7 +40,7 @@ const createRoom = async() => {
   
  }
 
-// 開始遊戲：核對房間，儲存資訊於sessionStorage
+// 開始遊戲：核對房間，socket確認同名及是否遊戲中，完成後儲存sessionStorage
 const getStart = async() => {
   const {userName, roomName, roomPassword } = inputData;
 

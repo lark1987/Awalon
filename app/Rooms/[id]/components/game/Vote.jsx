@@ -11,7 +11,6 @@ const Vote = (props) => {
 } = props;
 
  const [voteResult, setVoteResult] = useState();
-//  const [voteFinalResult, setVoteFinalResult] = useState();
 
 
 // 投票按鈕：發送答案到後端整合，紀錄投票結果
@@ -20,6 +19,7 @@ const Vote = (props) => {
   socket.emit('getVote',userId,userName,answer,roomId);
   socket.on('getVote',(obj) => { 
     checkVoteResult(obj)
+    return () => {socket.disconnect(); };
    });
   return () => {socket.disconnect(); };
  }
@@ -95,6 +95,7 @@ const onload = () => {
   const socket = io(`http://localhost:4000/${roomId}`);
   socket.on('getVoteResult',(obj) => { 
     handleVoteFinalResult(obj)
+    return () => {socket.disconnect(); };
    });
   return () => {socket.disconnect(); };
 }

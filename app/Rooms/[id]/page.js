@@ -1,8 +1,7 @@
 "use client"
 
-import React,{ useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation'
-import io from 'socket.io-client';
 
 import OnlineUsers from './components/OnlineUsers'
 import ScoreBoard from './components/ScoreBoard'
@@ -19,9 +18,12 @@ import '../../page.css'
 const RoomIdPage = () => {
 
   const [users, setUsers] = useState();
+  const [userNumber, setUserNumber] = useState();
   const [userReady, setUserReady] = useState();
+
   const [leaderList, setLeaderList] = useState();
   const [leaderName, setLeaderName] = useState();
+
   const [selectedList, setSelectedList] = useState();
   const [missionResult, setMissionResult] = useState();
   const [voteFinalResult, setVoteFinalResult] = useState();
@@ -43,6 +45,7 @@ const RoomIdPage = () => {
 
    const commonProps = {
     users,setUsers,roomId,userName,userId,
+    userNumber, setUserNumber,
     leaderList, setLeaderList,
     leaderName, setLeaderName,
     
@@ -63,7 +66,6 @@ const RoomIdPage = () => {
   }
 
   const router = useRouter();
-
   const goHome = () => {
     window.location.href = "/";
     // router.push('/');
@@ -78,6 +80,8 @@ const RoomIdPage = () => {
     <img src='/logo.png' alt="AWALON" />
     </div>
     <hr/>
+
+    {/* {userNumber} */}
     
     { !gameOver && (<Role {...commonProps} />)}
     { !gameOver && showGame && (<Game {...commonProps} />)}
@@ -100,18 +104,6 @@ const RoomIdPage = () => {
 
 export default RoomIdPage
 
-    // 暫停處理：遊戲開始後，房間禁止進入 (未完成)
-    // const roomNoEntry = async() => { 
-    //   const roomDocRef = doc(db, "Awalon-room",roomId);
-    //   await updateDoc(roomDocRef, {
-    //     gameStart: true
-    //   });
-    // }
-  
-    // 暫停處理：計分版
-    // const scoreRecord = (data) => { 
-    //   setGameRecord((prev) => [...prev,data]);
-    //  }
 
     // 暫停處理：得到壞人列表 
     // const getBadPeopleList = () => { 
