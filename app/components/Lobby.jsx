@@ -58,8 +58,12 @@ const getStart = async() => {
 
   // 確認是否玩家同名、遊戲進行中
   const roomCheckPromise = new Promise(resolve => {
-    const socket = io("https://awalon-server.vercel.app", {
+  
+  const socket = io("https://awalon-server.vercel.app", {
     withCredentials: true,
+    extraHeaders: {
+        "Access-Control-Allow-Origin": "https://awalon.vercel.app"
+    }
   });
     // const socket = io('https://awalon-server.vercel.app');
     socket.emit ('roomCheck',roomId,userName)
