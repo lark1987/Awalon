@@ -60,9 +60,6 @@ const getStart = async() => {
   const roomCheckPromise = new Promise(resolve => {
     const socket = io("https://awalon-server.vercel.app:4000", {
     withCredentials: true,
-    extraHeaders: {
-      "awalon": "awalon"
-    }
   });
     // const socket = io('https://awalon-server.vercel.app');
     socket.emit ('roomCheck',roomId,userName)
