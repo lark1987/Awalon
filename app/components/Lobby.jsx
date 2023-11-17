@@ -62,8 +62,8 @@ const getStart = async() => {
   // const socket = io("https://awalon-server.vercel.app", {
   //   withCredentials: true,
   // });
-    const socket = io('http://15.168.102.124:3000/');
-    // const socket = io('http://localhost:4000');
+    // const socket = io('http://15.168.102.124:3000/');
+    const socket = io('http://localhost:4000');
     socket.emit ('roomCheck',roomId,userName)
     socket.once('roomCheck', (msg) => {
       resolve(msg); 
