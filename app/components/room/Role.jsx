@@ -1,6 +1,7 @@
 
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const Role = (props) => {
 
@@ -58,14 +59,14 @@ const generateShuffleList = () => {
 // 創造角色按鈕：提供列表給 socket，同步生成
  const getRoleButton = () => { 
   const newList = generateShuffleList()
-  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  const socketRoom = io(`${socketUrl}${roomId}`);
   socketRoom.emit('getRoleButton',newList);
   return () => {socketRoom.disconnect(); };
 }
 // 遊戲開始按鈕：關房、抽角
 const gameStart = () => { 
   getRoleButton()
-  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  const socketRoom = io(`${socketUrl}${roomId}`);
   const userNumber = users.length
   socketRoom.emit('userNumber',userNumber);
   return () => {socketRoom.disconnect(); };
@@ -75,7 +76,7 @@ const gameStart = () => {
 // 點選好人牌：加入好人room、刷新角色按鈕列表
 const good = () => { 
 
-const socket = io(`http://localhost:4000/${roomId}`);
+const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinGood',userName);
 socket.on('groupMessage', (msg) => { 
   setGroupMessage(msg)
@@ -92,7 +93,7 @@ return () => {socket.disconnect(); };
 }
 // 點選壞人牌：加入壞人room、刷新角色按鈕列表
 const bad = () => { 
-const socket = io(`http://localhost:4000/${roomId}`);
+const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinBad',userName);
 socket.on('groupMessage', (msg) => { 
   setGroupMessage(msg)
@@ -113,7 +114,7 @@ return () => {socket.disconnect(); };
 }
 //  點選梅林牌：加入梅林 oom、刷新角色按鈕列表
 const merlin = () => { 
-const socket = io(`http://localhost:4000/${roomId}`);
+const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinMerlin',userName);
 socket.on('groupMessage', (msg) => { 
   setGroupMessage(msg)
@@ -134,7 +135,7 @@ return () => {socket.disconnect(); };
 
 }
 const assassin = () => { 
-const socket = io(`http://localhost:4000/${roomId}`);
+const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinAssassin',userName);
 socket.on('groupMessage', (msg) => { 
   setGroupMessage(msg)
@@ -162,7 +163,7 @@ return () => {socket.disconnect(); };
 
 // 角色確認等候，跳轉至 Game 組件 
 const toGame = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
+  const socket = io(`${socketUrl}${roomId}`);
   socket.emit('goGame',userId,userName,roomId);
   socket.on('goGame', (arr) => {
 
@@ -176,7 +177,7 @@ const toGame = () => {
 
 // 頁面掛載監聽
 const getReady = () => { 
-  const socketRoom = io(`http://localhost:4000/${roomId}`);
+  const socketRoom = io(`${socketUrl}${roomId}`);
   socketRoom.on('roleButton', (newList) => { 
     setShuffleList(newList)
     setHideClick1(false)

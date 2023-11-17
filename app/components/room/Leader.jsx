@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 
 const Leader = (props) => {
@@ -18,7 +19,7 @@ const Leader = (props) => {
   };
 
   const missionRaise = () => { 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('missionRaise',selectedItems,userName);
     setShowLeader(false)
 

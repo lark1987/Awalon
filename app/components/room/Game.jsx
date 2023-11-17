@@ -1,5 +1,6 @@
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const Game = (props) => {
 
@@ -31,7 +32,7 @@ const Game = (props) => {
   // 產生隊長清單
   const chooseLeader = () => { 
     const shuffleList = userReady.slice().sort(() => Math.random() - 0.5);
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('leaderList',shuffleList);
     return () => {socket.disconnect(); };
    }
@@ -56,7 +57,7 @@ const Game = (props) => {
     const nextIndex = (leaderIndex + 1) % leaderList.length;
     const newleaderName = leaderList[nextIndex];
 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('goNextGame',);
     socket.emit('leaderAction',newleaderName);
     return () => {socket.disconnect(); };
@@ -73,7 +74,7 @@ const Game = (props) => {
   // 遊戲結束判斷
   const judgeGameResult = () => { 
 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     let successCount = 0;
     let failureCount = 0;
     scoreRecord.forEach(item => {
@@ -99,7 +100,7 @@ const Game = (props) => {
 
   // 頁面加載監聽區
   const onLoad = () => { 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.on('leaderList', (msg) => { 
       setLeaderList(msg)
       return () => {socket.disconnect(); };

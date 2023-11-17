@@ -1,12 +1,13 @@
 
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const Mission = (props) => {
 
  const { roomId,userId,showMission,setShowMission } = props;
 
  const handleOnClick = (answer) => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
+  const socket = io(`${socketUrl}${roomId}`);
   socket.emit('getMissionResult',userId,answer,roomId);
   setShowMission(false)
   return () => {socket.disconnect(); };

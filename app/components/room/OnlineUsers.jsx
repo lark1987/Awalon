@@ -2,6 +2,7 @@
 
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const OnlineUsers = (props) => {
 
@@ -28,7 +29,7 @@ const OnlineUsers = (props) => {
  }
  // 創建 room 提供 userName 回傳！這裡很特別！用來接收userid專屬訊息！
  const connectRoom=() => { 
-   const socketRoom = io(`http://localhost:4000/${roomId}`);
+   const socketRoom = io(`${socketUrl}${roomId}`);
    socketRoom.emit('setUserName', userName,userId);
 
    socketRoom.on('leaderAction', (msg) => { 
@@ -47,7 +48,7 @@ const OnlineUsers = (props) => {
  }
  // 獲取線上使用者，並setUsers
  const getOnlineUsers=() => { 
-   const socketRoom = io(`http://localhost:4000/${roomId}`);
+   const socketRoom = io(`${socketUrl}${roomId}`);
    socketRoom.emit('getOnlineUsers');
    socketRoom.on('onlineUsers', (msg) => { 
      const users = Object.values(msg).map(item => item.userName);
@@ -66,7 +67,7 @@ useEffect(() => {
   if(!users) return
   if(!userNumber) return
   if (users.length !== userNumber){
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('goGameOver','玩家離線，遊戲結束')
     socket.emit('roomOpen')
     return () => {socket.disconnect(); };

@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const ScoreBoard = (props) => {
 
   const {roomId,scoreRecord,voteFailedRecord,gameOver,setGameOver } = props;
 
   const goRoom = () => { 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('roomOpen')
     window.location.href = `/rooms/${roomId}`
     return () => {socket.disconnect(); };
@@ -14,7 +15,7 @@ const ScoreBoard = (props) => {
 
   // 處理 gameOver 訊息 
   const onLoad = () => { 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.on('goGameOver', (msg) => {
       setGameOver(msg)
       return () => {socket.disconnect(); };

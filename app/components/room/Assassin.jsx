@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const Assassin = (props) => {
 
@@ -12,7 +13,7 @@ const Assassin = (props) => {
  };
 
   const assassinChoose = () => { 
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('assassinChoose',selectedItem);
     setShowAssassin(false)
     return () => {socket.disconnect(); };

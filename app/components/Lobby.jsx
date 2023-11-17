@@ -7,6 +7,7 @@ import { addDoc,getDocs,collection,query,where } from 'firebase/firestore'
 import io from 'socket.io-client';
 import { nanoid } from 'nanoid'
 import '../page.css'
+import { socketUrl } from '../utils/socketUrl';
 
 
 const Lobby = () => {
@@ -62,8 +63,8 @@ const getStart = async() => {
   // const socket = io("https://awalon-server.vercel.app", {
   //   withCredentials: true,
   // });
-    const socket = io('http://15.168.102.124:4000');
-    // const socket = io('http://localhost:4000');
+  // const socket = io('http://localhost:4000');
+    const socket = io(socketUrl);
     socket.emit ('roomCheck',roomId,userName)
     socket.once('roomCheck', (msg) => {
       resolve(msg); 

@@ -103,7 +103,7 @@ export default Room
 
     // 暫停處理：得到壞人列表 
     // const getBadPeopleList = () => { 
-    //   const socketRoom = io(`http://localhost:4000/${roomId}`);
+    //   const socketRoom = io(`${socketUrl}${roomId}`);
     //   socketRoom.emit('getBadPeopleList')
     //   return () => {socketRoom.disconnect(); };
     //  }

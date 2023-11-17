@@ -1,5 +1,6 @@
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
+import { socketUrl } from '../../utils/socketUrl';
 
 const Vote = (props) => {
 
@@ -15,7 +16,7 @@ const Vote = (props) => {
 
 // 投票按鈕：發送答案到後端整合，紀錄投票結果
  const handleOnClick = (answer) => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
+  const socket = io(`${socketUrl}${roomId}`);
   socket.emit('getVote',userId,userName,answer,roomId);
   socket.on('getVote',(obj) => { 
     checkVoteResult(obj)
@@ -35,7 +36,7 @@ const Vote = (props) => {
 
 // 投票結果按鈕 
  const handleResultOnclick = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
+  const socket = io(`${socketUrl}${roomId}`);
   socket.emit('getVoteResult',voteResult);
   return () => {socket.disconnect(); };
  }
@@ -65,14 +66,14 @@ const Vote = (props) => {
 
   // 投票同意：提供名單給後端，後端給發出任務給被選擇的人。
   if(voteFinalResult == '同意'){
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
     socket.emit('goMission',selectedList);
     return () => {socket.disconnect(); };
   }
 
   //投票反對：開啟下一局，紀錄反對次數 
   if(voteFinalResult == '反對'){
-    const socket = io(`http://localhost:4000/${roomId}`);
+    const socket = io(`${socketUrl}${roomId}`);
 
     if(voteFailedRecord.length > 4){
       socket.emit('goGameOver','遊戲結束，壞人陣營勝利',)
@@ -92,7 +93,7 @@ const Vote = (props) => {
 
 // 監聽加載
 const onload = () => { 
-  const socket = io(`http://localhost:4000/${roomId}`);
+  const socket = io(`${socketUrl}${roomId}`);
   socket.on('getVoteResult',(obj) => { 
     handleVoteFinalResult(obj)
     return () => {socket.disconnect(); };
