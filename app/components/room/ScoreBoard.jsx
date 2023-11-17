@@ -3,10 +3,13 @@ import io from 'socket.io-client';
 
 const ScoreBoard = (props) => {
 
-  const {roomId,scoreRecord,voteFailedRecord,gameOver,setGameOver,setUserNumber } = props;
+  const {roomId,scoreRecord,voteFailedRecord,gameOver,setGameOver } = props;
 
   const goRoom = () => { 
+    const socket = io(`http://localhost:4000/${roomId}`);
+    socket.emit('roomOpen')
     window.location.href = `/rooms/${roomId}`
+    return () => {socket.disconnect(); };
    }
 
   // 處理 gameOver 訊息 
