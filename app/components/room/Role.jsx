@@ -73,7 +73,7 @@ const gameStart = () => {
 }
 
 
-// 點選好人牌：加入好人room、刷新角色按鈕列表
+// 好人牌
 const good = () => { 
 
 const socket = io(`${socketUrl}${roomId}`);
@@ -91,7 +91,7 @@ setHideClick2(false)
 
 return () => {socket.disconnect(); };
 }
-// 點選壞人牌：加入壞人room、刷新角色按鈕列表
+// 壞人牌
 const bad = () => { 
 const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinBad',userName);
@@ -112,7 +112,7 @@ setHideClick2(false)
 
 return () => {socket.disconnect(); };
 }
-//  點選梅林牌：加入梅林 oom、刷新角色按鈕列表
+// 梅林牌
 const merlin = () => { 
 const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinMerlin',userName);
@@ -134,6 +134,7 @@ setHideClick2(false)
 return () => {socket.disconnect(); };
 
 }
+// 刺客牌
 const assassin = () => { 
 const socket = io(`${socketUrl}${roomId}`);
 socket.emit('joinAssassin',userName);
