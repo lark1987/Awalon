@@ -4,7 +4,7 @@ const RoomIdPage = () => {
   return (
    <>
     <div className='container'>TEST</div>
-    {/* <Room/> */}
+    <Room/>
    </>
   )
 }
