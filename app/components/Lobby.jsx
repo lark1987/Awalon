@@ -58,25 +58,25 @@ const getStart = async() => {
   const roomId = roomData.id
 
   // 確認是否玩家同名、遊戲進行中
-  // const roomCheckPromise = new Promise(resolve => {
+  const roomCheckPromise = new Promise(resolve => {
   
   // const socket = io("https://awalon-server.vercel.app", {
   //   withCredentials: true,
   // });
   // const socket = io('http://localhost:4000');
-  //   const socket = io(socketUrl);
+    const socket = io(socketUrl);
     
-  //   socket.emit ('roomCheck',roomId,userName)
-  //   socket.once('roomCheck', (msg) => {
-  //     resolve(msg); 
-  //   });
-  // });
+    socket.emit ('roomCheck',roomId,userName)
+    socket.once('roomCheck', (msg) => {
+      resolve(msg); 
+    });
+  });
   
-  // const msg = await roomCheckPromise; 
-  // if(msg){
-  //   setSystemMessage(msg)
-  //   return
-  // }
+  const msg = await roomCheckPromise; 
+  if(msg){
+    setSystemMessage(msg)
+    return
+  }
     
   const userId = nanoid()
   sessionStorage.setItem('roomId',roomId)
