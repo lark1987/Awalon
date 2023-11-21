@@ -60,13 +60,13 @@ const getStart = async() => {
   // 確認是否玩家同名、遊戲進行中
   const roomCheckPromise = new Promise(resolve => {
   
-  // const socket = io(socketUrl, {
-  //   withCredentials: true,
-  //   extraHeaders: {
-  //     "Access-Control-Allow-Origin": "https://awalon.vercel.app"
-  // }
-  // });
-    const socket = io(socketUrl);
+  const socket = io(socketUrl, {
+    withCredentials: true,
+    extraHeaders: {
+      "Access-Control-Allow-Origin": "https://awalon.vercel.app"
+  }
+  });
+    // const socket = io(socketUrl);
     
     socket.emit ('roomCheck',roomId,userName)
     socket.once('roomCheck', (msg) => {
