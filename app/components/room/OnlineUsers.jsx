@@ -13,7 +13,7 @@ const OnlineUsers = (props) => {
 
  // 連接 Socket 傳遞 spaceId
  const connectSocket=() => { 
-   const socket = io('http://localhost:4000');
+   const socket = io(socketUrl);
 
    if (!socket.connected){
     setConnectOK(false)
