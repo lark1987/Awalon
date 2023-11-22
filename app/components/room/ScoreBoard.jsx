@@ -64,13 +64,11 @@ const ScoreBoard = (props) => {
       {gameOver.includes("刺客")?[]:
         <button onClick={goRoom}>回到房間</button>
       }
-      
     </div>)
     :[]
     }
 
-
-
+   <br/><br/><button onClick={goRoom}>離開遊戲</button>
    </>
   )
 }

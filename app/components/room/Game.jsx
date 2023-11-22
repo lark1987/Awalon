@@ -40,6 +40,7 @@ const Game = (props) => {
   // 任務結果
   const handleMissionResult = (arr) => { 
     const keyCount = arr.length;
+    
     const isFailed = arr.some(item=>item.answer === "失敗");
     if (isFailed) { 
       setMissionResult('失敗')
