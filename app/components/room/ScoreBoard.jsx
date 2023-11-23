@@ -1,17 +1,11 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import io from 'socket.io-client';
 import { socketUrl } from '../../utils/socketUrl';
 
 const ScoreBoard = (props) => {
 
   const {roomId,scoreRecord,voteFailedRecord,gameOver,setGameOver } = props;
-
-  const goRoom = () => { 
-    const socket = io(`${socketUrl}${roomId}`);
-    socket.emit('roomOpen')
-    window.location.href = `/rooms/${roomId}`
-    return () => {socket.disconnect(); };
-   }
 
   // 處理 gameOver 訊息 
   const onLoad = () => { 
@@ -61,14 +55,9 @@ const ScoreBoard = (props) => {
       <br/><br/>
       <b style={{color:'blue'}}>{gameOver}</b>
       <br/><br/>
-      {gameOver.includes("刺客")?[]:
-        <button onClick={goRoom}>回到房間</button>
-      }
     </div>)
     :[]
     }
-
-   <br/><br/><button onClick={goRoom}>離開遊戲</button>
    </>
   )
 }

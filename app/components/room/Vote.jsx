@@ -60,7 +60,6 @@ const Vote = (props) => {
    }
  }
 
-
 // 投票結果下一步
  const handleNextOnclick = () => {
 
@@ -89,7 +88,6 @@ const Vote = (props) => {
     return () => {socket.disconnect(); };
   };
 }
-
 
 // 監聽加載
 const onload = () => { 

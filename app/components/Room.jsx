@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
+import Image from 'next/image';
+import { socketUrl } from '../utils/socketUrl';
 
 import OnlineUsers from './room/OnlineUsers'
 import ScoreBoard from './room/ScoreBoard'
@@ -67,8 +69,11 @@ const Room = () => {
 
   const router = useRouter();
   const goHome = () => {
-    window.location.href = "/";
-    // router.push('/');
+    const socket = io(`${socketUrl}${roomId}`);
+    socket.emit('roomOpen')
+    router.push('/');
+    // window.location.href = "/";
+    return () => {socket.disconnect(); };
    }
 
 
@@ -88,7 +93,7 @@ const Room = () => {
     <ScoreBoard {...commonProps} />
     <OnlineUsers {...commonProps} />
 
-    
+    <br/><br/><button style={{width:'100px'}} onClick={goHome}>離開房間</button>
     
     </div>
   

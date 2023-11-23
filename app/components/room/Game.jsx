@@ -26,8 +26,8 @@ const Game = (props) => {
   } = props;
 
 
-  const [missionKeyCount, setMissionKeyCount] = useState();
   const [missionWait,setMissionWait] = useState(false);
+  const [missionArr,setMissionArr] = useState();
 
   // 產生隊長清單
   const chooseLeader = () => { 
@@ -38,17 +38,26 @@ const Game = (props) => {
    }
 
   // 任務結果
-  const handleMissionResult = (arr) => { 
-    const keyCount = arr.length;
-    
-    const isFailed = arr.some(item=>item.answer === "失敗");
-    if (isFailed) { 
-      setMissionResult('失敗')
-      setMissionKeyCount(keyCount)
-      return
+  const handleMissionResult = () => { 
+    const socket = io(`${socketUrl}${roomId}`);
+    const failCount = missionArr.reduce((count, currentValue) => (currentValue.answer === "失敗" ? count + 1 : count), 0);
+
+    // 正式版：七位以上第四次任務要兩張失敗
+    // 測試版：兩位以上第一次任務要兩張失敗
+    if(users.length > 1 && scoreRecord.length == 0 && failCount < 2){
+      socket.emit('getMissionFinalResult','成功');
+      return () => {socket.disconnect(); };
     }
-    setMissionResult('成功')
-    setMissionKeyCount(keyCount)
+    if (failCount > 0) { 
+      socket.emit('getMissionFinalResult','失敗');
+      return () => {socket.disconnect(); };
+    }
+    socket.emit('getMissionFinalResult','成功');
+    return () => {socket.disconnect(); };
+
+
+    
+
   }
 
   // 投票成功 > 任務結束 > 開啟下局
@@ -67,6 +76,7 @@ const Game = (props) => {
   // 開啟下局前的全員同步清除工作
   const handleGoNextGame = () => { 
     setSelectedList('')
+    setMissionArr('')
     setMissionResult('')
     setVoteFinalResult('')
     setShowVote(false)
@@ -118,7 +128,11 @@ const Game = (props) => {
       return () => {socket.disconnect(); };
     });
     socket.on('getMissionResult', (arr) => {
-      handleMissionResult(arr)
+      setMissionArr(arr)
+      return () => {socket.disconnect(); };
+    });
+    socket.on('getMissionFinalResult', (msg) => {
+      setMissionResult(msg)
       return () => {socket.disconnect(); };
     });
     socket.on('goNextGame', () => {
@@ -143,12 +157,13 @@ const Game = (props) => {
   // 任務結果
   useEffect(() => {
     if(!selectedList) return
-    if(missionKeyCount == selectedList.length){
+    if(!missionArr) return
+    if(missionArr.length == selectedList.length){
       setScoreRecord((prev) => [...prev,missionResult]);
       setMissionWait(false)
       setVoteFailedRecord('')
     }
-  }, [missionKeyCount,missionResult]);
+  }, [missionResult]);
 
   // 勝敗判斷
   useEffect(() => {
@@ -201,16 +216,23 @@ const Game = (props) => {
    </div>)
    }
 
-   {missionWait && !showMission &&
+   {missionWait && missionArr && !showMission && missionArr.length !== selectedList.length &&
    (<div>
    <br/><img src='/goMission.png' alt="goMission" style={{width:'150px'}} /><br/><br/>
    <b style={{color:'red'}}>出任務中．．．</b>
    </div>)
    }
 
+   {missionArr && missionArr.length == selectedList.length && !missionResult && 
+   (<div><br/>任務結束，請確認任務結果<br/><br/>
+   <button onClick={handleMissionResult}>任務結果</button>
+   </div>)
+
+   }
+
 
    {
-   missionResult && missionKeyCount == selectedList.length &&
+   missionResult && 
    (<div>
      <br/>
      {missionResult.includes("成功")?

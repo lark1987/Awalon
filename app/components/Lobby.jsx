@@ -43,6 +43,9 @@ const createRoom = async() => {
 
 // 開始遊戲：確認房間狀況(密碼+同名+關閉)，儲存sessionStorage
 const getStart = async() => {
+
+  setSystemMessage('Loading...')
+  
   const {userName, roomName, roomPassword } = inputData;
 
   const roomRef = collection(db, "Awalon-room");
@@ -68,6 +71,8 @@ const getStart = async() => {
   // });
     const socket = io(socketUrl);
     
+    // 開後端房間
+    socket.emit ('spaceId',roomId)
     socket.emit ('roomCheck',roomId,userName)
     socket.once('roomCheck', (msg) => {
       resolve(msg); 

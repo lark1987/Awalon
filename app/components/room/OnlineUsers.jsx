@@ -9,70 +9,51 @@ const OnlineUsers = (props) => {
   const { users,setUsers,roomId,userName,userId,userNumber,
     setShowLeader,setShowMission,setShowVote } = props;
 
-    const [connectOK,setConnectOK] = useState(false);
+  const [connectOK,setConnectOK] = useState(false);
 
- // 連接 Socket 傳遞 spaceId
- const connectSocket=() => { 
-   const socket = io(socketUrl);
-
-   if (!socket.connected){
-    setConnectOK(false)
-   }
-
-   socket.emit ('spaceId',roomId)
-   socket.on('spaceId', () => { 
-     connectRoom()
-     getOnlineUsers()
-     return () => {socket.disconnect(); };
-    })
-   return () => {socket.disconnect(); };
- }
- // 創建 room 提供 userName 回傳！這裡很特別！用來接收userid專屬訊息！
- const connectRoom=() => { 
-   const socketRoom = io(`${socketUrl}${roomId}`);
-   socketRoom.emit('setUserName', userName,userId);
-
-   socketRoom.on('leaderAction', (msg) => { 
-    console.log(msg)
-    setShowLeader(true)
-    return () => {socketRoom.disconnect(); };
+ // 提供使用者資料，用來接收userid專屬訊息！
+ const createUserData=(socket) => { 
+  socket.emit('setUserName', userName,userId);
+  socket.on('leaderAction', () => { 
+  setShowLeader(true)
   })
-
-   socketRoom.on('goMission', (msg) => { 
-    console.log(msg)
-    setShowVote(false)
-    setShowMission(true)
-    return () => {socketRoom.disconnect(); };
+  socket.on('goMission', () => { 
+  setShowVote(false)
+  setShowMission(true)
   })
-   return () => {socketRoom.disconnect(); };
  }
- // 獲取線上使用者，並setUsers
- const getOnlineUsers=() => { 
-   const socketRoom = io(`${socketUrl}${roomId}`);
-   socketRoom.emit('getOnlineUsers');
-   socketRoom.on('onlineUsers', (msg) => { 
-     const users = Object.values(msg).map(item => item.userName);
-     setUsers(users)
-     setConnectOK(true)
-     return () => {socketRoom.disconnect(); };
-   })
-   return () => {socketRoom.disconnect(); };
+ // 獲取線上使用者
+ const getOnlineUsers=(socket) => { 
+  socket.emit('getOnlineUsers');
+  socket.on('onlineUsers', (msg) => { 
+    const users = Object.values(msg).map(item => item.userName);
+    setUsers(users)
+  })
  }
 
 // 連線掛載
-useEffect(() => connectSocket(), []);
+ useEffect(() => { 
+  const onloadData = async (socketRoom) => {
+    createUserData(socketRoom)
+    await Promise.resolve(getOnlineUsers(socketRoom));
+    setConnectOK(true)
+  };
+  const socketRoom = io(`${socketUrl}${roomId}`);
+  onloadData(socketRoom);
+  return () => {socketRoom.disconnect(); };
+}, []);
 
-// 判斷是否玩家中離
+
+// 判斷是否玩家中離！這裡要再改
 useEffect(() => { 
   if(!users) return
   if(!userNumber) return
   if (users.length !== userNumber){
     const socket = io(`${socketUrl}${roomId}`);
-    socket.emit('goGameOver','玩家離線，遊戲結束')
+    socket.emit('goGameOver','玩家離線，遊戲中止')
     socket.emit('roomOpen')
     return () => {socket.disconnect(); };
   }
-  
  },[users])
 
 
@@ -80,7 +61,7 @@ useEffect(() => {
    <>
    
    { 
-     connectOK?
+     connectOK && users?
      (<div><br/>
         <div className='onlineUsers'>
         目前在線人員<br/>
@@ -91,7 +72,7 @@ useEffect(() => {
         ))}
         </div>
       </div>)
-     :(<span>Loading...</span>)
+     :(<span><br/>Loading...</span>)
    }
    </>
  )
