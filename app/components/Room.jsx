@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import Image from 'next/image';
+import io from 'socket.io-client';
 import { socketUrl } from '../utils/socketUrl';
 
 import OnlineUsers from './room/OnlineUsers'
@@ -79,11 +80,22 @@ const Room = () => {
 
   return (
     <>
+
     <div className='container'>
-      
-    <div className='logo' onClick={goHome}><img src='/logo.png' alt="AWALON" /></div>
+
+    <div className='room-logo' onClick={goHome}>
+    <img src='/logo.png' alt="logo" />
+    </div>
+
+    <div onClick={goHome} className='leave-btn'>
+    <img src='/leave.png' alt="exit"/>
+    </div>
+
     <hr/>
-    
+
+
+
+
     { !gameOver && (<Role {...commonProps} />)}
     { !gameOver && showGame && (<Game {...commonProps} />)}
     { !gameOver && showLeader && (<Leader {...commonProps} />)}
@@ -93,12 +105,8 @@ const Room = () => {
     <ScoreBoard {...commonProps} />
     <OnlineUsers {...commonProps} />
 
-    <br/><br/><button style={{width:'100px'}} onClick={goHome}>離開房間</button>
     
     </div>
-  
-    
-
     </>
   )
 }

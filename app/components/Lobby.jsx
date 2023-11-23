@@ -97,19 +97,12 @@ const getStart = async() => {
 
 };
 
-const goHome = () => { 
-  window.location.href = "/";
- }
-
-
 
 
   return (
    <div className='container'>
 
-   <div className='logo' onClick={goHome}>
-    <img src='/logo.png' alt="AWALON" />
-    </div><br/>
+   <div className='logo'><img src='/logo.png' alt="logo" /></div><br/>
 
     <div>
     玩家名稱　

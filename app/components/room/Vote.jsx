@@ -109,8 +109,8 @@ useEffect(() => onload(), []);
     { showVote && !voteResult &&
       (<div>
         <br/>是否同意上述人員出任務？<br/><br/>
-      <span className='vote-btn' onClick={()=>handleOnClick('同意')}><img src='/yes.png' alt="yes" /></span>　
-      <span className='vote-btn' onClick={()=>handleOnClick('反對')}><img src='/no.png' alt="no" /></span>
+      <span className='vote-click' onClick={()=>handleOnClick('同意')}><img src='/yes.png' alt="yes" /></span>　
+      <span className='vote-click' onClick={()=>handleOnClick('反對')}><img src='/no.png' alt="no" /></span>
       </div>)
     }
 
