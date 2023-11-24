@@ -59,10 +59,12 @@ useEffect(() => {
 
  return (
    <>
+
+
    
    { 
      connectOK && users?
-     (<div><br/>
+     (<div><br/><br/>
         <div className='onlineUsers'>
         目前在線人員<br/>
         {users.map((user,index) => (
@@ -74,6 +76,17 @@ useEffect(() => {
       </div>)
      :(<span><br/>Loading...</span>)
    }
+  {userNumber?
+    (
+      <div className='mini-text-grey'>
+      <br/>
+      請留意，遊戲進行中關閉或刷新頁面，將導致遊戲中斷
+      <hr/>
+      <br/><br/>
+      </div>
+    )
+    :[]
+    }
    </>
  )
 

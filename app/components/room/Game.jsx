@@ -186,8 +186,18 @@ const Game = (props) => {
 
    {userReady && userReady.length === users.length && !leaderList && (
      <div>
-     <br/><button onClick={chooseLeader}>確認隊長</button><br/><br/>
-     確認完畢，點選按鈕指派隊長。
+      <br/><br/>
+      <img src='/closeEyes.png' alt="closeEyes" style={{width:'250px'}} />
+      <div className='mini-text-grey'>請一名玩家撥放下方指導語音，確認壞人身份！</div><br/>
+      <audio controls src='/audio/closeEyes.mp3' />
+      <br/><br/>
+     </div>
+   )}
+
+   {userReady && userReady.length === users.length && !leaderList && (
+     <div>
+    <div className='mini-text-grey'>身份確認完畢，請點選下方按鈕指派隊長。</div><br/>
+    <button onClick={chooseLeader}>指派隊長</button><br/><br/> 
      </div>
    )}
 

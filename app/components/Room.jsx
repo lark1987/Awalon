@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
-import Image from 'next/image';
 import io from 'socket.io-client';
 import { socketUrl } from '../utils/socketUrl';
 
@@ -92,9 +91,6 @@ const Room = () => {
     </div>
 
     <hr/>
-
-
-
 
     { !gameOver && (<Role {...commonProps} />)}
     { !gameOver && showGame && (<Game {...commonProps} />)}
