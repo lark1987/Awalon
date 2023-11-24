@@ -19,7 +19,7 @@ const Role = (props) => {
 
 
 // 好人壞人人數配置
-const scenarios = [
+const roleScenarios = [
   { total: 1, badCount: 0, goodCount: 1 },
   { total: 2, badCount: 1, goodCount: 1 },
   { total: 3, badCount: 1, goodCount: 2 },
@@ -49,7 +49,7 @@ const generateList = (total, badCount, goodCount) =>{
 }
 // 依照參與人數，生成好人壞人列表，並隨機亂序
 const generateShuffleList = () => { 
-  const newList = scenarios.map((scenario) => (
+  const newList = roleScenarios.map((scenario) => (
     users.length === scenario.total?
     generateList(scenario.total, scenario.badCount, scenario.goodCount):null)
     ).filter(item => item !== null)[0];

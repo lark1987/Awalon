@@ -20,7 +20,7 @@ const Leader = (props) => {
   };
 
   // 出任務人數配置，目前為測試配置
-  const scenarioMap = {
+  const missionScenario = {
     1: {1:1, 2:1, 3:1, 4:1, 5:1,},
     2: {1:2, 2:2, 3:1, 4:1, 5:1,},
     3: {1:1, 2:1, 3:1, 4:1, 5:1,},
@@ -34,7 +34,7 @@ const Leader = (props) => {
   };
   // 當局人數確認  
   const selectCheck = (user, game)=> {
-    const userMap = scenarioMap[user];
+    const userMap = missionScenario[user];
     return userMap[game];
 }
   // 選擇隊員，發起投票 
