@@ -196,8 +196,8 @@ const Game = (props) => {
 
    {userReady && userReady.length === users.length && !leaderList && (
      <div>
-    <div className='mini-text-grey'>身份確認完畢，請點選下方按鈕指派隊長。</div><br/>
-    <button onClick={chooseLeader}>指派隊長</button><br/><br/> 
+    <div className='mini-text-grey'>壞人陣營確認完畢，請點選下方按鈕繼續遊戲。</div><br/>
+    <button onClick={chooseLeader}>繼續遊戲</button><br/><br/> 
      </div>
    )}
 

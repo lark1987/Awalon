@@ -15,7 +15,8 @@ import Vote from './room/Vote'
 import Mission from './room/Mission'
 import Assassin from './room/Assassin'
 
-import MissionNumber from './room/MissionNumber'
+import GameInfo from './room/GameInfo'
+import GameRule from './room/GameRule'
 
 import '../page.css'
 
@@ -102,7 +103,9 @@ const Room = () => {
     { showAssassin && (<Assassin {...commonProps} />)}
     <ScoreBoard {...commonProps} />
     <OnlineUsers {...commonProps} />
-    <MissionNumber {...commonProps}/>
+    
+    <GameInfo {...commonProps}/>
+    <GameRule {...commonProps}/>
 
     
     </div>
