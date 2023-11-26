@@ -22,7 +22,8 @@ const ScoreBoard = (props) => {
    <>
     {!gameOver ? 
     (scoreRecord.includes("成功") || scoreRecord.includes("失敗") ?
-      (<div><br/><br/>任務紀錄：
+      (<><br/><br/>
+      <div style={{backgroundColor:'#f7f2c1'}}>任務紀錄：
       {scoreRecord.map((item, index) => (
       <span key={index}>
          {item && item.includes("成功")?('👑'):
@@ -30,7 +31,9 @@ const ScoreBoard = (props) => {
       </span>
       ))}<br/>
       <span className='mini-text-grey'>規則說明：五次任務中，先贏的三次的陣營獲勝</span>
-      </div>):[]
+      </div>
+      </>
+      ):[]
     ):[]
     }
 

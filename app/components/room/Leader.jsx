@@ -6,7 +6,7 @@ import { socketUrl } from '../../utils/socketUrl';
 
 const Leader = (props) => {
 
-  const { users,userName,roomId,scoreRecord,setShowLeader } = props;
+  const { users,userName,roomId,scoreRecord,setShowLeader,missionScenario, } = props;
 
   const [selectedItems, setSelectedItems] = useState([]);
   const [systemMessage, setSystemMessage] = useState([]);
@@ -19,19 +19,6 @@ const Leader = (props) => {
     }
   };
 
-  // 出任務人數配置，目前為測試配置
-  const missionScenario = {
-    1: {1:1, 2:1, 3:1, 4:1, 5:1,},
-    2: {1:2, 2:2, 3:1, 4:1, 5:1,},
-    3: {1:1, 2:1, 3:1, 4:1, 5:1,},
-    4: {1:1, 2:1, 3:1, 4:1, 5:1,},
-    5: {1:2, 2:3, 3:2, 4:3, 5:3,},
-    6: {1:2, 2:3, 3:4, 4:3, 5:4,},
-    7: {1:2, 2:3, 3:3, 4:4, 5:4,},
-    8: {1:3, 2:4, 3:4, 4:5, 5:5,},
-    9: {1:3, 2:4, 3:4, 4:5, 5:5,},
-    10: {1:3, 2:4, 3:4, 4:5, 5:5,},
-  };
   // 當局人數確認  
   const selectCheck = (user, game)=> {
     const userMap = missionScenario[user];

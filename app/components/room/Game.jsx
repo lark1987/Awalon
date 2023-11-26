@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react';
 import io from 'socket.io-client';
 import { socketUrl } from '../../utils/socketUrl';
+import GameRule from './GameRule'
 
 const Game = (props) => {
 
@@ -15,6 +16,7 @@ const Game = (props) => {
     voteFinalResult, setVoteFinalResult,
     
     showGame, setShowGame,
+    showRule, setShowRule,
     showLeader,setShowLeader,
     showVote,setShowVote,
     showMission, setShowMission,
@@ -23,17 +25,25 @@ const Game = (props) => {
     voteFailedRecord , setVoteFailedRecord ,
     gameOver,setGameOver,
 
+    roleScenarios,missionScenario,
+
   } = props;
 
 
   const [missionWait,setMissionWait] = useState(false);
   const [missionArr,setMissionArr] = useState();
 
-  // 產生隊長清單
-  const chooseLeader = () => { 
-    const shuffleList = userReady.slice().sort(() => Math.random() - 0.5);
+  // 說明遊戲規則，提供隊長列表
+  const goRule = () => { 
+    const shuffleList = users.slice().sort(() => Math.random() - 0.5);
     const socket = io(`${socketUrl}${roomId}`);
     socket.emit('leaderList',shuffleList);
+    return () => {socket.disconnect(); };
+   }
+  
+  const goLeader = () => { 
+    const socket = io(`${socketUrl}${roomId}`);
+    socket.emit('leaderAction',leaderList[0]);
     return () => {socket.disconnect(); };
    }
 
@@ -114,10 +124,16 @@ const Game = (props) => {
     const socket = io(`${socketUrl}${roomId}`);
     socket.on('leaderList', (msg) => { 
       setLeaderList(msg)
+      setShowRule(true)
       return () => {socket.disconnect(); };
     })
-    socket.on('missionRaise', (msg,leaderName) => { 
+    socket.on('goLeaderWait', (leaderName) => { 
+      setShowRule(false)
       setLeaderName(leaderName)
+      return () => {socket.disconnect(); };
+    })
+
+    socket.on('missionRaise', (msg,leaderName) => { 
       setSelectedList(msg)
       setShowVote(true)
       return () => {socket.disconnect(); };
@@ -185,31 +201,33 @@ const Game = (props) => {
    </span>)}
 
    {userReady && userReady.length === users.length && !leaderList && (
-     <div>
+    <>
       <br/><br/>
-      <img src='/closeEyes.png' alt="closeEyes" style={{width:'250px'}} />
+      <div><img src='/closeEyes.png' alt="closeEyes" style={{width:'250px'}} /></div>
       <div className='mini-text-grey'>請一名玩家撥放下方指導語音，確認壞人身份！</div><br/>
       <audio controls src='/audio/closeEyes.mp3' />
       <br/><br/>
-     </div>
+      <div className='mini-text-grey'>壞人陣營確認完畢，請點選下方按鈕繼續遊戲。</div><br/>
+      <div><button onClick={goRule}>繼續遊戲</button></div><br/><br/> 
+     </>
    )}
 
-   {userReady && userReady.length === users.length && !leaderList && (
-     <div>
-    <div className='mini-text-grey'>壞人陣營確認完畢，請點選下方按鈕繼續遊戲。</div><br/>
-    <button onClick={chooseLeader}>繼續遊戲</button><br/><br/> 
-     </div>
-   )}
+   {showRule && 
+    (<>
+    <GameRule/><br/> 
+    <div><button onClick={goLeader}>了解規則，開始指派隊長</button></div><br/>
+    </>)
+   }
 
-   {leaderList &&
+   {leaderList && !showRule &&
    (<b style={{color:'green'}}>隊長順序：
      {leaderList.map((item, index) => (
-       <span key={index}>{item}、</span>
+       <span key={index}>{item == leaderName? '🎯':''}{item}、</span>
      ))}
    </b>)
    }
 
-   {leaderList && !showLeader && !selectedList &&
+   {leaderList && !showLeader && !selectedList && !showRule &&
    (<div>
      <br/><img src='/wait-1.png' alt="wait" style={{width:'150px'}} /><br/>
      <b style={{color:'red'}}>隊長選擇中．．．</b>

@@ -7,7 +7,7 @@ import { socketUrl } from '../../utils/socketUrl';
 const OnlineUsers = (props) => {
 
   const { users,setUsers,roomId,userName,userId,userNumber,
-    setShowLeader,setShowMission,setShowVote } = props;
+    setShowRule,setShowLeader,setShowMission,setShowVote } = props;
 
   const [connectOK,setConnectOK] = useState(false);
 
@@ -15,6 +15,7 @@ const OnlineUsers = (props) => {
  const createUserData=(socket) => { 
   socket.emit('setUserName', userName,userId);
   socket.on('leaderAction', () => { 
+  setShowRule(false)
   setShowLeader(true)
   })
   socket.on('goMission', () => { 
@@ -63,8 +64,8 @@ useEffect(() => {
 
    
    { 
-     connectOK && users?
-     (<div><br/><br/>
+     connectOK && users && !userNumber ?
+     (<><br/><br/>
         <div className='onlineUsers'>
         目前在線人員<br/>
         {users.map((user,index) => (
@@ -73,20 +74,14 @@ useEffect(() => {
         </span>
         ))}
         </div>
-      </div>)
-     :(<span><br/>Loading...</span>)
+        <br/>
+        <div className='mini-text-grey'>
+        請留意，遊戲進行中關閉或刷新頁面，將導致遊戲中斷
+        <hr/>
+        </div>
+      </>)
+     :[]
    }
-  {userNumber?
-    (
-      <div className='mini-text-grey'>
-      <br/>
-      請留意，遊戲進行中關閉或刷新頁面，將導致遊戲中斷
-      <hr/>
-      <br/><br/>
-      </div>
-    )
-    :[]
-    }
    </>
  )
 

@@ -16,7 +16,6 @@ import Mission from './room/Mission'
 import Assassin from './room/Assassin'
 
 import GameInfo from './room/GameInfo'
-import GameRule from './room/GameRule'
 
 import '../page.css'
 
@@ -38,6 +37,7 @@ const Room = () => {
   const [voteFinalResult, setVoteFinalResult] = useState();
 
   const [showGame, setShowGame] = useState(true);
+  const [showRule, setShowRule] = useState(false);
   const [showLeader, setShowLeader] = useState(false);
   const [showVote, setShowVote] = useState(false);
   const [showMission, setShowMission] = useState(false);
@@ -46,6 +46,32 @@ const Room = () => {
   const [scoreRecord , setScoreRecord ] = useState([]);
   const [voteFailedRecord , setVoteFailedRecord ] = useState([]);
   const [gameOver,setGameOver]= useState()
+
+  const roleScenarios = [
+    { total: 1, badCount: 0, goodCount: 1 },
+    { total: 2, badCount: 1, goodCount: 1 },
+    { total: 3, badCount: 1, goodCount: 2 },
+    { total: 4, badCount: 1, goodCount: 3 },
+    { total: 5, badCount: 2, goodCount: 3 },
+    { total: 6, badCount: 2, goodCount: 4 },
+    { total: 7, badCount: 3, goodCount: 4 },
+    { total: 8, badCount: 3, goodCount: 5 },
+    { total: 9, badCount: 3, goodCount: 6 },
+    { total: 10, badCount: 4, goodCount: 6 },
+  ];
+
+  const missionScenario = {
+    1: {1:1, 2:1, 3:1, 4:1, 5:1,},
+    2: {1:2, 2:2, 3:1, 4:1, 5:1,},
+    3: {1:1, 2:1, 3:1, 4:1, 5:1,},
+    4: {1:1, 2:1, 3:1, 4:1, 5:1,},
+    5: {1:2, 2:3, 3:2, 4:3, 5:3,},
+    6: {1:2, 2:3, 3:4, 4:3, 5:4,},
+    7: {1:2, 2:3, 3:3, 4:4, 5:4,},
+    8: {1:3, 2:4, 3:4, 4:5, 5:5,},
+    9: {1:3, 2:4, 3:4, 4:5, 5:5,},
+    10: {1:3, 2:4, 3:4, 4:5, 5:5,},
+  };
 
 
   const commonProps = {
@@ -60,6 +86,7 @@ const Room = () => {
     voteFinalResult, setVoteFinalResult,
 
     showGame, setShowGame,
+    showRule, setShowRule,
     showLeader,setShowLeader,
     showVote,setShowVote,
     showMission, setShowMission,
@@ -68,6 +95,8 @@ const Room = () => {
     scoreRecord , setScoreRecord,
     voteFailedRecord , setVoteFailedRecord ,
     gameOver,setGameOver,
+
+    roleScenarios,missionScenario,
   }
 
   const router = useRouter();
@@ -95,6 +124,7 @@ const Room = () => {
 
     <hr/>
 
+    
     { !gameOver && (<Role {...commonProps} />)}
     { !gameOver && showGame && (<Game {...commonProps} />)}
     { !gameOver && showLeader && (<Leader {...commonProps} />)}
@@ -102,10 +132,10 @@ const Room = () => {
     { !gameOver && showMission && (<Mission {...commonProps} />)}
     { showAssassin && (<Assassin {...commonProps} />)}
     <ScoreBoard {...commonProps} />
+    { leaderList && (<GameInfo {...commonProps}/>) }
     <OnlineUsers {...commonProps} />
     
-    <GameInfo {...commonProps}/>
-    <GameRule {...commonProps}/>
+  
 
     
     </div>

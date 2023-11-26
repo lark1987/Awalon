@@ -7,7 +7,7 @@ const Role = (props) => {
 
   const { users,roomId,userName,userId,
     setUserNumber,userReady,setUserReady,
-    setShowAssassin, 
+    setShowAssassin, roleScenarios,
   } = props;
 
   const [shuffleList, setShuffleList] = useState();
@@ -16,21 +16,6 @@ const Role = (props) => {
   const [hideClick2,setHideClick2] = useState(true);
 
 
-
-
-// 好人壞人人數配置
-const roleScenarios = [
-  { total: 1, badCount: 0, goodCount: 1 },
-  { total: 2, badCount: 1, goodCount: 1 },
-  { total: 3, badCount: 1, goodCount: 2 },
-  { total: 4, badCount: 1, goodCount: 3 },
-  { total: 5, badCount: 2, goodCount: 3 },
-  { total: 6, badCount: 2, goodCount: 4 },
-  { total: 7, badCount: 3, goodCount: 4 },
-  { total: 8, badCount: 3, goodCount: 5 },
-  { total: 9, badCount: 3, goodCount: 6 },
-  { total: 10, badCount: 4, goodCount: 6 },
-];
 // 好人壞人列表生成
 const generateList = (total, badCount, goodCount) =>{
   const listItems = [];
@@ -221,7 +206,8 @@ useEffect(() => getReady(), []);
       :[]}
       
       {hideClick2 && shuffleList ?
-      ( <span>
+      ( <>
+        <div>
         <br/>請抽選您的角色牌<br/><br/>
         {shuffleList.map((role,index) => (
         <span key={index} 
@@ -234,7 +220,9 @@ useEffect(() => getReady(), []);
         <img src='/card.png' alt="card" />　
         </span>
         ))}
-        </span>
+        </div>
+        <br/><br/>
+        </>
       )
       :[]}
 
