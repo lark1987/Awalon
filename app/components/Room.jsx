@@ -132,7 +132,7 @@ const Room = () => {
     { !gameOver && showMission && (<Mission {...commonProps} />)}
     { showAssassin && (<Assassin {...commonProps} />)}
     <ScoreBoard {...commonProps} />
-    { leaderList && (<GameInfo {...commonProps}/>) }
+    { leaderName && (<GameInfo {...commonProps}/>) }
     <OnlineUsers {...commonProps} />
     
   

@@ -1,7 +1,7 @@
 body{
   font-family: '微軟正黑體';
   text-align:center;
-  font-size:12px;
+  font-size:16px;
   background-image:url('/homepage/home-background.png');
   background-size: cover;
 }
@@ -14,6 +14,8 @@ body{
   flex-flow : column wrap;
   border-radius: 50px;
   padding: 30px;
+  position: relative;
+  z-index:5;
 }
 
 
@@ -30,20 +32,17 @@ button{
   border: none;
   padding: 10px;
   cursor: pointer;
-  font-size:12px;
+  font-size:14px;
 }
 button:hover{
   background-color:rgb(111, 174, 111);
 }
-
-
 .btn-yellow {
   background-color:rgb(244, 244, 165);
 }
 .btn-yellow:hover {
   background-color:rgb(255, 200, 0);
 }
-
 .btn-red {
   background-color:rgb(244, 185, 165);
 }
@@ -62,16 +61,14 @@ button:hover{
 
 .mini-text-grey{
   color: grey;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing:1px
 }
-
 .background-red{
   background-color: rgb(237, 183, 183);
   padding: 10px;
   border-radius: 5px;
 }
-
 .background-blue{
   background-color: rgb(183, 201, 237);
   padding: 10px;
@@ -86,7 +83,6 @@ button:hover{
 
 .logo{
   margin: 0 auto;
-  cursor: pointer;
 }
 .logo img{
   width:200px;
@@ -98,57 +94,47 @@ button:hover{
   height:1px;
   margin: 20px auto;
 }
-
 .pic-welcome{
   width: 250px;
-  overflow: hidden;
   position:relative;
-  z-index:2;
+  z-index:5;
 }
-
 .pic-rocket{
   width: 300px;
-  overflow: hidden;
   position:absolute;
   left:8%;
-  z-index:2;
+  z-index:1;
 }
-
 .pic-star{
   width: 200px;
-  overflow: hidden;
   position:absolute;
   left:15%;
   top:250px;
-  z-index:2;
+  z-index:1;
 }
-
 .pic-balloon{
   width: 180px;
-  overflow: hidden;
   position:absolute;
   right:15%;
   top:30px;
   z-index:1;
 }
-
 .pic-earth{
   width: 280px;
-  overflow: hidden;
   position:absolute;
   top:200px;
   right:10%;
-  z-index:1;
+  z-index:2;
 }
-
 .pic-bling{
   width: 100px;
-  overflow: hidden;
   position:absolute;
   right:5%;
   top:180px;
   z-index:2;
 }
+
+
 
 /* 房間區 */
 
@@ -224,7 +210,14 @@ button:hover{
   display: none;
 }
 
-@media screen and (max-width:900px){
+@media screen and (max-width:1300px){
+  .pic-box{
+    width: 100%;
+  }
+
+}
+
+@media screen and (max-width:800px){
 
 .homePic{
 display:none;
@@ -233,21 +226,9 @@ display:none;
 .pic-rocket-800{
   display: block;
   width: 40px;
-  overflow: hidden;
   position:absolute;
   top:0px;
   left:47%;
   z-index:100;
 }
-}
-
-@media screen and (max-width:350px){
-  .pic-box{
-  width: 100%;
-  }
-  .container{
-   max-width: 80%;
-  }
-
-
 }

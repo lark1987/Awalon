@@ -244,7 +244,7 @@ const Game = (props) => {
    </div>)
    }
 
-   {missionWait && missionArr && !showMission && missionArr.length !== selectedList.length &&
+   {missionWait && !showMission && 
    (<div>
    <br/><img src='/goMission.png' alt="goMission" style={{width:'150px'}} /><br/><br/>
    <b style={{color:'red'}}>出任務中．．．</b>

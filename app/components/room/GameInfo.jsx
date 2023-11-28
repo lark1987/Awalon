@@ -12,14 +12,14 @@ const GameInfo = (props) => {
     <div style={{margin:'5px'}}>
     <img src='/icon-good.png' alt="goodman" style={{height:'30px'}}/>
     {users && roleScenarios[users.length-1] &&
-    <div style={{alignSelf:'end'}}>{roleScenarios[users.length-1].goodCount}</div>
+    <div style={{alignSelf:'end',fontSize:'13px'}}>{roleScenarios[users.length-1].goodCount}</div>
     }
     </div>
     
     <div style={{margin:'5px'}}>
     <img src='/icon-bad.png' alt="badman" style={{height:'30px'}}/>
     {users && roleScenarios[users.length-1] &&
-    <div style={{alignSelf:'end'}}>{roleScenarios[users.length-1].badCount}</div>
+    <div style={{alignSelf:'end',fontSize:'13px'}}>{roleScenarios[users.length-1].badCount}</div>
     }
     </div>
 
@@ -27,7 +27,7 @@ const GameInfo = (props) => {
 
     <div style={{display:'flex'}}>
     {users && Object.entries(missionScenario[users.length]).map(([index, item]) => (
-    <div key={index} style={{margin:'5px'}}>
+    <div key={index} style={{margin:'5px',fontSize:'13px'}}>
       <img src={`/number/number-${item}.png`} alt="number" style={{height:'30px'}}/>
       <div>任務{index}</div>
     </div>

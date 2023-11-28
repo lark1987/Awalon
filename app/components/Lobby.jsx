@@ -44,9 +44,19 @@ const createRoom = async() => {
 // 開始遊戲：確認房間狀況(密碼+同名+關閉)，儲存sessionStorage
 const getStart = async() => {
 
-  setSystemMessage('Loading...')
-  
+  if(!inputData){
+    setSystemMessage('尚有內容未填寫')
+    return
+  }
+
   const {userName, roomName, roomPassword } = inputData;
+
+  if(!userName || !roomName || !roomPassword){
+    setSystemMessage('尚有內容未填寫')
+    return
+  }
+
+  setSystemMessage('Loading...')
 
   const roomRef = collection(db, "Awalon-room");
   const qRoom = query(roomRef, where("roomName", "==", roomName), where("roomPassword", "==", roomPassword));
@@ -97,6 +107,10 @@ const getStart = async() => {
 
 };
 
+const goGuide = () => { 
+  router.push('/guide');
+ }
+
 
 
   return (
@@ -106,24 +120,26 @@ const getStart = async() => {
 
     <div>
     玩家名稱　
-   <input 
+   <input style={{padding:'5px',borderRadius: '5px'}}
    type='text' name='userName' placeholder='請輸入名稱' onChange={handleChange}/><br/><br/>
     房間名稱　
-   <input 
+   <input style={{padding:'5px',borderRadius: '5px'}}
    type='text' name='roomName'placeholder='請輸入房名' onChange={handleChange}/><br/><br/>
     房間密碼　
-   <input 
+   <input style={{padding:'5px',borderRadius: '5px'}}
    type='password' name='roomPassword' placeholder='請輸入密碼' onChange={handleChange}/><br/><br/>
    </div>
 
     {systemMessage?
-    (<b style={{color:'red'}} >{systemMessage}<br/><br/></b>)
+    (<b style={{color:'blue'}} >{systemMessage}<br/><br/></b>)
     :[]}
 
-   <div>
-   <button onClick={createRoom}> 創建房間 </button>　　　
+   <div style={{display:'flex',justifyContent:'space-evenly',}}>
+   <button onClick={goGuide}> 網站說明 </button>
+   <button onClick={createRoom}> 創建房間 </button>
    <button onClick={getStart}> 進入房間 </button>
    </div>
+   <br/>
   
 
  </div>

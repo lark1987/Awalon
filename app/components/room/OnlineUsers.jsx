@@ -76,9 +76,10 @@ useEffect(() => {
         </div>
         <br/>
         <div className='mini-text-grey'>
-        請留意，遊戲進行中關閉或刷新頁面，將導致遊戲中斷
+        請留意，遊戲中若關閉或刷新頁面，將導致遊戲中斷
         <hr/>
         </div>
+        <br/>
       </>)
      :[]
    }

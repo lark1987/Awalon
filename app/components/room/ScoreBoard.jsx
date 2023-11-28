@@ -30,7 +30,7 @@ const ScoreBoard = (props) => {
           item && item.includes("失敗")?('💀'):[]} 
       </span>
       ))}<br/>
-      <span className='mini-text-grey'>規則說明：五次任務中，先贏的三次的陣營獲勝</span>
+      <span className='mini-text-grey'>規則說明：五次任務中，先贏得三次的陣營獲勝</span>
       </div>
       </>
       ):[]
