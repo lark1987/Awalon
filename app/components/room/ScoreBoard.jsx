@@ -20,36 +20,8 @@ const ScoreBoard = (props) => {
 
   return (
    <>
-    {!gameOver ? 
-    (scoreRecord.includes("成功") || scoreRecord.includes("失敗") ?
-      (<><br/><br/>
-      <div style={{backgroundColor:'#f7f2c1'}}>任務紀錄：
-      {scoreRecord.map((item, index) => (
-      <span key={index}>
-         {item && item.includes("成功")?('👑'):
-          item && item.includes("失敗")?('💀'):[]} 
-      </span>
-      ))}<br/>
-      <span className='mini-text-grey'>規則說明：五次任務中，先贏得三次的陣營獲勝</span>
-      </div>
-      </>
-      ):[]
-    ):[]
-    }
-
-    {!gameOver && voteFailedRecord.includes("反對") ?
-    (<div><br/>投票失敗：
-      {voteFailedRecord.map((item, index) => (
-      <span key={index}>{item && item.includes("反對")?('❌'):[]}</span>
-      ))}<br/>
-      <span className='mini-text-grey'>規則說明：連續投票失敗達五次，壞人陣營獲勝</span>
-      </div>)
-    :[]
-    }
-
     {gameOver ? 
     (<div>
-      <br/>
       {gameOver.includes("壞人")?
       (<img src='/badWin.png' alt="badWin" style={{width:'300px'}} />):(
         gameOver.includes("好人")?

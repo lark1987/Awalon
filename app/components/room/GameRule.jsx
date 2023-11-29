@@ -4,7 +4,6 @@ import GameInfo from './GameInfo'
 const GameRule = (props) => {
   return (
    <>
-   <br/>
   <div>
   <img src='/gameRule.png' alt="gameRule" style={{width:'200px'}} />
   </div>

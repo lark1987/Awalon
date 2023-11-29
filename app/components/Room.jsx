@@ -122,6 +122,10 @@ const Room = () => {
     <img src='/leave.png' alt="exit"/>
     </div>
 
+    <div onClick={goHome} className='man-btn'>
+    <img src='/icon-man.png' alt="man"/>
+    </div>
+
     <hr/>
 
     
@@ -132,7 +136,7 @@ const Room = () => {
     { !gameOver && showMission && (<Mission {...commonProps} />)}
     { showAssassin && (<Assassin {...commonProps} />)}
     <ScoreBoard {...commonProps} />
-    { leaderName && (<GameInfo {...commonProps}/>) }
+    { !gameOver && leaderName && (<GameInfo {...commonProps}/>) }
     <OnlineUsers {...commonProps} />
     
   

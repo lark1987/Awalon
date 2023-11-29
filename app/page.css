@@ -147,11 +147,23 @@ button:hover{
   width:18px;
   cursor: pointer;
   position:absolute;
-  top:33px;
+  top:31px;
   right:30px;
 }
 .leave-btn img:hover{
   width:20px;
+}
+
+.man-btn img{
+  width:23px;
+  cursor: pointer;
+  position:absolute;
+  top:31px;
+  left:30px;
+}
+
+.man-btn img:hover{
+  width:25px;
 }
 
 
@@ -192,11 +204,14 @@ button:hover{
   display: flex;
   justify-content:space-evenly;
   background-color: rgb(233, 232, 232);
-  border-radius: 5px;
+  border-radius: 20px;
+  padding:5px;
+  margin:10px 0px;
 
 }
 
 .gameRuleBox {
+  font-size: 12px;
   text-align: left;
   letter-spacing:2px;
   background-color: rgb(233, 232, 232);
