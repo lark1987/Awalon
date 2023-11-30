@@ -26,7 +26,7 @@ const Mission = (props) => {
         </label></div>
       </div>
 
-      <span className='mini-text-grey'>溫馨提醒：好人陣營只能選任務成功喔！</span><br/><br/><br/>
+      <span className='mini-text-grey'>溫馨提醒：好人陣營只能選任務成功喔！</span><br/>
 
    </>
   )

@@ -12,6 +12,7 @@ const Vote = (props) => {
 } = props;
 
  const [voteResult, setVoteResult] = useState();
+ const [isToggled, setIsToggled] = useState(false);
 
 
 // 投票按鈕：發送答案到後端整合，紀錄投票結果
@@ -101,6 +102,10 @@ const onload = () => {
 
 useEffect(() => onload(), []);
 
+const showVoteDetail = () => { 
+  setIsToggled(!isToggled);
+ }
+
 
 
   return (
@@ -134,6 +139,7 @@ useEffect(() => onload(), []);
     {
      voteFinalResult && !missionResult && !gameOver &&
       (
+        <>
         <div>
         <br/>
         {voteFinalResult.includes("同意")?
@@ -141,14 +147,30 @@ useEffect(() => onload(), []);
         (<img src='/reject.png' alt="no" style={{width:'150px'}}/>)
         }
 
-        <br/><br/><b style={{color:'red'}}>投票結果：{voteFinalResult}</b><br/><br/>   
+        
 
-        {voteResult.map((data,index) => (
-          <div key={index}>{data.userName}：{data.answer}</div>
-        ))}
+
+        <br/><br/>
+        <span className='vote-info' onClick={showVoteDetail}>
+        <img src='/icon-info.png' alt="info" />
+        <b style={{color:'red'}}>投票結果：{voteFinalResult}</b>
+        </span><br/>   
+
+        {isToggled &&
+        ( <div><br/>
+          { voteResult.map((data,index) => (
+          <div key={index} className='voteResult'>{data.userName}：{data.answer}</div>
+          )) }
+          </div>
+        )
+        }
+
         <br/>
         <button onClick={handleNextOnclick}>繼續遊戲</button>
         </div>
+
+
+        </>
       )
     }
 

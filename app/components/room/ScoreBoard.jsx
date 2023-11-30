@@ -22,12 +22,12 @@ const ScoreBoard = (props) => {
    <>
     {gameOver ? 
     (<div>
+      <br/>
       {gameOver.includes("壞人")?
       (<img src='/badWin.png' alt="badWin" style={{width:'300px'}} />):(
         gameOver.includes("好人")?
       (<img src='/goodWin.png' alt="goodWin" style={{width:'300px'}} />):[])
       }
-      <br/><br/>
       <b style={{color:'blue'}}>{gameOver}</b>
       <br/><br/>
     </div>)

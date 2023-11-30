@@ -219,6 +219,22 @@ button:hover{
   padding:10px 20px 10px 5px;
 }
 
+.vote-info {
+  cursor: pointer;
+}
+
+.vote-info img{
+  width:22px;
+  cursor: pointer;
+  position:absolute;
+  left:26%;
+}
+
+.voteResult{
+  background-color: rgb(240 237 197);
+  border-radius: 20px;
+  padding:5px;
+}
 
 
 .pic-rocket-800{

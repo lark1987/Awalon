@@ -268,7 +268,7 @@ const Game = (props) => {
      (<img src='/mission-fail.png' alt="fail" style={{width:'200px'}} />)
      }
      <br/><b style={{color:'red'}}>任務結果：{missionResult}</b>
-     <br/><br/><button onClick={goNextGame}>繼續遊戲</button><br/><br/><br/>
+     <br/><br/><button onClick={goNextGame}>繼續遊戲</button><br/><br/>
     </div>)
    }
    

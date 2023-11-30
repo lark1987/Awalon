@@ -104,7 +104,6 @@ const Room = () => {
     const socket = io(`${socketUrl}${roomId}`);
     socket.emit('roomOpen')
     router.push('/');
-    // window.location.href = "/";
     return () => {socket.disconnect(); };
    }
 
