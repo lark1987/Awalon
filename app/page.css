@@ -236,6 +236,47 @@ button:hover{
   padding:5px;
 }
 
+.gameOver-text{
+  color:white;
+  font-weight:bold;
+  font-size:19px;
+}
+
+.assassin-box{
+  color: white;
+  font-weight:600;
+  letter-spacing:2px;
+
+  width: 300px;
+  margin: 20px auto;
+  padding: 20px;
+
+  background-color:rgb(39, 39, 39);
+  border: 3px solid white;
+  border-radius: 5px;
+  
+}
+
+.assassin-swordBox{
+  background-color: grey;
+  width: 75px;
+  margin: 5px auto;
+  padding: 5px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.gameOver-img img{
+  width:800px;
+}
+
+
+
+
+
+
+/* RWD區 */
 
 .pic-rocket-800{
   display: none;
@@ -252,6 +293,10 @@ button:hover{
 
 .homePic{
 display:none;
+}
+
+.gameOver-img img{
+  width:100%;
 }
 
 .pic-rocket-800{

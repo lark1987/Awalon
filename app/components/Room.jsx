@@ -1,12 +1,10 @@
 "use client"
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'
-import io from 'socket.io-client';
-import { socketUrl } from '../utils/socketUrl';
 
+import Header from './room/Header'
 import OnlineUsers from './room/OnlineUsers'
-import ScoreBoard from './room/ScoreBoard'
+import GameOver from './room/GameOver'
 
 import Role from './room/Role'
 import Game from './room/Game'
@@ -99,49 +97,29 @@ const Room = () => {
     roleScenarios,missionScenario,
   }
 
-  const router = useRouter();
-  const goHome = () => {
-    const socket = io(`${socketUrl}${roomId}`);
-    socket.emit('roomOpen')
-    router.push('/');
-    return () => {socket.disconnect(); };
-   }
 
 
   return (
     <>
 
+    {!gameOver && (
+
     <div className='container'>
-
-    <div className='room-logo' onClick={goHome}>
-    <img src='/logo.png' alt="logo" />
-    </div>
-
-    <div onClick={goHome} className='leave-btn'>
-    <img src='/leave.png' alt="exit"/>
-    </div>
-
-    <div onClick={goHome} className='man-btn'>
-    <img src='/icon-man.png' alt="man"/>
-    </div>
-
-    <hr/>
-
-    
-    { !gameOver && (<Role {...commonProps} />)}
-    { !gameOver && showGame && (<Game {...commonProps} />)}
-    { !gameOver && showLeader && (<Leader {...commonProps} />)}
-    { !gameOver && showVote && (<Vote {...commonProps} />)}
-    { !gameOver && showMission && (<Mission {...commonProps} />)}
-    { showAssassin && (<Assassin {...commonProps} />)}
-    <ScoreBoard {...commonProps} />
-    { !gameOver && leaderName && (<GameInfo {...commonProps}/>) }
+    { (<Header {...commonProps} />)}
+    { (<Role {...commonProps} />)}
+    { showGame && (<Game {...commonProps} />)}
+    { showLeader && (<Leader {...commonProps} />)}
+    { showVote && (<Vote {...commonProps} />)}
+    { showMission && (<Mission {...commonProps} />)}
+    { leaderName && (<GameInfo {...commonProps}/>) }
     <OnlineUsers {...commonProps} />
-    
-  
+    </div>
+    )}
+
+    { gameOver && <GameOver {...commonProps} /> }
+    { showAssassin && (<Assassin {...commonProps} />)}
 
     
-    </div>
     </>
   )
 }

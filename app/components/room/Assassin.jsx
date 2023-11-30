@@ -25,28 +25,37 @@ const Assassin = (props) => {
     {gameOver.includes("離線")?[]:
     (
       <>
-      <div className='background-blue'>請選出哪一位是梅林</div>
-      <div><br/>
-          {users?
-          users.map((item, index) => (
-            <span key={index}>
-                <input
-                  type="radio"
-                  checked={selectedItem === item}
-                  onChange={() => handleCheckboxChange(item)}
-                />
-                {item}　
-            </span>
-          ))
-          :[]}
+      <div className='assassin-box'>
+        請選出哪一位是梅林
         <br/><br/>
-        <button onClick={assassinChoose}>確認</button>
-      </div>
-      </>
-    )
+        <div style={{display:'flex',justifyContent:'center',gap:'10px'}}>
+            {users?
+            users.map((item, index) => (
+              <div key={index} >
+                  <label for={item} style={{cursor: 'pointer',}}>
+                  <div>{item}</div>
+                  <div><img src='/assassin-human.png' alt="human" style={{width:'30px'}} /></div>
+                  </label>
+                  <input
+                    type="radio"
+                    checked={selectedItem === item}
+                    onChange={() => handleCheckboxChange(item)}
+                    id={item}
+                  />
+              </div>
+            ))
+            :[]}
+        </div>
+        <br/>
 
-    }
- 
+        <div className='assassin-swordBox' onClick={assassinChoose}>
+        <img src='/assassin-sword.png' alt="sword" style={{width:'40px'}}/>
+        <br/><span>刺殺</span>
+        </div>
+
+      </div><br/><br/>
+      </>
+    )}
    </>
   )
 }

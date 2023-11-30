@@ -32,6 +32,7 @@ const Game = (props) => {
 
   const [missionWait,setMissionWait] = useState(false);
   const [missionArr,setMissionArr] = useState();
+  const [failCount,setFailCount] = useState();
 
   // 說明遊戲規則，提供隊長列表
   const goRule = () => { 
@@ -55,14 +56,14 @@ const Game = (props) => {
     // 正式版：七位以上第四次任務要兩張失敗
     // 測試版：兩位以上第一次任務要兩張失敗
     if(users.length > 1 && scoreRecord.length == 0 && failCount < 2){
-      socket.emit('getMissionFinalResult','成功');
+      socket.emit('getMissionFinalResult','成功',failCount);
       return () => {socket.disconnect(); };
     }
     if (failCount > 0) { 
-      socket.emit('getMissionFinalResult','失敗');
+      socket.emit('getMissionFinalResult','失敗',failCount);
       return () => {socket.disconnect(); };
     }
-    socket.emit('getMissionFinalResult','成功');
+    socket.emit('getMissionFinalResult','成功',failCount);
     return () => {socket.disconnect(); };
 
 
@@ -86,10 +87,11 @@ const Game = (props) => {
   // 開啟下局前的全員同步清除工作
   const handleGoNextGame = () => { 
     setSelectedList('')
+    setShowVote(false)
+    setVoteFinalResult('')
     setMissionArr('')
     setMissionResult('')
-    setVoteFinalResult('')
-    setShowVote(false)
+    setFailCount('')
    }
 
   // 遊戲結束判斷
@@ -105,7 +107,7 @@ const Game = (props) => {
         failureCount++;}
     });
     if (successCount > 2) {
-      socket.emit('goGameOver','遊戲結束，好人陣營勝利！刺客啟動暗殺行動')
+      socket.emit('goGameOver','任務成功三次，刺客啟動暗殺行動！')
       socket.emit('goAssassin');
       return () => {socket.disconnect(); };
     }
@@ -139,6 +141,7 @@ const Game = (props) => {
       return () => {socket.disconnect(); };
     })
     socket.on('goMissionWait', () => {
+      setVoteFailedRecord('')
       setShowVote(false)
       setMissionWait(true)
       return () => {socket.disconnect(); };
@@ -147,12 +150,17 @@ const Game = (props) => {
       setMissionArr(arr)
       return () => {socket.disconnect(); };
     });
-    socket.on('getMissionFinalResult', (msg) => {
+    socket.on('getMissionFinalResult', (msg,failCount) => {
       setMissionResult(msg)
+      setFailCount(failCount)
       return () => {socket.disconnect(); };
     });
     socket.on('goNextGame', () => {
       handleGoNextGame()
+      return () => {socket.disconnect(); };
+    });
+    socket.on('goGameOver', (msg) => {
+      setGameOver(msg)
       return () => {socket.disconnect(); };
     });
 
@@ -177,7 +185,6 @@ const Game = (props) => {
     if(missionArr.length == selectedList.length){
       setScoreRecord((prev) => [...prev,missionResult]);
       setMissionWait(false)
-      setVoteFailedRecord('')
     }
   }, [missionResult]);
 
@@ -268,9 +275,25 @@ const Game = (props) => {
      (<img src='/mission-fail.png' alt="fail" style={{width:'200px'}} />)
      }
      <br/><b style={{color:'red'}}>任務結果：{missionResult}</b>
-     <br/><br/><button onClick={goNextGame}>繼續遊戲</button><br/><br/>
+     <br/><br/>
+
+     <div style={{display:'flex',justifyContent:'space-evenly'}}>
+      <div>
+        <img src='/mission-sad.png' alt="sad" style={{width:'20px'}}/>
+        <div>×{failCount}</div>
+      </div>
+      <div>
+        <button onClick={goNextGame}>繼續遊戲</button>
+      </div>
+      <div>
+        <img src='/mission-happy.png' alt="happy" style={{width:'20px'}}/>
+        <div>×{selectedList.length - failCount}</div>
+      </div>
+      </div>
     </div>)
    }
+
+
    
    </>
     
