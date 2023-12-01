@@ -71,7 +71,6 @@ const Room = () => {
     10: {1:3, 2:4, 3:4, 4:5, 5:5,},
   };
 
-
   const commonProps = {
     users,setUsers,roomId,userName,userId,
     userNumber, setUserNumber,
@@ -95,31 +94,27 @@ const Room = () => {
     gameOver,setGameOver,
 
     roleScenarios,missionScenario,
-  }
-
+  };
 
 
   return (
     <>
+      <div className='container' 
+      style={{display: gameOver? 'none':'flex'}}
+      >
+        
+      <Header {...commonProps} />
+      <Role {...commonProps} />
+      { showGame && (<Game {...commonProps} />)}
+      { showLeader && (<Leader {...commonProps} />)}
+      { showVote && (<Vote {...commonProps} />)}
+      { showMission && (<Mission {...commonProps} />)}
+      { leaderName && (<GameInfo {...commonProps}/>) }
+      <OnlineUsers {...commonProps} />
+      </div>
 
-    {!gameOver && (
-
-    <div className='container'>
-    { (<Header {...commonProps} />)}
-    { (<Role {...commonProps} />)}
-    { showGame && (<Game {...commonProps} />)}
-    { showLeader && (<Leader {...commonProps} />)}
-    { showVote && (<Vote {...commonProps} />)}
-    { showMission && (<Mission {...commonProps} />)}
-    { leaderName && (<GameInfo {...commonProps}/>) }
-    <OnlineUsers {...commonProps} />
-    </div>
-    )}
-
-    { gameOver && <GameOver {...commonProps} /> }
-    { showAssassin && (<Assassin {...commonProps} />)}
-
-    
+      <GameOver {...commonProps} />
+      { showAssassin && (<Assassin {...commonProps} />)}
     </>
   )
 }

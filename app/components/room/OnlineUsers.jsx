@@ -6,7 +6,7 @@ import { socketUrl } from '../../utils/socketUrl';
 
 const OnlineUsers = (props) => {
 
-  const { users,setUsers,roomId,userName,userId,userNumber,
+  const { users,setUsers,roomId,userName,userId,userNumber,gameOver,
     setShowRule,setShowLeader,setShowMission,setShowVote } = props;
 
   const [connectOK,setConnectOK] = useState(false);
@@ -37,7 +37,7 @@ const OnlineUsers = (props) => {
   const onloadData = async (socketRoom) => {
     createUserData(socketRoom)
     await Promise.resolve(getOnlineUsers(socketRoom));
-    setConnectOK(true)
+    // setConnectOK(true)
   };
   const socketRoom = io(`${socketUrl}${roomId}`);
   onloadData(socketRoom);
@@ -45,7 +45,7 @@ const OnlineUsers = (props) => {
 }, []);
 
 
-// 判斷是否玩家中離！這裡要再改
+// 判斷是否玩家中離
 useEffect(() => { 
   if(!users) return
   if(!userNumber) return
@@ -60,11 +60,8 @@ useEffect(() => {
 
  return (
    <>
-
-
-   
    { 
-     connectOK && users && !userNumber ?
+     users && !userNumber && !gameOver ?
      (<><br/><br/>
         <div className='onlineUsers'>
         目前在線人員<br/>

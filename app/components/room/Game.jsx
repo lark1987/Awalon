@@ -159,11 +159,6 @@ const Game = (props) => {
       handleGoNextGame()
       return () => {socket.disconnect(); };
     });
-    socket.on('goGameOver', (msg) => {
-      setGameOver(msg)
-      return () => {socket.disconnect(); };
-    });
-
     return () => {socket.disconnect(); };
   }
   

@@ -4,19 +4,21 @@ import { socketUrl } from '../../utils/socketUrl';
 
 const Header = (props) => {
 
- const {roomId, } = props;
+ const {roomId,gameOver } = props;
 
  const router = useRouter();
  const goHome = () => {
    const socket = io(`${socketUrl}${roomId}`);
    socket.emit('roomOpen')
    router.push('/');
+  //  window.location.href = "/";
    return () => {socket.disconnect(); };
   }
 
   return (
     <>
-    <div className='room-logo' onClick={goHome}>
+    <div>
+    <div onClick={goHome} className='room-logo'>
     <img src='/logo.png' alt="logo" />
     </div>
 
@@ -29,6 +31,7 @@ const Header = (props) => {
     </div>
 
     <hr/>
+    </div>
     </>
   )
 }

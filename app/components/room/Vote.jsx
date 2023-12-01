@@ -154,12 +154,12 @@ const showVoteDetail = () => {
         <span className='vote-info' onClick={showVoteDetail}>
         <img src='/icon-info.png' alt="info" />
         <b style={{color:'red'}}>投票結果：{voteFinalResult}</b>
-        </span><br/>   
+        </span><br/><br/>  
 
         {isToggled &&
-        ( <div><br/>
+        ( <div className='voteResult'>
           { voteResult.map((data,index) => (
-          <div key={index} className='voteResult'>{data.userName}：{data.answer}</div>
+          <div key={index} >{data.userName}：{data.answer}</div>
           )) }
           </div>
         )

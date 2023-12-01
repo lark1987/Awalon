@@ -5,7 +5,7 @@ import { socketUrl } from '../../utils/socketUrl';
 
 const Role = (props) => {
 
-  const { users,roomId,userName,userId,
+  const { users,roomId,userName,userId,gameOver,
     setUserNumber,userReady,setUserReady,
     setShowAssassin, roleScenarios,
   } = props;
@@ -195,8 +195,9 @@ useEffect(() => getReady(), []);
 
   return (
    <>
-    <div>
-      
+   {
+    !gameOver && (
+      <>
       {hideClick1 ?
       (<div>
       <br/><br/>
@@ -239,8 +240,11 @@ useEffect(() => getReady(), []);
           <button onClick={toGame}>確認陣營，繼續遊戲</button>
         </div>
       ) : []}
+      </>
+    )
+   }
 
-    </div>    
+   
    </>
   )
 }
