@@ -101,7 +101,6 @@ const getStart = async() => {
   sessionStorage.setItem('userName',userName)
 
   router.push(`/rooms/${roomId}`);
-  // window.location.href = `/rooms/${roomId}`;
 
   return () => {socket.disconnect(); };
 
@@ -135,7 +134,7 @@ const goGuide = () => {
     :[]}
 
    <div style={{display:'flex',justifyContent:'space-evenly',}}>
-   <button onClick={goGuide}> 網站說明 </button>
+   {/* <button onClick={goGuide}> 網站說明 </button> */}
    <button onClick={createRoom}> 創建房間 </button>
    <button onClick={getStart}> 進入房間 </button>
    </div>

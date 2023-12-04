@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 
 import Header from './room/Header'
 import OnlineUsers from './room/OnlineUsers'
@@ -12,7 +13,6 @@ import Leader from './room/Leader'
 import Vote from './room/Vote'
 import Mission from './room/Mission'
 import Assassin from './room/Assassin'
-
 import GameInfo from './room/GameInfo'
 
 import '../page.css'
@@ -23,9 +23,15 @@ const Room = () => {
   const userName = sessionStorage.getItem('userName')
   const userId = sessionStorage.getItem('userId')
 
+  const router = useRouter();
+  if(!userId){
+    router.push('/');
+  }
+
   const [users, setUsers] = useState();
   const [userNumber, setUserNumber] = useState();
   const [userReady, setUserReady] = useState();
+  const [groupMessage, setGroupMessage] = useState();
 
   const [leaderList, setLeaderList] = useState();
   const [leaderName, setLeaderName] = useState();
@@ -60,9 +66,9 @@ const Room = () => {
 
   const missionScenario = {
     1: {1:1, 2:1, 3:1, 4:1, 5:1,},
-    2: {1:2, 2:2, 3:1, 4:1, 5:1,},
-    3: {1:1, 2:1, 3:1, 4:1, 5:1,},
-    4: {1:1, 2:1, 3:1, 4:1, 5:1,},
+    2: {1:2, 2:1, 3:1, 4:1, 5:1,},
+    3: {1:3, 2:1, 3:1, 4:1, 5:1,},
+    4: {1:4, 2:1, 3:1, 4:1, 5:1,},
     5: {1:2, 2:3, 3:2, 4:3, 5:3,},
     6: {1:2, 2:3, 3:4, 4:3, 5:4,},
     7: {1:2, 2:3, 3:3, 4:4, 5:4,},
@@ -76,6 +82,7 @@ const Room = () => {
     userNumber, setUserNumber,
     leaderList, setLeaderList,
     leaderName, setLeaderName,
+    groupMessage, setGroupMessage,
     
     userReady,setUserReady,
     selectedList, setSelectedList,

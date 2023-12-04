@@ -8,11 +8,12 @@ const Role = (props) => {
   const { users,roomId,userName,userId,gameOver,
     setUserNumber,userReady,setUserReady,
     setShowAssassin, roleScenarios,
+    groupMessage, setGroupMessage,
   } = props;
 
   const [systemMessage, setSystemMessage] = useState();
   const [shuffleList, setShuffleList] = useState();
-  const [groupMessage, setGroupMessage] = useState();
+  // const [groupMessage, setGroupMessage] = useState();
   const [hideClick1,setHideClick1] = useState(true);
   const [hideClick2,setHideClick2] = useState(true);
 
@@ -55,6 +56,7 @@ const gameStart = () => {
     setSystemMessage('玩家人數需至少為兩名')
     return
   }
+  
   getRoleButton()
   const socketRoom = io(`${socketUrl}${roomId}`);
   const userNumber = users.length
@@ -183,18 +185,7 @@ const getReady = () => {
 
 useEffect(() => getReady(), []);
 
-// 頁面刷新提醒
-// useEffect(() => {
-//   const handleBeforeUnload = (event) => {
-//     const message = '您確定要離開嗎？';
-//     event.returnValue = message; 
-//     return message; 
-//   };
-//   window.addEventListener('beforeunload', handleBeforeUnload);
-//   return () => {
-//     window.removeEventListener('beforeunload', handleBeforeUnload);
-//   };
-// }, []);
+
 
 
 

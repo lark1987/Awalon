@@ -15,8 +15,8 @@ const GameOver = (props) => {
   const goHome = () => {
     const socket = io(`${socketUrl}${roomId}`);
     socket.emit('roomOpen')
+    sessionStorage.clear()
     router.push('/');
-    // window.location.href = "/";
     return () => {socket.disconnect(); };
    }
 

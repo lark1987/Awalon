@@ -53,6 +53,11 @@ const GameInfo = (props) => {
     </div>
   </div>
   <span className='mini-text-grey'>規則說明：五次任務中，先贏得三次的陣營獲勝</span>
+
+  {users.length > 6 &&(
+  <span className='mini-text-grey' style={{color:'green'}}>玩家七位以上，第四次任務要兩張失敗才會失敗</span>
+  )
+  }
    </>
   )
 }

@@ -37,7 +37,6 @@ const OnlineUsers = (props) => {
   const onloadData = async (socketRoom) => {
     createUserData(socketRoom)
     await Promise.resolve(getOnlineUsers(socketRoom));
-    // setConnectOK(true)
   };
   const socketRoom = io(`${socketUrl}${roomId}`);
   onloadData(socketRoom);
@@ -56,6 +55,28 @@ useEffect(() => {
     return () => {socket.disconnect(); };
   }
  },[users])
+
+// 關閉頁面處理
+useEffect(() => {
+  const socket = io(`${socketUrl}${roomId}`);
+
+  const handleBeforeUnload = (event) => {
+    if(userNumber){
+      socket.emit('goGameOver', '玩家離線，遊戲中止');
+      socket.emit('roomOpen');
+    }
+    socket.disconnect(); 
+    const message = '您確定要離開嗎？';
+    event.returnValue = message;
+    return message;
+  };
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  return () => {
+    socket.disconnect();
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, []);
 
 
  return (
