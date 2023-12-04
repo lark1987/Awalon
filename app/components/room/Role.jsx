@@ -10,6 +10,7 @@ const Role = (props) => {
     setShowAssassin, roleScenarios,
   } = props;
 
+  const [systemMessage, setSystemMessage] = useState();
   const [shuffleList, setShuffleList] = useState();
   const [groupMessage, setGroupMessage] = useState();
   const [hideClick1,setHideClick1] = useState(true);
@@ -50,6 +51,10 @@ const generateShuffleList = () => {
 }
 // 遊戲開始按鈕：關房、抽角
 const gameStart = () => { 
+  if(users.length < 2) {
+    setSystemMessage('玩家人數需至少為兩名')
+    return
+  }
   getRoleButton()
   const socketRoom = io(`${socketUrl}${roomId}`);
   const userNumber = users.length
@@ -203,6 +208,7 @@ useEffect(() => getReady(), []);
       <br/><br/>
       <button className ='btn-yellow ' onClick={gameStart}>START</button><br/><br/>
       <div className='mini-text-grey'>人員到齊後，即可開始遊戲</div><br/>
+      <div style={{color:'blue'}}><b>{systemMessage}</b></div>
       </div>)
       :[]}
       
