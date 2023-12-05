@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { db } from '../utils/firebase'
 import { addDoc,getDocs,collection,query,where } from 'firebase/firestore'
-import io from 'socket.io-client';
 import { nanoid } from 'nanoid'
-import '../page.css'
+import io from 'socket.io-client';
 import { socketUrl } from '../utils/socketUrl';
+import '../page.css'
 
 
 const Lobby = () => {
@@ -134,7 +134,7 @@ const goGuide = () => {
     :[]}
 
    <div style={{display:'flex',justifyContent:'space-evenly',}}>
-   {/* <button onClick={goGuide}> 網站說明 </button> */}
+   <button onClick={goGuide}> 網站說明 </button>
    <button onClick={createRoom}> 創建房間 </button>
    <button onClick={getStart}> 進入房間 </button>
    </div>

@@ -82,8 +82,7 @@ const GameOver = (props) => {
 
   { goods && bads && (
       <>
-      <br/><br/>
-      <div style={{color:'white',display:'flex',justifyContent:'center',columnGap:'10px'}}>
+      <div style={{color:'white',display:'flex',justifyContent:'center',columnGap:'10px',fontSize:'20px'}}>
         <div>
           <img src='/gameOver-goods.png' alt="goods" style={{width:'150px'}}/>
           {goods && goods.map((item, index) => (

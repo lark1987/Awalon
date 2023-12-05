@@ -270,6 +270,19 @@ button:hover{
   width:800px;
 }
 
+.guide-list{
+  padding:10px;
+  cursor: pointer;
+  background-color: rgb(232, 229, 229);
+  border-radius: 20px;
+}
+
+.guide-content{
+  text-align:left;
+  margin: 20px;
+  letter-spacing:1px;
+}
+
 
 
 
