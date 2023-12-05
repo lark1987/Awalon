@@ -9,8 +9,6 @@ const OnlineUsers = (props) => {
   const { users,setUsers,roomId,userName,userId,userNumber,gameOver,
     setShowRule,setShowLeader,setShowMission,setShowVote } = props;
 
-  const [connectOK,setConnectOK] = useState(false);
-
  // 提供使用者資料，用來接收userid專屬訊息！
  const createUserData=(socket) => { 
   socket.emit('setUserName', userName,userId);

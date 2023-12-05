@@ -53,11 +53,6 @@ const Game = (props) => {
     const socket = io(`${socketUrl}${roomId}`);
     const failCount = missionArr.reduce((count, currentValue) => (currentValue.answer === "失敗" ? count + 1 : count), 0);
     
-    // 測試版：兩位以上第一次任務要兩張失敗
-    // if(users.length > 1 && scoreRecord.length == 0 && failCount < 2){
-    //   socket.emit('getMissionFinalResult','成功',failCount);
-    //   return () => {socket.disconnect(); };
-    // }
     // 正式版：七位以上第四次任務要兩張失敗
     if(users.length > 6 && scoreRecord.length == 3 && failCount < 2){
       socket.emit('getMissionFinalResult','成功',failCount);

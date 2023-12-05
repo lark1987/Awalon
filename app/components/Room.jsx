@@ -122,6 +122,7 @@ const Room = () => {
 
       <GameOver {...commonProps} />
       { showAssassin && (<Assassin {...commonProps} />)}
+
     </>
   )
 }

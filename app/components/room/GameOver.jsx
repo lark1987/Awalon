@@ -16,32 +16,34 @@ const GameOver = (props) => {
     const socket = io(`${socketUrl}${roomId}`);
     socket.emit('roomOpen')
     sessionStorage.clear()
+    setGoods('')
+    setBads('')
     router.push('/');
     return () => {socket.disconnect(); };
-   }
+  }
+
+  const getRoleList = () => { 
+    const socket = io(`${socketUrl}${roomId}`);
+    socket.emit('roleList')
+    socket.on('roleList', (goods,bads) => {
+      setGoods(goods)
+      setBads(bads)
+      return () => {socket.disconnect(); };
+    });
+    return () => {socket.disconnect(); };
+    
+  }
 
   const onLoad = () => {
     const socket = io(`${socketUrl}${roomId}`);
-    socket.on('goGameOver', (msg,goods,bads) => {
+    socket.on('goGameOver', (msg) => {
       setGameOver(msg)
-      setGoods(goods)
-      setBads(bads)
       return () => {socket.disconnect(); };
     });
     return () => {socket.disconnect(); };
   }
   useEffect(() => onLoad(), []);
 
-  // useEffect(() => { 
-  //   if(!users) return
-  //   if(!userNumber) return
-  //   if (users.length !== userNumber){
-  //     const socket = io(`${socketUrl}${roomId}`);
-  //     socket.emit('goGameOver','玩家離線，遊戲中止')
-  //     socket.emit('roomOpen')
-  //     return () => {socket.disconnect(); };
-  //   }
-  //  },[users])
 
   return (
    <>
@@ -67,22 +69,44 @@ const GameOver = (props) => {
     }
   </div>
 
-  {/* <br/><br/>
-  <div style={{backgroundColor:'white'}}>
-  <div>好人陣營
-    {goods && goods.map((item, index) => (
-      <div key={index}>{item.userName}：{item.role}</div>
-    ))}
-  </div>
-  <div>壞人陣營
-    {bads && bads.map((item, index) => (
-      <div key={index}>{item.userName}：{item.role}</div>
-    ))}
-  </div>
-  </div> */}
-
   <br/><br/>
-  <div><button className='btn-yellow' onClick={goHome}>離開房間</button></div>
+  <div style={{display:'flex',justifyContent:'space-evenly'}}>
+    {gameOver.includes("刺客")?null:
+    (gameOver.includes("離線")?null:
+    (<button className='btn-yellow' onClick={getRoleList}>玩家身份</button>
+    ))}
+    <button className='btn-yellow' onClick={goHome}>離開房間</button>
+  </div>
+  <br/><br/>
+
+
+  { goods && bads && (
+      <>
+      <br/><br/>
+      <div style={{color:'white',display:'flex',justifyContent:'center',columnGap:'10px'}}>
+        <div>
+          <img src='/gameOver-goods.png' alt="goods" style={{width:'150px'}}/>
+          {goods && goods.map((item, index) => (
+            <div key={index}>{item.userName}：{item.role}</div>
+          ))}
+        </div>
+        <div>
+          <img src='/gameOver-bads.png' alt="goods" style={{width:'150px'}}/>
+          {bads && bads.map((item, index) => (
+            <div key={index}>{item.userName}：{item.role}</div>
+          ))}
+        </div>
+      </div>
+      <br/><br/>
+      </>
+    )
+  }
+
+
+
+
+
+
   </div>
    )}
 
