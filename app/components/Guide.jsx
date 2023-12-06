@@ -39,8 +39,8 @@ const goHome = () => {
       </div>
       {toggles[0] && (
        <div className='guide-content'>
-       歡迎來到 Awalon！<br/>
-       本站希望能作為經典桌遊阿瓦隆的團康輔助工具，好友相約，隨時開玩！<br/><br/>
+       <b>歡迎來到 Awalon！</b><br/>
+       本站希望能作為經典桌遊阿瓦隆<br/>的輔助工具，好友相約，隨時開玩！<br/><br/>
  
        <span style={{color:'blue'}}>遊戲人數建議：5~10人。<br/>
        目前特殊角色僅提供：梅林、刺客<br/></span>
@@ -57,15 +57,13 @@ const goHome = () => {
       {toggles[1] && (
        <>
        <div className='guide-content'>
-       由一玩家創建房間名稱及密碼，並提供給其他玩家加入。<br/>
-       確認"目前在線人員"的名單，人員到齊即可開始遊戲。<br/><br/>
-       點選左上角圖示可以離開房間，<br/>
+       創建房間名稱及密碼，即可進入房間<br/>
+       確認玩家有出現在<b>"目前在線人員"</b>，<br/>全員到齊即可開始遊戲！<br/><br/>
        <span style={{color:'blue'}}>
        房間員額10名為上限、<br/>房間名稱不可重複、<br/>房間內的玩家名稱不可以相同。<br/><br/>
        </span>
-       請留意遊戲開始後，<br/>關閉或刷新頁面都將導致遊戲中斷。
+       請留意遊戲開始後，<br/><span style={{color:'red'}}>關閉或刷新頁面都將導致遊戲中斷。</span>
        </div>
-       <img src='/guide/guide-1.png' alt="guide" style={{width:'250px'}}></img>
        </>
       )}
      </div>
@@ -78,17 +76,24 @@ const goHome = () => {
       {toggles[2] && (
        <>
        <div className='guide-content'>
-       每位玩家抽取自己的角色牌，確認自己的身份。
-       遊戲過程中可點選左上角的人物圖示確認自己的身份。<br/><br/>
- 
-       壞人數量：<br/>
-       二~四位玩家：一名壞人<br/>
-       五~六位玩家：二名壞人<br/>
-       七~九位玩家：三名壞人<br/>
-       十位玩家：四名壞人<br/><br/>
-       目前特殊角色僅提供：梅林、刺客。
+       每位玩家抽取角色牌、確認陣營身份<br/>
+       <span style={{color:'blue'}}>目前特殊角色僅提供：梅林、刺客。</span><br/><br/>
+
+       <table className='guide-table'>
+        <tr><th>玩家人數</th><th>壞人數量</th></tr>
+        <tr><td>2~4</td><td>一位</td></tr>
+        <tr><td>5~6</td><td>二位</td></tr>
+        <tr><td>7~9</td><td>三位</td></tr>
+        <tr><td>10</td><td>四位</td></tr>
+        </table><br/>
+
+       角色分成好人陣營及壞人陣營，<br/>
+       <span style={{color:'blue'}}>壞人陣營知悉彼此身份。</span><br/>
+       <b>梅林</b>：可以知道壞人的身份，<br/><b>刺客</b>：可以找出梅林並刺殺。<br/>
+
+
+
        </div>
-        <img src='/guide/guide-2.png' alt="guide" style={{width:'250px'}}></img>
         </>
       )}
      </div>
@@ -100,9 +105,8 @@ const goHome = () => {
       {toggles[3] && (
        <>
        <div className='guide-content'>
-       請一位玩家撥放指導語音，供梅林及壞人陣營確認身份。
+       請一位玩家撥放指導語音，<br/>供梅林及壞人陣營知悉身份。<br/>
        </div>
-       <img src='/guide/guide-2.png' alt="guide" style={{width:'250px'}}></img>
        </>
       )}
       
@@ -115,9 +119,10 @@ const goHome = () => {
       {toggles[4] && (
       <>
       <div className='guide-content'>
-      所有人了解規則後可繼續遊戲。
+      <b>玩家輪流當隊長</b>，<br/>每局隊長可以指派人員出任務，<br/>並由全體玩家投票是否同意。<br/><br/>
+      <b>總共會進行五次任務</b>，<br/>先贏得三次的陣營獲勝！<br/><br/>
+      好人陣營獲勝時，<br/><b>壞人陣營的刺客可以指認梅林</b>，<br/>若指認正確，壞人陣營反敗為勝！
       </div>
-      <img src='/guide/guide-4.png' alt="guide" style={{width:'250px'}}></img>
       </>)}
      </div>
 
@@ -127,8 +132,8 @@ const goHome = () => {
       </div>
       {toggles[5] && (<>
        <div className='guide-content'>
-       隊長順序會列示在最上方，請依照下方星星裡的數字選擇該數量的人員。
-       資訊版會呈現當次遊戲的好人及壞人數量，及目前進行到哪一次的任務。
+       隊長順序會列示在最上方，<br/><b>依照星星數字選擇該數量的人員。</b><br/>
+       資訊版會呈現好人壞人數量，<br/><b>當次任務的字體會呈現粗體紅色。</b><br/>
        </div>
        <img src='/guide/guide-5.png' alt="guide" style={{width:'250px'}}></img>
        </>)}
@@ -140,10 +145,12 @@ const goHome = () => {
       </div>
       {toggles[6] && (<>
       <div className='guide-content'>
-      每位玩家可以投票表決是否同意此次出任務的人選。
-      點選 黑色圈圈 可以確認投票結果的詳細資訊。
-      若平票或反對票佔多數，即投票失敗。更換隊長重新指派。
-      若連續投票失敗達五次，壞人陣營直接勝利。由電池圖案標記。
+      投票表決是否同意出任務的人選。<br/>
+      <b>投票結果可點選 黑色圈圈 查看。</b><br/><br/>
+      <span style={{color:'blue'}}>
+      若平票或反對票佔多數，投票失敗。</span><br/>更換隊長重新指派。<br/><br/>
+      <span style={{color:'blue'}}>連續投票失敗五次，壞人陣營勝利。</span><br/>
+      以電池圖案標記。<br/>
       </div>
       <img src='/guide/guide-6.png' alt="guide" style={{width:'250px'}}></img>
       </>)}
@@ -155,11 +162,20 @@ const goHome = () => {
       </div>
       {toggles[7] && (<>
       <div className='guide-content'>
-      被指派的人員可以點選任務成功或任務失敗，（好人陣營只能選擇任務成功）
-      只要有一人點選失敗，任務即失敗（資訊版星星會變成黑色）。
-      （七人以上第四次任務需要兩人點選失敗，任務才算失敗）
-      笑臉表示任務成功的數量，哭臉表示任務失敗的數量。
-      任務失敗三次，壞人陣營獲勝！
+      任務人員可以點選任務成功或失敗，<br/>
+      <b>好人陣營只能選擇任務成功！</b><br/><br/>
+
+      任務成功三次，好人陣營獲勝！<br/>
+      任務失敗三次，壞人陣營獲勝！<br/><br/>
+
+      <span style={{color:'blue'}}><b>只要有一人點選失敗，任務即失敗</b></span><br/>
+      資訊版星星會變成黑色。<br/>
+      <b>笑臉</b>：任務成功的數量，<br/>
+      <b>哭臉</b>：任務失敗的數量。<br/><br/>
+
+      <span style={{color:'blue'}}><b>七人以上第四次任務需兩個失敗，</b></span><br/>任務才算失敗<br/>
+      
+      
       </div>
       <img src='/guide/guide-7.png' alt="guide" style={{width:'250px'}}></img>
       </>)}
@@ -171,9 +187,9 @@ const goHome = () => {
       </div>
       {toggles[8] && (<>
       <div className='guide-content'>
-      若任務成功三次，啟動刺客任務。
-      抽到刺客角色的玩家，可和壞人陣營討論哪一位玩家是梅林。
-      若刺殺成功，壞人陣營獲勝！
+      <b>若任務成功三次，啟動刺客任務。</b><br/>
+      壞人陣營討論哪一位玩家是梅林。<br/>
+      若刺客刺殺成功，壞人陣營獲勝！
       </div>
       <img src='/guide/guide-8.png' alt="guide" style={{width:'250px'}}></img>
       </>)}
