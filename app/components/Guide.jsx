@@ -105,7 +105,8 @@ const goHome = () => {
       {toggles[3] && (
        <>
        <div className='guide-content'>
-       請一位玩家撥放指導語音，<br/>供梅林及壞人陣營知悉身份。<br/>
+       請一位玩家撥放指導語音，<br/>供梅林及壞人陣營知悉身份。<br/><br/>
+       <img src='/guide/guide-3.png' alt="guide" style={{width:'250px'}}></img>
        </div>
        </>
       )}
@@ -147,9 +148,9 @@ const goHome = () => {
       <div className='guide-content'>
       投票表決是否同意出任務的人選。<br/>
       <b>投票結果可點選 黑色圈圈 查看。</b><br/><br/>
-      <span style={{color:'blue'}}>
-      若平票或反對票佔多數，投票失敗。</span><br/>更換隊長重新指派。<br/><br/>
-      <span style={{color:'blue'}}>連續投票失敗五次，壞人陣營勝利。</span><br/>
+      <span style={{color:'blue'}}><b>
+      若平票或反對票佔多數，投票失敗。</b></span><br/>更換隊長重新指派。<br/><br/>
+      <span style={{color:'blue'}}><b>連續投票失敗五次，壞人陣營勝利。</b></span><br/>
       以電池圖案標記。<br/>
       </div>
       <img src='/guide/guide-6.png' alt="guide" style={{width:'250px'}}></img>
