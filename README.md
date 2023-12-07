@@ -15,7 +15,13 @@
 
 ## Components
 
+頁面：登入頁面 Lobby、遊戲說明 Guide、遊戲房間 Room  
+房間：房間標頭 Header、在線人員 OnlineUsers  
+流程：抽取角色 Role、<b>流程串接 Game</b>、遊戲結束 GameOver  
+任務：隊長選人 Leader、全員投票 Vote、執行任務 Mission、刺客行動 Assassin  
+資訊：遊戲規則 GameRule、遊戲紀錄 GameInfo
 
+<img src='./public/read/components.PNG' width='300'>  
 
 ## Socket.io
 
