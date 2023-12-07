@@ -28,14 +28,12 @@ const goHome = () => {
    <>
     <div className='container' >
 
-    <div className='logo'><img src='/logo.png' alt="logo" onClick={goHome}
-    style={{cursor:'pointer'}}/></div>
-
+    <div><img src='/guide/guide-title.png' alt="guide"style={{width:'200px'}}/></div>
     <hr/>
 
      <div>
       <div onClick={()=>handleToggle(0)} className='guide-list'>
-      step 0 ：網站主題
+      Step 0 ：網站主題
       </div>
       {toggles[0] && (
        <div className='guide-content'>
@@ -52,7 +50,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(1)} className='guide-list'>
-      step 1 ：進入房間
+      Step 1 ：進入房間
       </div>
       {toggles[1] && (
        <>
@@ -71,7 +69,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(2)} className='guide-list'>
-      step 2 ：抽取角色
+      Step 2 ：抽取角色
       </div>
       {toggles[2] && (
        <>
@@ -100,13 +98,13 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(3)} className='guide-list'>
-      step 3 ：天黑閉眼
+      Step 3 ：天黑閉眼
       </div>
       {toggles[3] && (
        <>
        <div className='guide-content'>
        請一位玩家撥放指導語音，<br/>供梅林及壞人陣營知悉身份。<br/><br/>
-       <img src='/guide/guide-3.png' alt="guide" style={{width:'250px'}}></img>
+       <img src='/guide/guide-3.PNG' alt="guide" style={{width:'250px'}}></img>
        </div>
        </>
       )}
@@ -115,7 +113,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(4)} className='guide-list'>
-      step 4 ：遊戲規則
+      Step 4 ：遊戲規則
       </div>
       {toggles[4] && (
       <>
@@ -129,7 +127,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(5)} className='guide-list'>
-      step 5 ：隊長指派
+      Step 5 ：隊長指派
       </div>
       {toggles[5] && (<>
        <div className='guide-content'>
@@ -142,7 +140,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(6)} className='guide-list'>
-      step 6 ：全員投票
+      Step 6 ：全員投票
       </div>
       {toggles[6] && (<>
       <div className='guide-content'>
@@ -159,7 +157,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(7)} className='guide-list'>
-      step 7 ：出任務囉
+      Step 7 ：出任務囉
       </div>
       {toggles[7] && (<>
       <div className='guide-content'>
@@ -184,7 +182,7 @@ const goHome = () => {
 
      <div>
       <div onClick={()=>handleToggle(8)} className='guide-list'>
-      step 8 ：刺客出動
+      Step 8 ：刺客出動
       </div>
       {toggles[8] && (<>
       <div className='guide-content'>
