@@ -58,7 +58,7 @@ const goHome = () => {
        <>
        <div className='guide-content'>
        創建房間名稱及密碼，即可進入房間<br/>
-       確認玩家有出現在<b>"目前在線人員"</b>，<br/>全員到齊即可開始遊戲！<br/><br/>
+       確認玩家有出現在<b>目前在線人員</b>，<br/>全員到齊即可開始遊戲！<br/><br/>
        <span style={{color:'blue'}}>
        房間員額10名為上限、<br/>房間名稱不可重複、<br/>房間內的玩家名稱不可以相同。<br/><br/>
        </span>
