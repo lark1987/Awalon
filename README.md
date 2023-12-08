@@ -22,7 +22,7 @@
 
 <img src='./public/read/components.PNG' width='600'> 
 
-## Tip
+## Tips
 - 依玩家人數變動的角色人數、任務次數，以物件列表配置。
 - 運用 條件表達式 取代非必要的 state 和監聽。
 - 使用 useEffect 時善用 if 控制。
