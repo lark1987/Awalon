@@ -6,7 +6,6 @@ export default function Home() {
 
   return (
     <>
-    
     <div className='pic-box'>
     <img className='homePic pic-rocket' src='/homepage/home-rocket.png' alt="pic-rocket" />
     <img className='homePic pic-star' src='/homepage/home-star.png' alt="pic-star" />
@@ -18,10 +17,6 @@ export default function Home() {
     <Lobby/>
     <img className='pic-welcome' src='/homepage/home-welcome.png' alt="pic-welcome" />
     <br/><br/>
-
-    
-    
-
     </div>
     </>
 

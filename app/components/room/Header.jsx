@@ -24,10 +24,21 @@ const Header = (props) => {
 
   return (
     <>
+
     <div>
+    {/* <div className='room-logo'>
+    <img src='/logo.png' alt="logo" />
+    </div> */}
+
+    {isToggled ? (<>
+    <div style={{color:'rgb(20 36 55)',borderRadius:'20px',padding:'3px',height:'28px'}}>
+    <b>{groupMessage}</b></div>
+    </>):(
     <div className='room-logo'>
     <img src='/logo.png' alt="logo" />
     </div>
+    )
+    }
 
     <div onClick={goHome} className='leave-btn'>
     <img src='/leave.png' alt="exit"/>
@@ -42,11 +53,7 @@ const Header = (props) => {
     <hr/>
     </div>
 
-    {isToggled && (<>
-    <div style={{color:'green',background:'#c4f6c4',borderRadius:'5px',}}>
-      {groupMessage}</div><br/>
-    </>)
-    }
+
 
     
     </>

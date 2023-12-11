@@ -26,7 +26,19 @@ const handleChange = (e) => {
 
 // 創建房間：核對房名 > 於 firebase 創建房間
 const createRoom = async() => { 
+
+  if(!inputData){
+    setSystemMessage('尚有內容未填寫')
+    return
+  }
+
   const {userName, roomName, roomPassword } = inputData;
+
+  if(!roomName || !roomPassword){
+    setSystemMessage('尚有內容未填寫')
+    return
+  }
+
   const roomRef = collection(db, "Awalon-room");
   const q = query(roomRef, where("roomName", "==", roomName))
   const roomDouble = await getDocs(q);

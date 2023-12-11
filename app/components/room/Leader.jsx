@@ -61,7 +61,7 @@ const Leader = (props) => {
         </label>))}
         </div>
 
-        <br/><br/><button onClick={missionRaise} style={{'backgroundColor':'#cbd5f1'}}>提請投票</button><br/><br/>
+        <br/><br/><button onClick={missionRaise} className='btn-blue'>提請投票</button><br/><br/>
         {systemMessage?
         (<div><b style={{color:'red'}}>{systemMessage}</b></div>)
         :[]}

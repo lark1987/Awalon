@@ -216,12 +216,12 @@ const Game = (props) => {
    {showRule && 
     (<>
     <GameRule/><br/> 
-    <div><button onClick={goLeader}>了解規則，開始指派隊長</button></div><br/>
+    <div><button className='btn-blue' onClick={goLeader}>開始指派隊長</button></div><br/>
     </>)
    }
 
    {leaderList && !showRule &&
-   (<b style={{color:'green'}}>隊長順序：
+   (<b style={{color:'rgb(45 51 67)',background:'rgb(233, 232, 232)',borderRadius:'20px',padding:'3px'}}>隊長順序：
      {leaderList.map((item, index) => (
        <span key={index}>{item == leaderName? '🎯':''}{item}、</span>
      ))}
@@ -237,11 +237,11 @@ const Game = (props) => {
 
    {selectedList && 
    (<div><br/>
-   <div className='background-blue'>出任務人員：
+   <div className='background-blue'><b>出任務人員：
      {selectedList.map((item, index) => (
        <span key={index}> {item}、</span>
      ))}
-     </div>
+     </b></div>
    </div>)
    }
 

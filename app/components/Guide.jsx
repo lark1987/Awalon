@@ -29,6 +29,9 @@ const goHome = () => {
     <div className='container' >
 
     <div><img src='/guide/guide-title.png' alt="guide"style={{width:'200px'}}/></div>
+    <div style={{position:'absolute',right:'40px',top:'42px'}}>
+    <img src='/leave.png' alt="exit" onClick={goHome} style={{width:'25px',cursor:'pointer'}} />
+    </div>
     <hr/>
 
      <div>
@@ -195,10 +198,7 @@ const goHome = () => {
      </div>
     
     <br/>
-    <div>
-    <img src='/leave.png' alt="exit" onClick={goHome} 
-    style={{width:'30px',cursor:'pointer'}} />
-    </div>
+
 
 
 

@@ -234,7 +234,7 @@ useEffect(() => getReady(), []);
           }</div>
 
           <br/><b>{groupMessage}</b><br/><br/>
-          <button onClick={toGame}>確認陣營，繼續遊戲</button>
+          <button className='btn-blue' onClick={toGame}>繼續遊戲</button>
         </div>
       ) : []}
       </>
