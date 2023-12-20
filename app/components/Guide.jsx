@@ -80,12 +80,16 @@ const goHome = () => {
        每位玩家抽取角色牌、確認陣營身份<br/>
        <span style={{color:'blue'}}>目前特殊角色僅提供：梅林、刺客。</span><br/><br/>
 
-       <table className='guide-table'>
-        <tr><th>玩家人數</th><th>壞人數量</th></tr>
-        <tr><td>2~4</td><td>一位</td></tr>
-        <tr><td>5~6</td><td>二位</td></tr>
-        <tr><td>7~9</td><td>三位</td></tr>
-        <tr><td>10</td><td>四位</td></tr>
+        <table className='guide-table'>
+        <thead>
+          <tr><th>玩家人數</th><th>壞人數量</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2~4</td><td>一位</td></tr>
+          <tr><td>5~6</td><td>二位</td></tr>
+          <tr><td>7~9</td><td>三位</td></tr>
+          <tr><td>10</td><td>四位</td></tr>
+        </tbody>
         </table><br/>
 
        角色分成好人陣營及壞人陣營，<br/>
@@ -134,8 +138,8 @@ const goHome = () => {
       </div>
       {toggles[5] && (<>
        <div className='guide-content'>
-       隊長順序會列示在最上方，<br/><b>依照星星數字選擇該數量的人員。</b><br/>
-       資訊版會呈現好人壞人數量，<br/><b>當次任務的字體會呈現粗體紅色。</b><br/>
+       隊長順序列示在最上方，<br/><b>資訊板會呈現好人壞人數量，</b><br/>
+       及當次出任務的人員數量。<br/><b>當次任務的字體會呈現粗體紅色。</b><br/>
        </div>
        <img src='/guide/guide-5.png' alt="guide" style={{width:'250px'}}></img>
        </>)}
@@ -148,7 +152,7 @@ const goHome = () => {
       {toggles[6] && (<>
       <div className='guide-content'>
       投票表決是否同意出任務的人選。<br/>
-      <b>投票結果可點選 黑色圈圈 查看。</b><br/><br/>
+      <b>投票結果可點選 <img src='/icon-info.png' alt="info" style={{width:'15px'}}></img> 查看。</b><br/><br/>
       <span style={{color:'blue'}}><b>
       若平票或反對票佔多數，投票失敗。</b></span><br/>更換隊長重新指派。<br/><br/>
       <span style={{color:'blue'}}><b>連續投票失敗五次，壞人陣營勝利。</b></span><br/>
@@ -171,15 +175,10 @@ const goHome = () => {
       任務失敗三次，壞人陣營獲勝！<br/><br/>
 
       <span style={{color:'blue'}}><b>只要有一人點選失敗，任務即失敗</b></span><br/>
-      資訊板的星星會變成黑色。<br/>
-      <b>笑臉</b>：任務成功的數量，<br/>
-      <b>哭臉</b>：任務失敗的數量。<br/><br/>
-
+      <img src='/mission-happy.png' alt="happy" style={{width:'15px'}}></img>：任務成功的數量，<br/>
+      <img src='/mission-sad.png' alt="happy" style={{width:'15px'}}></img>：任務失敗的數量。<br/><br/>
       <span style={{color:'blue'}}><b>七人以上第四次任務需兩個失敗，</b></span><br/>任務才算失敗<br/>
-      
-      
       </div>
-      <img src='/guide/guide-7.png' alt="guide" style={{width:'250px'}}></img>
       </>)}
      </div>
 
