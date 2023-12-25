@@ -7,7 +7,7 @@
 
 遊戲 DEMO 影片：https://www.flexclip.com/tw/share/27031520f008021fd06997fd2f342bffffeaf8e.html
 
-<img src='./public/read/demo.PNG' width='600'> 
+<img src='./public/read/demo.PNG' width='700'> 
 
 ## Architecture
 
