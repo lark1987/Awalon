@@ -7,6 +7,8 @@
 
 遊戲 DEMO 影片：https://www.flexclip.com/tw/share/27031520f008021fd06997fd2f342bffffeaf8e.html
 
+<img src='./public/read/demo.PNG' width='600'> 
+
 ## Architecture
 
 前端以 React 作為主要框架，搭配 Next.js，於 Vercel 部屬。  
